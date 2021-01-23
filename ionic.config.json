@@ -1,0 +1,7 @@
+{
+  "name": "smartClinicClientMobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
