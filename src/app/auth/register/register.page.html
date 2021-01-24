@@ -1,0 +1,67 @@
+<ion-content [scrollEvents]="true">
+  <ion-grid class="centralize">
+    <ion-row>
+      <ion-col>
+        <ion-img src="/assets/icon-transparent.png"></ion-img>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col class="center-text">
+        <ion-text color="primary">Create your Smart Clinic Account</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row class="centralize">
+      <ion-col>
+        <ion-item>
+          <ion-input placeholder="First Name"></ion-input>
+          <ion-icon name="person-outline" color="primary" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-input placeholder="Last Name"></ion-input>
+          <ion-icon name="person" color="primary" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-input placeholder="Email Address"></ion-input>
+          <ion-icon name="mail-outline" color="primary" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-input placeholder="Phone Number"></ion-input>
+          <ion-icon name="call" color="primary" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-datetime displayFormat="MM DD YY" placeholder="Date of Birth"></ion-datetime>
+          <ion-icon name="calendar-outline" color="primary" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-select interface="popover" placeholder="Select Sex">
+            <ion-select-option value="Female">Female</ion-select-option>
+            <ion-select-option value="Male">Male</ion-select-option>
+          </ion-select>
+          <ion-icon name="person-circle" color="primary" slot="start"></ion-icon>
+        </ion-item>
+        <ion-item>
+          <ion-input autofocus="on" type="password" placeholder="Password"></ion-input>
+          <ion-icon name="lock-closed-outline" color="primary" slot="start"></ion-icon>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button color="primary" expand="full">Create Account</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="center-text small-text grey">Already have an account? <ion-text routerLink="/" color="primary">
+          Sign In</ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="center-text small-text grey">
+        Are you a Doctor?
+        <a routerLink="" color="primary">Click Here</a>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

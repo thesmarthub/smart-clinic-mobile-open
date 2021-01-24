@@ -1,0 +1,50 @@
+ion-img {
+    height: 60px;
+  }
+  
+  ion-card {
+    width: 80vw;
+  }
+  
+  ion-col {
+    text-align: center;
+  }
+  
+  .center-text {
+    text-align: center;
+  }
+  
+  ion-item {
+    width: 80vw;
+  }
+  
+  ion-item {
+    //   --border-color: var(--custom-border-color);
+    --highlight-color-valid: var(--custom-border-color);
+    --highlight-background: #0a1365;
+    margin-top: 10px;
+  }
+  
+  .small-text {
+    font-size: 12px;
+  }
+  
+  ion-button {
+    --ion-color-primary: var(--custom-border-color);
+  }
+  
+  .centralize {
+    align-items: center;
+  }
+  .extra-margin {
+    margin-top: 20px;
+  }
+  
+  .little-margin {
+    margin-top: 10px;
+  }
+  
+  .grey {
+    color: gray;
+  }
+  

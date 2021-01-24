@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,3 +24,59 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+:root {
+  --ion-color-primary: #673ab7;
+}
+html {
+    background-color: #f7f2f7 !important;
+    color: #0a1365 !important;
+}
+
+.default-text-color {
+    color: #0a1365;
+}
+
+$custom-border-color:#673ab7;
+
+.smart-primary {
+  color: #673ab7 !important;
+}
+
+.smart-primary-light {
+  color: #f7f2f7 !important;
+}
+
+.smart-primary-dark {
+  color: #51578d;
+}
+
+.smart-accent {
+  color: #ffa500;
+}
+
+.smart-primary:hover {
+  color: #51578d !important;
+}
+
+.smart-primary:active {
+  color: #51578d !important;
+}
+
+.smart-primary-bg {
+  background-color: #673ab7 !important;
+  color: white !important;
+}
+
+.smart-primary-bg:hover {
+  background-color: white !important;
+  color: #673ab7 !important;
+}
+
+.smart-primary-bg-light {
+  background-color: rgba(129, 94, 190, 0.397);
+  color: #673ab7 !important;
+}
+
+.is-pointer {
+  cursor: pointer;
+}
