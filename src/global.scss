@@ -24,19 +24,22 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
-:root {
-  --ion-color-primary: #673ab7;
+
+ion-card {
+  background-color: #f9f9f9;
+  box-shadow: 1px 2px 20px 0 rgb(236, 230, 230) !important;
 }
+
 html {
-    background-color: #f7f2f7 !important;
-    color: #0a1365 !important;
+  background-color: #f7f2f7 !important;
+  color: #0a1365 !important;
 }
 
 .default-text-color {
-    color: #0a1365;
+  color: #0a1365;
 }
 
-$custom-border-color:#673ab7;
+$custom-border-color: #673ab7;
 
 .smart-primary {
   color: #673ab7 !important;
@@ -79,4 +82,9 @@ $custom-border-color:#673ab7;
 
 .is-pointer {
   cursor: pointer;
+}
+
+.centralize {
+  text-align: center;
+  align-content: center;
 }

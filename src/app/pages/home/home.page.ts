@@ -10,7 +10,7 @@ export class HomePage implements OnInit {
     {
       title: "Appointments",
       icon: "fa fa-calendar",
-      link: "/tabs/appointment",
+      link: "/tabs/view-appointments",
       img: "/assets/004-calendar.png",
     },
     {

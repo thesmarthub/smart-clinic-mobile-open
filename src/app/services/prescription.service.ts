@@ -10,19 +10,29 @@ import {
 } from "../actions/events/prescription";
 import { BehaviorSubject, Observable } from "rxjs";
 import { GeneralService } from "./general.service";
+import { IAPIResponse } from "src/interfaces/general";
 
 @Injectable({
   providedIn: "root",
 })
 export class PrescriptionService {
-  currentValues: { [param: string]: BehaviorSubject<any> } = {};
+  currentValues = {
+    prescriptions: new BehaviorSubject<Record<string, any>[]>(null),
+    loadingPrescriptions: new BehaviorSubject<boolean>(null),
+  };
 
   private currentState: BehaviorSubject<PrescriptionState> = new BehaviorSubject(
-    new PrescriptionState()
+    PrescriptionState
   );
 
   constructor(private _genService: GeneralService) {
-    this.initValues();
+    this._genService.broadcaster.subscribe((result) => {
+      if (!result) return;
+      if (result.failed) {
+        return console.log(result.res);
+      }
+      this.handleEvent(result.action, result.res);
+    });
   }
 
   normalizePrescriptionData = (arr: { [param: string]: any }[]) => {
@@ -60,48 +70,35 @@ export class PrescriptionService {
     return results;
   };
 
-  callbackRunner = async (
-    callback: Observable<object>,
-    state: PrescriptionState
-  ) => {
-    this.currentValues.loading.next(true);
-    const result = await callback.subscribe(
-      (data: { [param: string]: [] }) => {
-        if (state === LoadingPrescriptions) {
-          this.currentValues.prescriptions.next(
-            this.normalizePrescriptionData(data?.result)
-          );
-
-          this.currentState.next(new LoadedPrescriptions());
-
-          console.log(this.currentValues);
-        }
-        data?.result;
-      },
-      (err) => {
-        console.log("Prescription API call failed!", err);
-      },
-      () => {
-        this.currentValues.loading.next(false);
-      }
-    );
-  };
-
-  handleEvent = async (event: PrescriptionEvent, value?) => {
-    console.log("handling events");
-    if (event instanceof LoadPrescriptions) {
-      console.log("Loading Prescriptions");
-      this.currentState.next(new LoadingPrescriptions());
-      this.callbackRunner(
-        await this._genService.getData(
-          "hospital/patient-request?action=FETCH_PATIENT_PRESCRIPTIONS"
-        ),
-        LoadingPrescriptions
-      ) ?? [];
+  triggerEvent = async (event: PrescriptionEvent, value?) => {
+    if (event === LoadPrescriptions) {
+      this.currentState.next(LoadingPrescriptions);
+      this.currentValues.loadingPrescriptions.next(true);
+      this._genService.getData({
+        url: "hospital/patient-request",
+        action: event,
+        params: { action: "FETCH_PATIENT_PRESCRIPTIONS" },
+      });
     }
   };
 
-  initValues() {
+  private readonly handleEvent = (
+    event: PrescriptionEvent,
+    value: IAPIResponse<Record<string, any> | Record<string, any>[]>
+  ) => {
+    if (event === LoadPrescriptions) {
+      this.currentValues.loadingPrescriptions.next(false);
+      if (Array.isArray(value.result)) {
+        this.currentValues.prescriptions.next(
+          this.normalizePrescriptionData(value.result)
+        );
+      } else {
+        throw "PRESCRIPTIONS: RESPONSE FORMAT IS INVALID";
+      }
+    }
+  };
+
+  resetValues() {
     Object.keys(this.currentValues).forEach((key) => {
       if (!this.currentValues[key].closed) {
         this.currentValues[key].unsubscribe();
@@ -110,7 +107,7 @@ export class PrescriptionService {
 
     this.currentValues = {
       prescriptions: new BehaviorSubject([]),
-      loading: new BehaviorSubject(false),
+      loadingPrescriptions: new BehaviorSubject(false),
     };
   }
 }

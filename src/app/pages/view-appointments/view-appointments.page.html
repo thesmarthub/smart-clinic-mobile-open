@@ -1,0 +1,32 @@
+<ion-toolbar>
+  <ion-searchbar placeholder="Filter Appointments"></ion-searchbar>
+</ion-toolbar>
+<ion-content class="centralize">
+  <ion-spinner *ngIf="aService.currentValues.loadingAppointments | async"></ion-spinner>
+  <ion-list>
+    <ion-item *ngFor="let item of aService.currentValues.appointments | async">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="7">
+            <ion-row>
+              <ion-text color="primary">{{item.department_route}}</ion-text>
+            </ion-row>
+            <ion-row>
+              <ion-text>{{item.smart_code}}</ion-text>
+            </ion-row>
+            <ion-row>
+            </ion-row>
+          </ion-col>
+          <ion-col size="5">
+            <ion-label color="primary">{{item.appointment_time | date: 'short'}}</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="presentActionSheet()">
+    <ion-fab-button>
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

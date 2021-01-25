@@ -13,10 +13,10 @@ const routes: Routes = [
           import("../pages/home/home.module").then((m) => m.HomePageModule),
       },
       {
-        path: "prescription",
+        path: "view-appointments",
         loadChildren: () =>
-          import("../pages/prescription/prescription.module").then(
-            (m) => m.PrescriptionPageModule
+          import("../pages/view-appointments/view-appointments.module").then(
+            (m) => m.ViewAppointmentsPageModule
           ),
       },
       {

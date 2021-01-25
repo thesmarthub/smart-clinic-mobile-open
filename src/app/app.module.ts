@@ -11,6 +11,7 @@ import { AppComponent } from "./app.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GeneralInterceptorService } from "./interceptors/general-interceptor";
+import { CalendarModule } from "ion2-calendar";
 
 @NgModule({
   declarations: [AppComponent],

@@ -20,6 +20,14 @@ const routes: Routes = [
     path: "tabs",
     loadChildren: () =>
       import("./tabs/tabs.module").then((m) => m.TabsPageModule),
+  },
+  {
+    path: 'view-appointments',
+    loadChildren: () => import('./pages/view-appointments/view-appointments.module').then( m => m.ViewAppointmentsPageModule)
+  },
+  {
+    path: 'calendar',
+    loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
   }
 ];
 @NgModule({

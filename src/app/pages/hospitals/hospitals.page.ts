@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadHospitals } from 'src/app/actions/events/hospital';
+import { HospitalService } from 'src/app/services/hospital.service';
 
 @Component({
   selector: 'app-hospitals',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HospitalsPage implements OnInit {
 
-  constructor() { }
+  constructor(public hService: HospitalService) { }
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
+    this.hService.triggerEvent(LoadHospitals)
   }
 
 }

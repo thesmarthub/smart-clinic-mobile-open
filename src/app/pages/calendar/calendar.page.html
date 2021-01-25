@@ -1,0 +1,8 @@
+<ion-content>
+  <button ion-button icon-only (click)="closeModal()">
+    <ion-icon name="close"></ion-icon>
+  </button>
+  <ion-calendar [(ngModel)]="selectedDate" (change)="onChange($event)" [options]="selectedOptions" [type]="selectedType"
+    [format]="selectedFormat">
+  </ion-calendar>
+</ion-content>

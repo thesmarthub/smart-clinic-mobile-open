@@ -10,11 +10,9 @@ import { PrescriptionService } from "src/app/services/prescription.service";
 export class PrescriptionPage implements OnInit {
   constructor(public pService: PrescriptionService) {}
 
-  ngOnInit() {
-  }
-  
-  ionViewDidEnter() {
-    this.pService.handleEvent(new LoadPrescriptions);
+  ngOnInit() {}
 
+  ionViewDidEnter() {
+    this.pService.triggerEvent(LoadPrescriptions);
   }
 }

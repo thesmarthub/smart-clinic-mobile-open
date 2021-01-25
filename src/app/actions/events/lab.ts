@@ -1,11 +1,3 @@
-export abstract class LabEvents {
-  constructor(private event) {
-    this.eventLogger();
-  }
+export abstract class LabEvent {}
 
-  eventLogger() {
-    console.log(typeof this.event);
-  }
-}
-
-export class LoadLabRequests extends LabEvents {}
+export class LoadLabRequests extends LabEvent {}
