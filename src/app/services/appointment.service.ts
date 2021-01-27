@@ -8,6 +8,8 @@ import {
   LoadTimeSlots,
 } from "../actions/events/appointment";
 import { AppointmentState } from "../actions/states/appointment";
+import { departmentByRoute } from "../engine/department";
+import { Store } from "../engine/store";
 import { GeneralService } from "./general.service";
 
 @Injectable({
@@ -31,6 +33,18 @@ export class AppointmentService {
       if (result.failed) return console.log("Request failed!");
       this.handleEvent(result.action, result.res);
     });
+  }
+
+  normalizeAppointmentData(data: any[]) {
+    return (
+      data?.map((el) => {
+        el.department = departmentByRoute({
+          store: new Store(),
+          route: el.department_route,
+        });
+        return el;
+      }) || []
+    );
   }
 
   triggerEvent(event: AppointmentEvent, data?) {
@@ -61,7 +75,9 @@ export class AppointmentService {
     if (event === LoadAppointments) {
       this.currentValues.loadingAppointments.next(false);
       if (Array.isArray(value.result)) {
-        this.currentValues.appointments.next(value.result);
+        this.currentValues.appointments.next(
+          this.normalizeAppointmentData(value.result)
+        );
       } else {
         throw "Appointment: RESPONSE FORMAT IS INVALID";
       }

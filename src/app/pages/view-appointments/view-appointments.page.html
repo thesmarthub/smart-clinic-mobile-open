@@ -9,10 +9,10 @@
         <ion-row>
           <ion-col size="7">
             <ion-row>
-              <ion-text color="primary">{{item.department_route}}</ion-text>
+              <ion-text color="primary">{{item?.service_name || item.smart_code}}</ion-text>
             </ion-row>
             <ion-row>
-              <ion-text>{{item.smart_code}}</ion-text>
+              <ion-text><small>{{item?.department?.name || item.service_name || item.smart_code}}</small></ion-text>
             </ion-row>
             <ion-row>
             </ion-row>

@@ -20,6 +20,7 @@ import {
 import { CalendarPage } from "../calendar/calendar.page";
 import * as moment from "moment";
 import { Store } from "../../engine/store";
+import { rangeGenerator } from "src/app/engine/utility";
 
 @Component({
   selector: "app-view-appointments",
@@ -29,6 +30,7 @@ import { Store } from "../../engine/store";
 export class ViewAppointmentsPage implements OnInit {
   daysConfig: DayConfig[] = [];
   store = new Store();
+  rangeGenerator = rangeGenerator;
   constructor(
     public aService: AppointmentService,
     private modalController: ModalController,
@@ -59,7 +61,7 @@ export class ViewAppointmentsPage implements OnInit {
   async openCalendar() {
     const options: CalendarModalOptions = {
       daysConfig: this.daysConfig,
-      pickMode: "basic",
+      pickMode: "single",
     };
     const modal = await this.modalController.create({
       component: CalendarModal,
@@ -88,10 +90,10 @@ export class ViewAppointmentsPage implements OnInit {
   }
 
   configureDates(slots: any[]) {
-    const daysConfig: DayConfig[] = this.rangeGenerator(1, 366).map((num) => {
+    const daysConfig: DayConfig[] = this.rangeGenerator(1, 360).map((num) => {
       return this.disableDate(moment().dayOfYear(num).toDate());
     });
-    daysConfig.forEach((config) => {
+    for (const config of daysConfig) {
       if (
         slots.find(
           (slot: any) =>
@@ -102,7 +104,7 @@ export class ViewAppointmentsPage implements OnInit {
         console.log("Found matching days", config.date);
         config.disable = false;
       }
-    });
+    }
     return daysConfig;
   }
 
@@ -111,15 +113,6 @@ export class ViewAppointmentsPage implements OnInit {
       date,
       disable: true,
     };
-  }
-
-  rangeGenerator(start: number, end: number) {
-    let result: number[] = [];
-    for (let i = start; i + 1 < end; i++) {
-      result.push(i);
-    }
-
-    return result;
   }
 
   async presentLoading() {
@@ -133,7 +126,7 @@ export class ViewAppointmentsPage implements OnInit {
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
-      header: "Albums",
+      header: "Departments",
       buttons: this.store.currentHospital.departments.map((data) => {
         return {
           text: data.name,
