@@ -29,9 +29,7 @@ export class AppointmentService {
 
   constructor(private _genService: GeneralService) {
     this._genService.broadcaster.subscribe((result) => {
-      if (!result) return;
-      if (result.failed) return console.log("Request failed!");
-      this.handleEvent(result.action, result.res);
+      this.handleEvent(result?.action, result?.res);
     });
   }
 
@@ -69,14 +67,14 @@ export class AppointmentService {
   }
 
   private readonly handleEvent = (
-    event: LoadAppointments,
+    event: AppointmentEvent,
     value: IAPIResponse<Record<string, any> | Record<string, any>[]>
   ) => {
     if (event === LoadAppointments) {
       this.currentValues.loadingAppointments.next(false);
-      if (Array.isArray(value.result)) {
+      if (Array.isArray(value?.result)) {
         this.currentValues.appointments.next(
-          this.normalizeAppointmentData(value.result)
+          this.normalizeAppointmentData(value?.result)
         );
       } else {
         throw "Appointment: RESPONSE FORMAT IS INVALID";

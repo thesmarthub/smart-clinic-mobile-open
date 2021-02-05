@@ -1,25 +1,48 @@
-import { Component } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { Component } from "@angular/core";
+import { MenuController } from "@ionic/angular";
+import { OpenMenu, TabEvent } from "../actions/events/tab";
+import { TabsService } from "../services/tabs.service";
 
 @Component({
-  selector: 'app-tabs',
-  templateUrl: 'tabs.page.html',
-  styleUrls: ['tabs.page.scss']
+  selector: "app-tabs",
+  templateUrl: "tabs.page.html",
+  styleUrls: ["tabs.page.scss"],
 })
 export class TabsPage {
-
-  constructor(private menu: MenuController) {}
-  openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
+  openMenu = OpenMenu;
+  constructor(private menu: MenuController, private tService: TabsService) {
+    this.tService.currentValues.menuAction.subscribe((action) => {
+      if (action === "open") {
+        this.openCustom();
+      } else if (action === "close") {
+        this.closeCustom();
+      }
+    });
   }
 
-  openEnd() {
-    this.menu.open('end');
+
+  eventTrigger(event: TabEvent) {
+    this.tService.triggerEvent(event)
   }
+
+  ngOnDestroy() {
+    console.log("Tabs destroyed");
+  }
+  // openFirst() {
+  //   this.menu.enable(true, 'first');
+  //   this.menu.open('first');
+  // }
+
+  // openEnd() {
+  //   this.menu.open('end');
+  // }
 
   openCustom() {
-    this.menu.enable(true, 'custom');
-    this.menu.open('custom');
+    this.menu.enable(true, "custom");
+    this.menu.open("custom");
+  }
+
+  closeCustom() {
+    this.menu.close("custom");
   }
 }

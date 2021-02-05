@@ -273,7 +273,7 @@ export class AuthService {
               text: `Welcome, ${this.store.user.fname}`,
               duration: 2000,
             });
-            this.router.navigateByUrl("/home");
+            this.router.navigateByUrl("/tabs/home");
           } else if (
             this.store.user.active_hospital_smart_code !==
               "SMART_CLINIC_DEFAULT" &&
@@ -321,7 +321,7 @@ export class AuthService {
         if (res?.result && res.result._id) {
           console.log(res?.result);
           this.authListenerWithData.next({ event: "LOGGED IN" });
-          this.router.navigateByUrl("/home");
+          this.router.navigateByUrl("/tabs/home");
         }
       });
   }

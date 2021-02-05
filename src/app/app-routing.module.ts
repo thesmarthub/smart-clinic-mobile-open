@@ -4,18 +4,18 @@ import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "home",
+    redirectTo: "tabs/home",
     pathMatch: "full",
   },
   {
     path: "auth",
     loadChildren: () => import("./auth/auth.module").then((m) => m.AuthModule),
   },
-  {
-    path: "home",
-    loadChildren: () =>
-      import("./pages/home/home.module").then((m) => m.HomePageModule),
-  },
+  // {
+  //   path: "home",
+  //   loadChildren: () =>
+  //     import("./pages/home/home.module").then((m) => m.HomePageModule),
+  // },
   {
     path: "tabs",
     loadChildren: () =>
@@ -28,6 +28,14 @@ const routes: Routes = [
   {
     path: 'calendar',
     loadChildren: () => import('./pages/calendar/calendar.module').then( m => m.CalendarPageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./pages/payment/payment.module').then( m => m.PaymentPageModule)
+  },
+  {
+    path: 'cart',
+    loadChildren: () => import('./pages/cart/cart.module').then( m => m.CartPageModule)
   }
 ];
 @NgModule({

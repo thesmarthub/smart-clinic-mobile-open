@@ -2,10 +2,10 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 import { ApiAction } from "src/interfaces/action";
+import { API } from "src/interfaces/api";
 import { IAPIResponse } from "src/interfaces/general";
 import { environment } from "../../environments/environment";
-import { LabEvent } from "../actions/events/lab";
-import { PrescriptionEvent } from "../actions/events/prescription";
+import { SmartMobileEvent } from "../actions/events";
 
 @Injectable({
   providedIn: "root",
@@ -14,7 +14,7 @@ export class GeneralService {
   baseUrl = environment.baseURL;
   broadcaster = new BehaviorSubject<{
     res: APIResp;
-    action: PrescriptionEvent | LabEvent;
+    action: SmartMobileEvent;
     failed: boolean;
   }>(null);
   constructor(public http: HttpClient) {}
@@ -66,10 +66,10 @@ export class GeneralService {
 }
 
 interface RequestRequirements {
-  url: string;
+  url: API;
   params?: Record<string, ApiAction | string>;
   data?: Record<string, any> | any[];
-  action: PrescriptionEvent | LabEvent;
+  action: SmartMobileEvent;
 }
 
 type APIResp = IAPIResponse<Record<string, any> | Record<string, any>[]>;

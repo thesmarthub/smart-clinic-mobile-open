@@ -8,6 +8,8 @@ import {
   ModalController,
   LoadingController,
   ActionSheetController,
+  AlertController,
+  PickerController,
 } from "@ionic/angular";
 
 import {
@@ -21,6 +23,7 @@ import { CalendarPage } from "../calendar/calendar.page";
 import * as moment from "moment";
 import { Store } from "../../engine/store";
 import { rangeGenerator } from "src/app/engine/utility";
+import { BehaviorSubject, Subscription } from "rxjs";
 
 @Component({
   selector: "app-view-appointments",
@@ -30,31 +33,71 @@ import { rangeGenerator } from "src/app/engine/utility";
 export class ViewAppointmentsPage implements OnInit {
   daysConfig: DayConfig[] = [];
   store = new Store();
+  loading: HTMLIonLoadingElement;
+  fresh = true;
+  tempSubs: Subscription[] = [];
+  availableSlots = new BehaviorSubject([]);
+  enabledSlots = [];
+  selectedDepartmentRoute;
   rangeGenerator = rangeGenerator;
   constructor(
     public aService: AppointmentService,
     private modalController: ModalController,
     private loadingController: LoadingController,
-    private actionSheetController: ActionSheetController
+    private alertController: AlertController,
+    private actionSheetController: ActionSheetController,
+    private pickerController: PickerController
   ) {}
 
   ngOnInit() {}
 
   ionViewDidEnter() {
     this.aService.triggerEvent(LoadAppointments);
-    this.aService.currentValues.timeSlots.subscribe((data: any[]) => {
-      if (Array.isArray(data) && data.length > 0) {
-        const expanded = [];
-        data.forEach((el) => {
-          el?.slots?.forEach((e) => {
-            if (e) {
-              expanded.push(e);
-            }
+    const sub1 = this.aService.currentValues.timeSlots.subscribe(
+      (data: any[]) => {
+        if (Array.isArray(data) && data.length > 0 && !this.fresh) {
+          const expanded = [];
+          data.forEach((el) => {
+            el?.slots?.forEach((e) => {
+              if (e) {
+                expanded.push(e);
+              }
+            });
           });
-        });
-        this.daysConfig = this.configureDates(expanded);
-        this.openCalendar();
+          let { daysConfig, numberOfDays } = this.configureDates(expanded);
+          console.log("num days", numberOfDays);
+          console.log("enabled slots", this.enabledSlots);
+          if (numberOfDays > 0) {
+            this.daysConfig = daysConfig;
+            this.openCalendar();
+          } else {
+            this.loading.dismiss();
+            this.noTimeSlotsAlert();
+          }
+        } else if (Array.isArray(data)) {
+          this.loading.dismiss();
+          this.noTimeSlotsAlert();
+        }
       }
+    );
+    this.fresh = false;
+    this.tempSubs.push(sub1);
+  }
+
+  ionViewDidLeave() {
+    this.aService.resetValue();
+    this.tempSubs.forEach((sub) => {
+      if (!sub.closed) {
+        sub.unsubscribe();
+      }
+    });
+    this.selectedDepartmentRoute = null;
+  }
+
+  noTimeSlotsAlert() {
+    this.presentAlert({
+      header: "Time Slots",
+      message: "No time slot available here.",
     });
   }
 
@@ -73,14 +116,15 @@ export class ViewAppointmentsPage implements OnInit {
 
     const event: any = await modal.onDidDismiss();
     const date = event.data;
+    this.setAvailableSlots(date.string);
+    this.presentPicker(this.availableSlots.value);
     // const from: CalendarResult = date.from;
     // const to: CalendarResult = date.to;
-
-    console.log(date);
   }
 
   loadTimeSlots({ departmentRoute }: { departmentRoute: string }) {
-    this.presentLoading();
+    this.selectedDepartmentRoute = departmentRoute;
+    this.presentLoading({});
     this.aService.triggerEvent(LoadTimeSlots, {
       "slot.start_time": moment().startOf("year"),
       "slot.end_time": moment().endOf("year"),
@@ -90,22 +134,39 @@ export class ViewAppointmentsPage implements OnInit {
   }
 
   configureDates(slots: any[]) {
+    let numberOfDays = 0;
     const daysConfig: DayConfig[] = this.rangeGenerator(1, 360).map((num) => {
       return this.disableDate(moment().dayOfYear(num).toDate());
     });
+    this.enabledSlots = [];
     for (const config of daysConfig) {
       if (
-        slots.find(
-          (slot: any) =>
+        slots.find((slot: any) => {
+          const isValidSlot =
             moment(slot.start_time).dayOfYear() ===
-            moment(config.date).dayOfYear()
-        )
+            moment(config.date).dayOfYear();
+          if (isValidSlot) {
+            this.enabledSlots.push(slot);
+          }
+          return isValidSlot;
+        })
       ) {
-        console.log("Found matching days", config.date);
-        config.disable = false;
+        if (moment(config.date).startOf("day") < moment().startOf("day")) {
+          config.disable = false;
+          numberOfDays += 1;
+          console.log("Found matching days", config.date.getDate());
+        }
       }
     }
-    return daysConfig;
+    return { daysConfig, numberOfDays };
+  }
+
+  setAvailableSlots(date) {
+    console.log(this.enabledSlots);
+    const availableSlots = this.enabledSlots.filter((slot) => {
+      return moment(slot.start_time).dayOfYear() === moment(date).dayOfYear();
+    });
+    this.availableSlots.next(availableSlots);
   }
 
   disableDate(date: Date): DayConfig {
@@ -115,13 +176,39 @@ export class ViewAppointmentsPage implements OnInit {
     };
   }
 
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      message: "Loading Time Slots",
-      duration: 2000,
-      spinner: "bubbles",
+  async presentLoading({
+    message = "Please wait...",
+    duration = 2000,
+    spinner = "bubbles",
+  }: {
+    message?: string;
+    duration?: number;
+    spinner?:
+      | "bubbles"
+      | "circles"
+      | "circular"
+      | "crescent"
+      | "dots"
+      | "lines"
+      | "lines-small";
+  }) {
+    this.loading = await this.loadingController.create({
+      message,
+      duration,
+      spinner,
     });
-    await loading.present();
+    await this.loading.present();
+  }
+
+  async presentAlert({ header = "Alert", subHeader = "", message = "" }) {
+    const alert = await this.alertController.create({
+      header,
+      subHeader,
+      message,
+      buttons: ["OK"],
+    });
+
+    await alert.present();
   }
 
   async presentActionSheet() {
@@ -137,30 +224,47 @@ export class ViewAppointmentsPage implements OnInit {
           },
         };
       }),
-      // buttons: this.store.currentHospital. [{
-      //   text: 'Delete',
-      //   role: 'destructive',
-      //   icon: 'trash',
-      //   handler: () => {
-      //     console.log('Delete clicked');
-      //   }
-      // }, {
-      //   text: 'Share',
-      //   icon: 'share',
-      //   handler: () => {
-      //     console.log('Share clicked');
-      //   }
-      // }, {
-      //   text: 'Cancel',
-      //   icon: 'close',
-      //   role: 'cancel',
-      //   handler: () => {
-      //     console.log('Cancel clicked');
-      //   }
-      // }],
       mode: "ios",
     });
 
     await actionSheet.present();
+  }
+
+  async presentPicker(slots: any[]) {
+    const picker = await this.pickerController.create({
+      animated: true,
+      buttons: [
+        {
+          text: "Book Now",
+          handler: () => console.log("Clicked Save!"),
+        },
+        {
+          text: "Back to Calendar",
+          handler: (val) => {
+            console.log("Going back to calendar")
+            this.loadTimeSlots({
+              departmentRoute: this.selectedDepartmentRoute,
+            });
+          },
+        },
+      ],
+      columns: [
+        {
+          name: "Time",
+          // prefix: 'total',
+          // suffix: 'hours',
+          options: [
+            ...slots.map((data) => {
+              return {
+                text: moment(data.start_time).format("HH:MM A"),
+              };
+            }),
+          ],
+        },
+      ],
+      cssClass: "picker-hours",
+      mode: "ios",
+    });
+    picker.present();
   }
 }
