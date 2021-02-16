@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Chat Room</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <div class="container">
+    <div *ngFor="let msg of messageList || [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]; let e = even"
+      class="message left">
+      <!-- <img class="user-img" [src]="msg.sender?.avatarURL" alt="image" src=""> -->
+      <ion-row>
+        <ion-col [size]="e ? 0 : 3"></ion-col>
+        <ion-col [size]="9">
+          <ion-card>
+            <ion-card-content>
+              <pre class="line-wrap">hello world. This is a wonderful message.
+                Isn't it so?
+              </pre>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+      <!-- <div class="msg-detail">
+        <div class="msg-info">
+        </div>
+        <div class="msg-content">
+          <span class="triangle"></span>
+          <p class="line-breaker "></p>
+        </div>
+      </div> -->
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <div class="input-wrap">
+    <ion-textarea #messageInput placeholder="Enter your message!" [(ngModel)]="chatMessage"
+      (keyup.enter)="sendMessage()">
+    </ion-textarea>
+    <ion-button ion-button clear icon-only item-right (click)="sendMessage()">
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+  </div>
+</ion-footer>

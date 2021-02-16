@@ -8,37 +8,37 @@ import { Component, OnInit } from "@angular/core";
 export class HomePage implements OnInit {
   cards = [
     {
-      title: "Appointments",
+      title: "appointments",
       icon: "fa fa-calendar",
       link: "/tabs/view-appointments",
       img: "/assets/004-calendar.png",
     },
     {
-      title: "Payments",
+      title: "bills",
       icon: "fa fa-wallet",
       link: "/tabs/payment",
       img: "/assets/payment.png",
     },
     {
-      title: "Prescriptions",
+      title: "prescriptions",
       icon: "fa fa-prescription",
       link: "/tabs/prescription",
       img: "/assets/001-drug.png",
     },
     {
-      title: "Laboratory",
+      title: "laboratory",
       icon: "fa fa-vials",
       link: "/tabs/lab",
       img: "/assets/003-research.png",
     },
     {
-      title: "Scans",
+      title: "scans",
       icon: "fa fa-x-ray",
       link: "/tabs/radiology",
       img: "/assets/ante_natal.png",
     },
     {
-      title: "Change Hospital",
+      title: "hospitals",
       icon: "fa fa-building",
       link: "/tabs/hospitals",
       img: "/assets/012-hospital-1.png",

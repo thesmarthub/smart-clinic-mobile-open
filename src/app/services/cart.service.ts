@@ -58,4 +58,8 @@ export class CartService {
       }
     }
   }
+
+  clearCart() {
+    this.cart = [];
+  }
 }

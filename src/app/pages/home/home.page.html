@@ -1,26 +1,30 @@
-<ion-content class="bg-style">
+<ion-content>
   <ion-grid class="centralize">
-    <ion-row>
-      <ion-col>
-        <ion-text color="primary">Hello, Amin</ion-text>
-      </ion-col>
-    </ion-row>
+    <div class="top-row">
+      <ion-row>
+        <ion-col>
+          <ion-text class="big-font strong-font">Hello, Amin</ion-text>
+        </ion-col>
+      </ion-row>
 
-    <ion-row>
-      <ion-col>
-        <ion-text color="primary">You are in Gwarinpa General Hospital</ion-text>
-      </ion-col>
-    </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text class="strong-font">You are in Gwarinpa General Hospital</ion-text>
+        </ion-col>
+      </ion-row>
+    </div>
 
-    <ion-row>
-      <ion-col *ngFor="let card of cards" size="6">
-        <ion-card [routerLink]="card.link">
-          <ion-card-content>
-            <ion-img [src]="card.img"></ion-img>
-            <ion-text color="primary">{{card.title}}</ion-text>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+    <div class="bottom-row">
+      <ion-row>
+        <ion-col *ngFor="let card of cards" size="6">
+          <ion-card [routerLink]="card.link">
+            <ion-card-content>
+              <ion-img [src]="card.img"></ion-img>
+              <ion-text color="primary">{{card.title}}</ion-text>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-grid>
 </ion-content>

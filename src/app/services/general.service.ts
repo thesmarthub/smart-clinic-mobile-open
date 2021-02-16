@@ -30,16 +30,31 @@ export class GeneralService {
     );
   };
 
-  getData = ({ url, params, action }: RequestRequirements) => {
-    this.http.get(`${this.baseUrl}${url}`, { params }).subscribe(
-      (res: APIResp) => {
-        console.log(res);
-        this.broadcaster.next({ res: res, action, failed: false });
-      },
-      (error) => {
-        this.broadcaster.next({ res: error, action, failed: true });
-      }
-    );
+  getData = async ({
+    url,
+    params,
+    action,
+    requestMode,
+  }: RequestRequirements) => {
+    if (!requestMode) {
+      requestMode = "async";
+    }
+    if (requestMode === "async") {
+      this.http.get(`${this.baseUrl}${url}`, { params }).subscribe(
+        (res: APIResp) => {
+          console.log(res);
+          this.broadcaster.next({ res: res, action, failed: false });
+        },
+        (error) => {
+          this.broadcaster.next({ res: error, action, failed: true });
+        }
+      );
+    } else {
+      return await this.http
+        .get(`${this.baseUrl}${url}`, { params })
+        .toPromise()
+        .then((data) => data);
+    }
   };
 
   updateData = ({ url, data, action }: RequestRequirements) => {
@@ -70,6 +85,7 @@ interface RequestRequirements {
   params?: Record<string, ApiAction | string>;
   data?: Record<string, any> | any[];
   action: SmartMobileEvent;
+  requestMode?: "async" | "sync";
 }
 
 type APIResp = IAPIResponse<Record<string, any> | Record<string, any>[]>;

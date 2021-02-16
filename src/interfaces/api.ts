@@ -4,4 +4,5 @@ export type API =
   | "hospital/fetch-hospital"
   | "hospital/fetch-hospitals"
   | "hospital/patient-request"
-  | "payment/flutterwave/init";
+  | "payment/flutterwave/init"
+  | "payment/generate-transaction-ref";

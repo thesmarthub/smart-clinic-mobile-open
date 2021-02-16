@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { map } from "rxjs/operators";
 import {
   FetchBills,
   InitiatePayment,
@@ -9,6 +10,7 @@ import {
   FetchedBills,
   FetchingBills,
   InitiatedPayment,
+  InitiatingPayment,
   PaymentState,
 } from "../actions/states/payment";
 import { GeneralService } from "./general.service";
@@ -43,6 +45,15 @@ export class PaymentService {
         action: event,
       });
     }
+    if (event === InitiatePayment) {
+      this.currentState.next(InitiatingPayment);
+      this.currentValues.initiatingPayment.next(true);
+      this.gService.postData({
+        url: "payment/flutterwave/init",
+        data: {},
+        action: PaymentEvent,
+      });
+    }
   }
 
   filterBills(bills: any[]) {
@@ -66,6 +77,16 @@ export class PaymentService {
     this.currentValues.pendingBills.next(bills.pendingBills);
     this.currentState.next(FetchedBills);
   }
+
+  generateTxRef = async (bills: number[]) => {
+    return await this.gService.http
+      .post(`${this.gService.baseUrl}payment/generate-transaction-ref`, {
+        bills,
+      })
+      .pipe(map((data) => data))
+      .toPromise()
+      .then((data) => data);
+  };
 
   private handleEvent(event: PaymentEvent, value?: any) {
     if (event === FetchBills) {

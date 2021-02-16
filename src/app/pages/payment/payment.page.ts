@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ModalController } from "@ionic/angular";
 import * as moment from "moment";
+import { Subscription } from "rxjs";
 import { FetchBills } from "src/app/actions/events/payment";
 import { CartService } from "src/app/services/cart.service";
 import { PaymentService } from "src/app/services/payment.service";
@@ -16,6 +17,7 @@ export class PaymentPage implements OnInit {
   cart = [];
   products = [];
   cartItemCount;
+  subs: Subscription[] = [];
   @ViewChild("cart", { static: false, read: ElementRef }) fab: ElementRef;
   constructor(
     public pService: PaymentService,
@@ -24,27 +26,49 @@ export class PaymentPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cart = this.cartService.getCart();
-    this.cartItemCount = this.cartService.getCartItemCount();
-    this.pService.currentValues.pendingBills.subscribe((bills) => {
-      this.products = bills.map((element) => {
-        console.log("refreshing", element.id, this.cartService.productIsInCart(element?.id));
-        if (this.cartService.productIsInCart(element?.id)) {
-          element.isInCart = true;
-        } else {
-          element.isInCart = false;
-        }
-        return element;
-      });
-    });
+    this.loadData();
   }
 
   ionViewDidEnter() {
-    console.log("Trying to fetch bills");
+    this.fetchBills();
+  }
+
+  loadData() {
+    this.cart = this.cartService.getCart();
+    this.cartItemCount = this.cartService.getCartItemCount();
+    const billsSub = this.pService.currentValues.pendingBills.subscribe(
+      (bills) => {
+        this.products = bills.map((element) => {
+          console.log(
+            "refreshing",
+            element.id,
+            this.cartService.productIsInCart(element?.id)
+          );
+          if (this.cartService.productIsInCart(element?.id)) {
+            element.isInCart = true;
+          } else {
+            element.isInCart = false;
+          }
+          return element;
+        });
+      }
+    );
+    this.subs.push(billsSub);
+  }
+
+  fetchBills() {
     const action: ApiAction = "FETCH_PATIENT_BILLS";
     this.pService.triggerEvent(FetchBills, {
       action,
       start_date: moment().subtract(3, "months").toDate(),
+    });
+  }
+
+  unsub() {
+    this.subs.forEach((sub) => {
+      if (!sub.closed) {
+        sub.unsubscribe();
+      }
     });
   }
 
@@ -74,6 +98,15 @@ export class PaymentPage implements OnInit {
       this.animateCSS("bounceInLeft");
     });
     modal.present();
+
+    modal.onDidDismiss().then((res) => {
+      if (res.data?.reload === true) {
+        this.cartItemCount = 0;
+        this.unsub();
+        this.loadData();
+        this.fetchBills();
+      }
+    });
   }
 
   animateCSS(animationName, keepAnimated = false) {

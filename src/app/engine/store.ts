@@ -1,21 +1,25 @@
-import {IDepartment, IHospital} from 'src/interfaces/hospital';
-import { IUser } from 'src/interfaces/user';
+import { IDepartment, IHospital } from "src/interfaces/hospital";
+import { IUser } from "src/interfaces/user";
 
 export class Store {
   set token(val) {
-    localStorage.setItem('token', val);
+    localStorage.setItem("token", val);
   }
 
   get token(): string {
-    return localStorage.getItem('token');
+    return localStorage.getItem("token");
   }
 
   set user(data) {
-    localStorage.setItem('user', JSON.stringify(data));
+    localStorage.setItem("user", JSON.stringify(data));
   }
 
   get user(): IUser {
-    return JSON.parse(localStorage.getItem('user'));
+    return JSON.parse(localStorage.getItem("user"));
+  }
+
+  get userFullName(): string {
+    return `${this.user.fname} ${this.user.lname}`;
   }
 
   set currentHospital(data) {
@@ -29,33 +33,32 @@ export class Store {
   }
 
   set tempHospital(data: IHospital) {
-    localStorage.setItem('tempHospital', JSON.stringify(data));
+    localStorage.setItem("tempHospital", JSON.stringify(data));
   }
 
   get tempHospital(): IHospital {
-    if (!localStorage.getItem('tempHospital')) {
+    if (!localStorage.getItem("tempHospital")) {
       return;
     }
-    return JSON.parse(localStorage.getItem('tempHospital'));
+    return JSON.parse(localStorage.getItem("tempHospital"));
   }
 
   set department(data) {
-    localStorage.setItem('department', JSON.stringify(data));
+    localStorage.setItem("department", JSON.stringify(data));
   }
 
   get department() {
-    return JSON.parse(localStorage.getItem('department'));
+    return JSON.parse(localStorage.getItem("department"));
   }
   set staff(data) {
-    localStorage.setItem('staff', JSON.stringify(data));
+    localStorage.setItem("staff", JSON.stringify(data));
   }
 
   get staff() {
-    return JSON.parse(localStorage.getItem('staff'));
+    return JSON.parse(localStorage.getItem("staff"));
   }
 
   clearStore() {
     localStorage.clear();
   }
-
 }

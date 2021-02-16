@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GeneralInterceptorService } from "./interceptors/general-interceptor";
 import { CalendarModule } from "ion2-calendar";
+import { FlutterwaveModule } from "flutterwave-angular-v3"
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +25,7 @@ import { CalendarModule } from "ion2-calendar";
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
+    FlutterwaveModule
   ],
   providers: [
     StatusBar,

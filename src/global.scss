@@ -26,6 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 @import '~animate.css/animate.min.css';
+$custom-border-color: #673ab7;
  
 .cart-modal {
   --height: 90%;
@@ -39,7 +40,7 @@ ion-card {
 }
 
 html {
-  background-color: #f7f2f7 !important;
+  background-color: white;
   color: #0a1365 !important;
 }
 
@@ -47,7 +48,6 @@ html {
   color: #0a1365;
 }
 
-$custom-border-color: #673ab7;
 
 .smart-primary {
   color: #673ab7 !important;

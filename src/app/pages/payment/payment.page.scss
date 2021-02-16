@@ -3,13 +3,13 @@ ion-fab-button {
   width: 45px;
   --ion-color-primary: transparent;
 }
- 
+
 .cart-icon {
-//   --ion-color-primary: green;
-color: indigo;
+  //   --ion-color-primary: green;
+  color: indigo;
   font-size: 30px;
 }
- 
+
 .cart-length {
   color: white;
   position: absolute;
@@ -19,4 +19,45 @@ color: indigo;
   font-size: 1em;
   min-width: 25px;
   z-index: 10;
+}
+
+.whiteBack {
+  background-color: white;
+}
+
+ion-card {
+  box-shadow: 0px 0px 3px 2px #673ab7 !important;
+  padding: 0px !important;
+  // margin: 0px !important;
+}
+
+ion-card-title {
+  font-size: 14px;
+  font-weight: bolder;
+}
+
+ion-text {
+  font-weight: bolder;
+  color: #673ab7;
+}
+
+ion-label {
+  font-size: 12px;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+ion-button {
+  font-size: 12px;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+ion-col {
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.small-margin {
+  margin: 0 !important;
 }
