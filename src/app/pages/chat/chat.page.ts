@@ -7,16 +7,19 @@ import { ChatService } from "src/app/services/chat.service";
   styleUrls: ["./chat.page.scss"],
 })
 export class ChatPage implements OnInit {
+  chatMessage;
+  messageList = [];
   constructor(public chatService: ChatService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewDidEnter() {
-    console.log("Entering messenger")
+    console.log("Entering messenger");
     this.chatService.socketManager.emit("hello", { who: "me?" });
     this.chatService.socketManager.on("userconn", (data) => {
       console.log("Message came", data);
     });
   }
+
+  sendMessage() {}
 }

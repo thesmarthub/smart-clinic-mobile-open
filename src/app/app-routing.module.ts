@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "tabs/home",
+    redirectTo: "auth/login",
     pathMatch: "full",
   },
   {
@@ -40,6 +40,10 @@ const routes: Routes = [
   {
     path: 'chat',
     loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'please-wait',
+    loadChildren: () => import('./pages/please-wait/please-wait.module').then( m => m.PleaseWaitPageModule)
   }
 ];
 @NgModule({

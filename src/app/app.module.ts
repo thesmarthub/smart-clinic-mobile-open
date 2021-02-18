@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GeneralInterceptorService } from "./interceptors/general-interceptor";
 import { CalendarModule } from "ion2-calendar";
 import { FlutterwaveModule } from "flutterwave-angular-v3"
+import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +31,7 @@ import { FlutterwaveModule } from "flutterwave-angular-v3"
   providers: [
     StatusBar,
     SplashScreen,
+    AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,5 +1,7 @@
 import { Component } from "@angular/core";
 
+import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
+
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
@@ -20,7 +22,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private router: Router,
-    private tabService: TabsService
+    private tabService: TabsService,
+    private androidPermissions: AndroidPermissions
   ) {
     this.initializeApp();
   }
@@ -33,6 +36,21 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.androidPermissions
+        .checkPermission(this.androidPermissions.PERMISSION.CAMERA)
+        .then(
+          (result) => console.log("Has permission?", result.hasPermission),
+          (err) =>
+            this.androidPermissions.requestPermission(
+              this.androidPermissions.PERMISSION.CAMERA
+            )
+        );
+
+      this.androidPermissions.requestPermissions([
+        this.androidPermissions.PERMISSION.CAMERA,
+        this.androidPermissions.PERMISSION.GET_ACCOUNTS,
+        this.androidPermissions.PERMISSION.INTERNET
+      ]);
     });
   }
 

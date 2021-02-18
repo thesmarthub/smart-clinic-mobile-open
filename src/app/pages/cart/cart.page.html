@@ -1,4 +1,4 @@
-<ion-content class="bg" fullscreen>
+<ion-content class="bg">
 
   <div class="ion-text-end">
     <ion-button (click)="close()" fill="clear" color="dark">
@@ -35,11 +35,25 @@
             </ion-col>
           </ion-row> -->
           <ion-row>
-            <ion-col size="7">
-              {{ p.item_name }}
+            <ion-col class="text-size" size="6">
+              <ion-text>
+                {{ p.item_name }}
+              </ion-text>
             </ion-col>
-            <ion-col size="5" class="ion-text-end">
-              {{ p.amount_paid_per_unit * p.number_of_units | currency:'&#8358;' }}
+            <ion-col size="6" class="ion-text-end">
+              <ion-row>
+                <ion-col class="text-size" size="8">
+                  <ion-text>
+                    &#8358;{{ p.amount_paid_per_unit * p.number_of_units }}
+                  </ion-text>
+
+                </ion-col>
+                <ion-col size="4">
+                  <ion-button color="medium" fill="clear" (click)="removeCartItem(p)">
+                    <ion-icon name="close-circle" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -48,7 +62,7 @@
         <ion-grid>
           <ion-row>
             <ion-col size="6">
-              Total:
+              <b>Total:</b>
             </ion-col>
             <ion-col size="6" class="ion-text-end">
               <b>{{ getTotal() | currency:'&#8358;' }}</b>
@@ -57,15 +71,15 @@
         </ion-grid>
       </ion-item>
     </ion-list>
-    <!-- 
-    <ion-button expand="full" (click)="checkout()">
+
+    <ion-button *ngIf="getTotal() > 0" expand="full" (click)="checkout()">
       Checkout
-    </ion-button> -->
-    <flutterwave-make-payment *ngIf="transactionInitiated" [public_key]="publicKey" [amount]="amount" currency='NGN'
-      payment_options="card,ussd,bank" redirect_url="" text="Pay Now" [customer]="customerDetails"
+    </ion-button>
+    <!-- <flutterwave-make-payment *ngIf="transactionInitiated" [public_key]="publicKey" [amount]="amount" currency='NGN'
+      payment_options="card,ussd,bank" [redirect_url]="redirectUrl" text="Pay Now" [customer]="customerDetails"
       [customizations]="customizations" [meta]="meta" [tx_ref]="txRef" (callback)="makePaymentCallback($event)"
       (close)="closedPaymentModal()">
-    </flutterwave-make-payment>
+    </flutterwave-make-payment> -->
     <ion-progress-bar *ngIf="!transactionInitiated"></ion-progress-bar>
   </div>
 

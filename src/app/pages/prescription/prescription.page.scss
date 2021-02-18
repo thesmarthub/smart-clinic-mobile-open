@@ -1,4 +1,14 @@
 .centralize {
-    text-align: center;
-    align-content: center;
+  text-align: center;
+  align-content: center;
+}
+
+ion-text {
+  font-size: 14px;
+  font-weight: bolder;
+  color: #673ab7;
+}
+
+.align-right {
+  text-align: right;
 }

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ModalController } from "@ionic/angular";
 import * as moment from "moment";
-import { Subscription } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { FetchBills } from "src/app/actions/events/payment";
 import { CartService } from "src/app/services/cart.service";
 import { PaymentService } from "src/app/services/payment.service";
@@ -16,7 +16,7 @@ import { CartPage } from "../cart/cart.page";
 export class PaymentPage implements OnInit {
   cart = [];
   products = [];
-  cartItemCount;
+  cartItemCount: BehaviorSubject<number>;
   subs: Subscription[] = [];
   @ViewChild("cart", { static: false, read: ElementRef }) fab: ElementRef;
   constructor(
@@ -101,7 +101,7 @@ export class PaymentPage implements OnInit {
 
     modal.onDidDismiss().then((res) => {
       if (res.data?.reload === true) {
-        this.cartItemCount = 0;
+        this.cartItemCount?.next(0);
         this.unsub();
         this.loadData();
         this.fetchBills();

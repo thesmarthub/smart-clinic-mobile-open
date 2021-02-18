@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { AuthService } from '../auth.service';
+import { FormBuilder, Validators } from "@angular/forms";
+import { AlertController } from "@ionic/angular";
+import { Subscription } from "rxjs/internal/Subscription";
+import { AuthService } from "../auth.service";
 
 @Component({
   selector: "app-login",
@@ -17,7 +18,11 @@ export class LoginPage implements OnInit {
   loading = false;
   subs: Subscription[] = [];
 
-  constructor(private _authService: AuthService, private fb: FormBuilder) {}
+  constructor(
+    private _authService: AuthService,
+    private fb: FormBuilder,
+    private alertCtrl: AlertController
+  ) {}
 
   ngOnInit(): void {
     this.subs.push(
@@ -27,8 +32,10 @@ export class LoginPage implements OnInit {
         } else {
           this.loading = false;
         }
-        if (status.event === "LOGIN FAILED" && status.data) {
-          this._authService.toaster({ text: status.data, duration: 2000 });
+        if (status.event === "LOGIN FAILED") {
+          console.log("Failed to login!!!", status);
+          this.showAlert(status.data);
+          // this._authService.toaster({ text: status.data, duration: 2000 });
         }
       })
     );
@@ -47,5 +54,14 @@ export class LoginPage implements OnInit {
       this.loginForm.value.email,
       this.loginForm.value.password
     );
+  }
+
+  async showAlert(message) {
+    const alert = await this.alertCtrl.create({
+      message,
+      header: "Login Failed",
+      buttons: ["OK"],
+    });
+    alert.present();
   }
 }

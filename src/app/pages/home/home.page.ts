@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Store } from "src/app/engine/store";
 
 @Component({
   selector: "app-home",
@@ -45,6 +46,7 @@ export class HomePage implements OnInit {
     },
   ];
 
+  store = new Store()
   constructor() {}
 
   ngOnInit() {

@@ -19,6 +19,7 @@ export class CartPage implements OnInit {
   cart: any[] = [];
   store = new Store();
   transactionInitiated = false;
+  redirectUrl = "/validate-payment";
 
   constructor(
     private cartService: CartService,
@@ -37,7 +38,9 @@ export class CartPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.initTransaction();
+    if (this.getTotal() < 1) {
+      this.initTransaction(true);
+    }
   }
 
   decreaseCartItem(product) {
@@ -49,7 +52,9 @@ export class CartPage implements OnInit {
   }
 
   removeCartItem(product) {
+    this.transactionInitiated = false;
     this.cartService.removeProduct(product);
+    this.initTransaction(true);
   }
 
   getTotal() {
@@ -63,9 +68,9 @@ export class CartPage implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  async initTransaction() {
+  async initTransaction(reloadEmpty?) {
     if (this.cart.length < 1) {
-      this.modalCtrl.dismiss();
+      this.modalCtrl.dismiss({ reload: reloadEmpty });
       return;
     }
     const tx = await this.paymentService
@@ -106,16 +111,7 @@ export class CartPage implements OnInit {
     this.modalCtrl.dismiss({ reload: true });
   }
 
-  async checkout() {
-    // Perfom PayPal or Stripe checkout process
-
-    let alert = await this.alertCtrl.create({
-      header: "Thanks for your Order!",
-      message: "We will deliver your food as soon as possible",
-      buttons: ["OK"],
-    });
-    alert.present().then(() => {
-      this.modalCtrl.dismiss();
-    });
+  checkout() {
+    this.paymentService.payNow({cart: this.cart, redirectUrl: ""});
   }
 }
