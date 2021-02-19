@@ -115,8 +115,8 @@ export class PaymentService {
     localStorage.setItem("after_payment", "/home/payment/pending");
     // const redirectUrl = window.location.origin + '/home/payment/paid-cons';
 
-    const paymentURL = `${this.gService.baseUrl}payment/flutterwave/`;
-    // const testPaymentURL = "http://localhost:7004/flutterwave/";
+    // const paymentURL = `${this.gService.baseUrl}payment/flutterwave/`;
+    const paymentURL = "http://localhost:7004/flutterwave/";
     const billIds = cart.map((bill) => {
       return bill.id;
     });
@@ -127,7 +127,7 @@ export class PaymentService {
     }, 0);
     this._http
       .post(
-        `${paymentURL}init?redirect_url=${redirectUrl}&amount=${amount}&email=${this.store.user.email}`,
+        `${paymentURL}init?redirect_url=${redirectUrl}&amount=${amount}&email=${this.store.user.email}&patient_name=${this.store.userFullName}&phone=${this.store.user.phone}`,
         { bills: billIds }
       )
       .subscribe(
