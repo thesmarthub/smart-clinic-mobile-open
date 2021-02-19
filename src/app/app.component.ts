@@ -54,20 +54,24 @@ export class AppComponent {
     PushNotifications.addListener(
       "registration",
       (token: PushNotificationToken) => {
-        alert("Push registration success, token: " + token.value);
+        this.store.firebaseToken = token.value;
+        // alert("Push registration success, token: " + token.value);
+        console.log("Push notification enabled!");
       }
     );
 
     // Some issue with our setup and push will not work
     PushNotifications.addListener("registrationError", (error: any) => {
-      alert("Error on registration: " + JSON.stringify(error));
+      // alert("Error on registration: " + JSON.stringify(error));
+      console.log("Could not register push notifications");
     });
 
     // Show us the notification payload if the app is open on our device
     PushNotifications.addListener(
       "pushNotificationReceived",
       (notification: PushNotification) => {
-        alert("Push received: " + JSON.stringify(notification));
+        // alert("Push received: " + JSON.stringify(notification));
+        console.log("Push received: " + JSON.stringify(notification));
       }
     );
 
@@ -75,7 +79,8 @@ export class AppComponent {
     PushNotifications.addListener(
       "pushNotificationActionPerformed",
       (notification: PushNotificationActionPerformed) => {
-        alert("Push action performed: " + JSON.stringify(notification));
+        // alert("Push action performed: " + JSON.stringify(notification));
+        console.log("Push action performed: " + JSON.stringify(notification));
       }
     );
   }

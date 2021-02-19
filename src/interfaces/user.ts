@@ -1,4 +1,4 @@
-import { IHospital } from './hospital';
+import { IHospital } from "./hospital";
 
 export interface IUser extends ILoginData, IRegisterData {
   active_hospital_smart_code: string;
@@ -20,6 +20,7 @@ export interface IUser extends ILoginData, IRegisterData {
 
   profile_image?: string;
   next_of_kin_address?: string;
+  firebase_key?: string;
 }
 
 export interface ILoginData {

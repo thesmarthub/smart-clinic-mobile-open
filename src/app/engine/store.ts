@@ -2,6 +2,14 @@ import { IDepartment, IHospital } from "src/interfaces/hospital";
 import { IUser } from "src/interfaces/user";
 
 export class Store {
+  set firebaseToken(val) {
+    localStorage.setItem("firebase_reg_token", val);
+  }
+
+  get firebaseToken() {
+    return localStorage.getItem("firebase_reg_token");
+  }
+
   set token(val) {
     localStorage.setItem("token", val);
   }
@@ -10,7 +18,7 @@ export class Store {
     return localStorage.getItem("token");
   }
 
-  set user(data) {
+  set user(data: IUser) {
     localStorage.setItem("user", JSON.stringify(data));
   }
 

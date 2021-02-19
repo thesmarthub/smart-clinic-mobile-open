@@ -146,17 +146,20 @@ export class AuthService {
       );
   }
 
-  editUserDetails(data) {
+  editUserDetails(data, showNotification = true) {
     this._http
       .post<IAPIResponse<any>>(
         `${this.baseURL}auth/edit-patient/${data._id}`,
         data
       )
       .subscribe((res) => {
-        this.toaster({ text: res.message, duration: 2000 });
+        if (showNotification) {
+          alert(res.message);
+        }
         this.initializeProfile(data._id);
       });
   }
+
   updatePassword(data, id) {
     this._http
       .post<IAPIResponse<any>>(
@@ -164,7 +167,7 @@ export class AuthService {
         data
       )
       .subscribe((res) => {
-        this.toaster({ text: res.message, duration: 2000 });
+        alert(res.message);
         console.log(res);
         // this.initializeProfile(data._id)
       });
@@ -334,6 +337,10 @@ export class AuthService {
     // this.authListenerWithData.next({ event: action });
     this.store.token = res["token"];
     this.store.user = res["result"];
+    if (this.store.firebaseToken) {
+      this.store.user.firebase_key = this.store.firebaseToken;
+      this.editUserDetails(this.store.user, false);
+    }
   }
 }
 
