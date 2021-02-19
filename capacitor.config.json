@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "smartClinicClientMobile",
+  "appId": "com.smartclinicmobile.smartclinic",
+  "appName": "Smart Clinic Mobile",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
