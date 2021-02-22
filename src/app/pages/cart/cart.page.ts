@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AlertController, ModalController } from "@ionic/angular";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { Store } from "src/app/engine/store";
 import { CartService } from "src/app/services/cart.service";
 import { PaymentService } from "src/app/services/payment.service";
@@ -9,7 +10,7 @@ import { PaymentService } from "src/app/services/payment.service";
   templateUrl: "./cart.page.html",
   styleUrls: ["./cart.page.scss"],
 })
-export class CartPage implements OnInit {
+export class CartPage implements OnInit, OnDestroy {
   publicKey = "FLWPUBK-c5b9e8583d786c4f157dc1cd2801662b-X";
   customerDetails = {};
   customizations = {};
@@ -20,6 +21,9 @@ export class CartPage implements OnInit {
   store = new Store();
   transactionInitiated = false;
   redirectUrl = "/validate-payment";
+  verifyingPayment = false;
+
+  subs: Subscription[] = [];
 
   constructor(
     private cartService: CartService,
@@ -35,6 +39,34 @@ export class CartPage implements OnInit {
       email: this.store.user.email,
       phone_number: this.store.user.phone,
     };
+    const sub1 = this.paymentService.currentValues.afterPayment.subscribe(
+      (data) => {
+        alert(`SUB1 ${data}`)
+        if (data) {
+          this.verifyingPayment = true;
+          this.paymentService.verifyPayment(data);
+        }
+      }
+    );
+    const sub2 = this.paymentService.currentValues.afterVerification.subscribe(
+      (data) => {
+        alert(`SUB2 ${data}`)
+        this.verifyingPayment = false;
+        alert(data.message);
+        if (!data.failed) {
+          this.closedPaymentModal();
+        }
+      }
+    );
+    this.subs.push(sub1, sub2);
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach((sub) => {
+      if (!sub.closed) {
+        sub.unsubscribe();
+      }
+    });
   }
 
   ionViewDidEnter() {
@@ -112,6 +144,8 @@ export class CartPage implements OnInit {
   }
 
   checkout() {
-    this.paymentService.payNow({cart: this.cart, redirectUrl: ""});
+    this.paymentService.payNow({
+      cart: this.cart,
+    });
   }
 }

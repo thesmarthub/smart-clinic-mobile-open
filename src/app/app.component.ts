@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
+import { Component, NgZone } from "@angular/core";
+import { Router } from "@angular/router";
+import { Platform } from "@ionic/angular";
 
 import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 
-import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Store } from "./engine/store";
-import { Router } from "@angular/router";
 import { TabsService } from "./services/tabs.service";
 import { CloseMenu } from "./actions/events/tab";
 
@@ -16,8 +16,11 @@ import {
   PushNotificationToken,
   PushNotificationActionPerformed,
 } from "@capacitor/core";
+import { PaymentService } from "./services/payment.service";
 
-const { PushNotifications } = Plugins;
+const { PushNotifications, App } = Plugins;
+
+import * as Url from "url-parse";
 
 @Component({
   selector: "app-root",
@@ -32,7 +35,9 @@ export class AppComponent {
     private statusBar: StatusBar,
     private router: Router,
     private tabService: TabsService,
-    private androidPermissions: AndroidPermissions
+    private paymentService: PaymentService,
+    private androidPermissions: AndroidPermissions,
+    private zone: NgZone
   ) {
     this.initializeApp();
   }
@@ -108,6 +113,24 @@ export class AppComponent {
         this.androidPermissions.PERMISSION.GET_ACCOUNTS,
         this.androidPermissions.PERMISSION.INTERNET,
       ]);
+    });
+
+    App.addListener("appUrlOpen", (data: any) => {
+      this.zone.run(() => {
+        // Example url: https://beerswift.app/tabs/tab2
+        // slug = /tabs/tab2
+        const url = new Url(data.url, true);
+        if (url?.query?.action === "payment") {
+          this.paymentService.currentValues.afterPayment.next(url.query);
+        }
+        // const slug = data.url.split(".app").pop();
+        // if (slug) {
+        //   alert(slug);
+        //   this.router.navigateByUrl(slug);
+        // }
+        // If no match, do nothing - let regular routing
+        // logic take over
+      });
     });
   }
 

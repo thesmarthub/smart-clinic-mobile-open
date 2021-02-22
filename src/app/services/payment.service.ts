@@ -27,6 +27,8 @@ export class PaymentService {
     paidBills: new BehaviorSubject([]),
     loadingBills: new BehaviorSubject(false),
     initiatingPayment: new BehaviorSubject(false),
+    afterPayment: new BehaviorSubject(null),
+    afterVerification: new BehaviorSubject(null),
   };
 
   currentState = new BehaviorSubject(PaymentState);
@@ -109,14 +111,14 @@ export class PaymentService {
     }
   }
 
-  async payNow({ cart, redirectUrl }) {
+  async payNow({ cart }) {
     console.log(cart);
     this.creatingLink = true;
     localStorage.setItem("after_payment", "/home/payment/pending");
     // const redirectUrl = window.location.origin + '/home/payment/paid-cons';
 
-    // const paymentURL = `${this.gService.baseUrl}payment/flutterwave/`;
-    const paymentURL = "http://localhost:7004/flutterwave/";
+    const paymentURL = `${this.gService.baseUrl}payment/flutterwave/`;
+    // const paymentURL = "http://localhost:7004/flutterwave/";
     const billIds = cart.map((bill) => {
       return bill.id;
     });
@@ -127,7 +129,7 @@ export class PaymentService {
     }, 0);
     this._http
       .post(
-        `${paymentURL}init?redirect_url=${redirectUrl}&amount=${amount}&email=${this.store.user.email}&patient_name=${this.store.userFullName}&phone=${this.store.user.phone}`,
+        `${paymentURL}init?amount=${amount}&email=${this.store.user.email}&patient_name=${this.store.userFullName}&phone=${this.store.user.phone}`,
         { bills: billIds }
       )
       .subscribe(
@@ -156,6 +158,32 @@ export class PaymentService {
           await alert.present();
         },
         () => (this.creatingLink = false)
+      );
+  }
+
+  verifyPayment(queryParams) {
+    this._http
+      .get(
+        `${this.gService.baseUrl}payment/flutterwave/verify?tx_ref=${queryParams.tx_ref}&transaction_id=${queryParams.transaction_id}&hospital_smart_code=${queryParams.hospital_smart_code}&patient_smart_code=${queryParams.patient_smart_code}&platform=${queryParams.platform}&status=${queryParams.status}`
+      )
+      .subscribe(
+        (res: any) => {
+          if (res && res?.result) {
+            this.currentValues.afterVerification.next(res);
+          } else {
+            this.currentValues.afterVerification.next({
+              message: "Could not validate payment. Please try again later.",
+              failed: true
+            });
+          }
+        },
+        (err) => {
+          console.log(err);
+          this.currentValues.afterVerification.next({
+            message: "Something went wrong",
+            failed: true
+          });
+        }
       );
   }
 }

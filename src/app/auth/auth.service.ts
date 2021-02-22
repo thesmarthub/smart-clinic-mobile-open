@@ -337,10 +337,8 @@ export class AuthService {
     // this.authListenerWithData.next({ event: action });
     this.store.token = res["token"];
     this.store.user = res["result"];
-    if (this.store.firebaseToken) {
-      this.store.user.firebase_key = this.store.firebaseToken;
-      this.editUserDetails(this.store.user, false);
-    }
+    this.store.addFirebaseKey(this.store.firebaseToken);
+    this.editUserDetails(this.store.user, false);
   }
 }
 

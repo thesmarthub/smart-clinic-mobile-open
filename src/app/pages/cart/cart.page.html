@@ -81,6 +81,7 @@
       (close)="closedPaymentModal()">
     </flutterwave-make-payment> -->
     <ion-progress-bar *ngIf="!transactionInitiated"></ion-progress-bar>
+    <progress *ngIf="verifyingPayment"></progress>
   </div>
 
 

@@ -66,6 +66,12 @@ export class Store {
     return JSON.parse(localStorage.getItem("staff"));
   }
 
+  addFirebaseKey(key) {
+    const user = this.user;
+    user.firebase_key = key;
+    this.user = user;
+  }
+
   clearStore() {
     localStorage.clear();
   }

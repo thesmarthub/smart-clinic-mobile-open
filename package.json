@@ -34,6 +34,7 @@
     "socket.io": "^3.1.1",
     "toastify-js": "^1.9.3",
     "tslib": "^2.0.0",
+    "url-parse": "^1.5.1",
     "zone.js": "~0.10.3"
   },
   "devDependencies": {

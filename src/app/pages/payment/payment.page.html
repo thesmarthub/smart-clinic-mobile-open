@@ -1,7 +1,12 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>
-      Bills
+      <ion-card>
+        <ion-card-content>
+          <ion-text>Wallet Balance: $0</ion-text>
+          <ion-button>Fund Wallet</ion-button>
+        </ion-card-content>
+      </ion-card>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,6 +18,7 @@
       <ion-icon name="cart" class="cart-icon"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
   <ion-list class="whiteBack">
     <ion-row>
       <ion-col *ngFor="let p of pService.currentValues.pendingBills | async" size="12">
