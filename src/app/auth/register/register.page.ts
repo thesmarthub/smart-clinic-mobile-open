@@ -1,15 +1,75 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
+import { AlertController, LoadingController } from "@ionic/angular";
+import { Subscription } from "rxjs";
+import { GeneralService } from "src/app/services/general.service";
+import { AuthService } from "../auth.service";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.page.html',
-  styleUrls: ['./register.page.scss'],
+  selector: "app-register",
+  templateUrl: "./register.page.html",
+  styleUrls: ["./register.page.scss"],
 })
 export class RegisterPage implements OnInit {
+  regForm: FormGroup;
+  subs: Subscription[] = [];
+  registering = false;
+  loaderConf = {
+    message: "Please wait...",
+    currentEvent: "",
+    expectedEvent: "REGISTERING",
+  };;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(
+    private fb: FormBuilder,
+    public authService: AuthService,
+    private alertCtrl: AlertController,
+    private loadingController: LoadingController,
+    private gService: GeneralService
+  ) {
+    this.regForm = this.fb.group({
+      fname: ["", Validators.required],
+      lname: ["", Validators.required],
+      email: ["", Validators.required],
+      phone: ["", Validators.required],
+      password: ["", Validators.required],
+      d_o_b: ["", Validators.required],
+      sex: ["", Validators.required],
+    });
   }
 
+  ngOnInit() {
+    const sub1 = this.authService.authListenerWithData.subscribe(
+      async (status) => {
+        this.registering = status.event === "REGISTERING";
+        this.loaderConf.currentEvent = status.event;
+        this.gService.presentLoading(this.loaderConf);
+        if (status?.data) {
+          const alert = await this.alertCtrl.create({
+            message: status.data,
+            buttons: ["OK"],
+          });
+          alert.present();
+        }
+      }
+    );
+    this.subs.push(sub1);
+  }
+
+  ngOnDestroy() {
+    this.subs.forEach((sub) => {
+      if (!sub.closed) {
+        sub.unsubscribe();
+      }
+    });
+  }
+
+  registerUser() {
+    this.authService.register(this.regForm.value);
+  }
 }

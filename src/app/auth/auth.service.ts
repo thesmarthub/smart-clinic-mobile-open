@@ -218,7 +218,7 @@ export class AuthService {
   }
 
   fetchActiveHospitalAndProfile(smartCode) {
-    this.authListenerWithData.next({ event: "LOGGING IN" });
+    this.authListenerWithData.next({ event: "FETCHING HOSPITAL PROFILE" });
     this._http
       .get<IAPIResponse<IHospital>>(
         `${this.baseURL}hospital/fetch-hospital?smart_code=${smartCode}`
@@ -357,6 +357,7 @@ export type AuthEvent =
   | "RECOVERING ACCOUNT"
   | "RECOVERY SENT"
   | "RECOVERY FAILED"
+  | "FETCHING HOSPITAL PROFILE"
   | "FAILED TO FIND HOSPITAL PROFILE"
   | "VALIDATING HMO"
   | "VALIDATE HMO FAILED"

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { AlertController } from "@ionic/angular";
 import { Subscription } from "rxjs/internal/Subscription";
+import { GeneralService } from "src/app/services/general.service";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -16,17 +17,25 @@ export class LoginPage implements OnInit {
   });
 
   loading = false;
+  loaderConf = {
+    message: "Please wait...",
+    currentEvent: "",
+    expectedEvent: "LOGGING IN",
+  };
   subs: Subscription[] = [];
 
   constructor(
     private _authService: AuthService,
     private fb: FormBuilder,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private gService: GeneralService
   ) {}
 
   ngOnInit(): void {
     this.subs.push(
       this._authService.authListenerWithData.subscribe((status) => {
+        this.loaderConf.currentEvent = status.event;
+        this.gService.presentLoading(this.loaderConf);
         if (status.event === "LOGGING IN") {
           this.loading = true;
         } else {

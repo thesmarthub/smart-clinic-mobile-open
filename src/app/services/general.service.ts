@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { LoadingController } from "@ionic/angular";
 import { BehaviorSubject } from "rxjs";
 import { ApiAction } from "src/interfaces/action";
 import { API } from "src/interfaces/api";
@@ -17,7 +18,10 @@ export class GeneralService {
     action: SmartMobileEvent;
     failed: boolean;
   }>(null);
-  constructor(public http: HttpClient) {}
+  constructor(
+    public http: HttpClient,
+    private loadingController: LoadingController
+  ) {}
 
   postData = ({ url, data, action }: RequestRequirements) => {
     this.http.post(`${this.baseUrl}${url}`, data).subscribe(
@@ -78,6 +82,22 @@ export class GeneralService {
       }
     );
   };
+
+  async presentLoading(conf) {
+    console.log(conf)
+    if (conf.currentEvent === conf.expectedEvent) {
+      if (conf.loader) {
+        await conf.loader.dismiss();
+      }
+      conf.loader = await this.loadingController.create({
+        message: conf.message,
+        spinner: "bubbles",
+      });
+      await conf.loader.present();
+    } else if (conf.loader) {
+      await conf.loader.dismiss();
+    }
+  }
 }
 
 interface RequestRequirements {
