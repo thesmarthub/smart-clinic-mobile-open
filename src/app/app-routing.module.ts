@@ -44,6 +44,10 @@ const routes: Routes = [
   {
     path: 'please-wait',
     loadChildren: () => import('./pages/please-wait/please-wait.module').then( m => m.PleaseWaitPageModule)
+  },
+  {
+    path: 'pandemic',
+    loadChildren: () => import('./pages/pandemic/pandemic.module').then( m => m.PandemicPageModule)
   }
 ];
 @NgModule({

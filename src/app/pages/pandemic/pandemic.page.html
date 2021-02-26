@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="title" color="primary">Covid Checker</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents] #content>
+  <ion-slides #slides (ionSlidePrevEnd)="afterSlide($event, content)" (ionSlideNextEnd)="afterSlide($event, content)">
+    <ion-slide *ngFor="let slide of tabs; let i = index">
+      <ion-grid>
+        <ion-label *ngIf="slide.key !== 'result'" color="primary" class="question-font">{{slide.title}}</ion-label>
+        <ion-label *ngIf="slide.key === 'result'" [color]="resultCalc()?.color || 'primary'" color="primary"
+          class="question-font">{{resultCalc()?.status}}</ion-label>
+        <ion-row *ngFor="let form of tabForms[slide.key]">
+          <ion-col size="12" *ngIf="slide.type==='check'">
+            <ion-card>
+              <ion-list>
+                <ion-radio-group (ionChange)="scoreInc($event.target.value, form)" [(ngModel)]="form.value">
+                  <ion-list-header>
+                    <ion-label class="ion-text-left question-font" color="primary">{{form.title}}</ion-label>
+                  </ion-list-header>
+
+                  <ion-item>
+                    <ion-label [color]="form.value < 1 ? '' : 'primary'">Yes</ion-label>
+                    <ion-radio [value]="form.score" #radYes></ion-radio>
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label [color]="form.value === 0 ? 'primary' : ''">No</ion-label>
+                    <ion-radio selected [value]="0" #radNo></ion-radio>
+                  </ion-item>
+                </ion-radio-group>
+              </ion-list>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col *ngIf="slide.type==='result'" size="12">
+            <ion-card>
+              <ion-row>
+                <ion-label class="title ion-text-left" [color]="resultCalc()?.color || 'primary'">
+                  <img src="assets/test.png">
+                  {{resultCalc()?.message}}
+                </ion-label>
+
+                <ion-label class="title ion-text-left">
+                  {{resultCalc()?.advice}}
+                </ion-label>
+              </ion-row>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col *ngIf="i > 0" class="ion-text-center">
+            <ion-button (click)="slides.slidePrev()">Prev</ion-button>
+          </ion-col>
+          <ion-col *ngIf="slide.type === 'check'" class="ion-text-center">
+            <ion-button (click)="slides.slideNext()">Next</ion-button>
+          </ion-col>
+          <ion-col *ngIf="slide.type === 'result'" class="ion-text-center">
+            <ion-button (click)="goHome()">Done</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
