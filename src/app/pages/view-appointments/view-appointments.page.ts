@@ -38,7 +38,7 @@ export class ViewAppointmentsPage implements OnInit {
   tempSubs: Subscription[] = [];
   availableSlots = new BehaviorSubject([]);
   enabledSlots = [];
-  selectedDepartmentRoute;
+  selectedDepartment;
   rangeGenerator = rangeGenerator;
   constructor(
     public aService: AppointmentService,
@@ -91,7 +91,7 @@ export class ViewAppointmentsPage implements OnInit {
         sub.unsubscribe();
       }
     });
-    this.selectedDepartmentRoute = null;
+    this.selectedDepartment = null;
   }
 
   noTimeSlotsAlert() {
@@ -103,7 +103,7 @@ export class ViewAppointmentsPage implements OnInit {
 
   async openCalendar() {
     const options: CalendarModalOptions = {
-      daysConfig: this.daysConfig,
+      // daysConfig: this.daysConfig,
       pickMode: "single",
     };
     const modal = await this.modalController.create({
@@ -122,13 +122,13 @@ export class ViewAppointmentsPage implements OnInit {
     // const to: CalendarResult = date.to;
   }
 
-  loadTimeSlots({ departmentRoute }: { departmentRoute: string }) {
-    this.selectedDepartmentRoute = departmentRoute;
+  loadTimeSlots() {
     this.presentLoading({});
     this.aService.triggerEvent(LoadTimeSlots, {
       "slot.start_time": moment().startOf("year"),
       "slot.end_time": moment().endOf("year"),
-      "slots.department_route": departmentRoute ?? "general-health",
+      "slots.department_route":
+        this.selectedDepartment?.route ?? "general-health",
     });
     // this.presentAlert();
   }
@@ -166,6 +166,7 @@ export class ViewAppointmentsPage implements OnInit {
     const availableSlots = this.enabledSlots.filter((slot) => {
       return moment(slot.start_time).dayOfYear() === moment(date).dayOfYear();
     });
+    console.log(this.availableSlots);
     this.availableSlots.next(availableSlots);
   }
 
@@ -220,7 +221,8 @@ export class ViewAppointmentsPage implements OnInit {
           role: "option",
           icon: "option",
           handler: () => {
-            this.loadTimeSlots({ departmentRoute: data.route });
+            this.selectedDepartment = JSON.parse(JSON.stringify(data));
+            this.loadTimeSlots();
           },
         };
       }),
@@ -236,27 +238,43 @@ export class ViewAppointmentsPage implements OnInit {
       buttons: [
         {
           text: "Book Now",
-          handler: () => console.log("Clicked Save!"),
+          handler: (val) => {
+            const data = {
+              appointment_type: "Future",
+              appointment_time: val.Time?.text,
+              clinic: this.selectedDepartment.name,
+              department_route: this.selectedDepartment.route,
+              hospital_number: this.store?.user.hospital_number,
+              patient: this.store?.user._id,
+              hmo_or_retainer: null,
+              has_approved_hmo: false,
+              patient_sex: this.store?.user.sex,
+              patient_dob: this.store?.user.d_o_b,
+              smart_code: this.selectedDepartment.route,
+              slot_id: val.slot?._id,
+            };
+            console.log(val);
+            this.aService.createAppointment(data);
+          },
         },
         {
           text: "Back to Calendar",
           handler: (val) => {
-            console.log("Going back to calendar")
-            this.loadTimeSlots({
-              departmentRoute: this.selectedDepartmentRoute,
-            });
+            console.log("Going back to calendar");
+            this.loadTimeSlots();
           },
         },
       ],
       columns: [
         {
-          name: "Time",
+          name: "slot",
           // prefix: 'total',
           // suffix: 'hours',
           options: [
             ...slots.map((data) => {
               return {
-                text: moment(data.start_time).format("HH:MM A"),
+                text: moment(data.start_time).format("MM/DD/YYYY HH:MM A"),
+                value: data._id,
               };
             }),
           ],

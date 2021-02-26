@@ -22,7 +22,7 @@ import { GeneralService } from "./general.service";
   providedIn: "root",
 })
 export class PaymentService {
-  currentValues = {
+  readonly currentValues = {
     pendingBills: new BehaviorSubject([]),
     paidBills: new BehaviorSubject([]),
     loadingBills: new BehaviorSubject(false),
@@ -164,7 +164,13 @@ export class PaymentService {
   verifyPayment(queryParams) {
     this._http
       .get(
-        `${this.gService.baseUrl}payment/flutterwave/verify?tx_ref=${queryParams.tx_ref}&transaction_id=${queryParams.transaction_id}&hospital_smart_code=${queryParams.hospital_smart_code}&patient_smart_code=${queryParams.patient_smart_code}&platform=${queryParams.platform}&status=${queryParams.status}`
+        `${this.gService.baseUrl}payment/flutterwave/verify?tx_ref=${queryParams.tx_ref}&transaction_id=${queryParams.transaction_id}&platform=${queryParams.platform}&status=${queryParams.status}`,
+        {
+          params: {
+            hospital_smart_code: queryParams.hospital_smart_code,
+            patient_smart_code: queryParams.patient_smart_code,
+          },
+        }
       )
       .subscribe(
         (res: any) => {
@@ -173,7 +179,7 @@ export class PaymentService {
           } else {
             this.currentValues.afterVerification.next({
               message: "Could not validate payment. Please try again later.",
-              failed: true
+              failed: true,
             });
           }
         },
@@ -181,9 +187,19 @@ export class PaymentService {
           console.log(err);
           this.currentValues.afterVerification.next({
             message: "Something went wrong",
-            failed: true
+            failed: true,
           });
         }
       );
+  }
+
+  clean(prop) {
+    if (Object.keys(this.currentValues).includes(prop)) {
+      this.currentValues[prop].next(null);
+    }
+  }
+
+  typeGenerator() {
+    return "aftermath";
   }
 }

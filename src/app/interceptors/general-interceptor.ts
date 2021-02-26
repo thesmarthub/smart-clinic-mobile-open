@@ -18,7 +18,7 @@ export class GeneralInterceptorService implements HttpInterceptor {
     const store = new Store();
     const duplicate = req.clone({
       setParams: {
-        action: req.params.get("action"),
+        action: req.params.get("action") || "",
         token: store.token,
         hospital_smart_code:
           req.params.get("use_temp_hosp") === "yes"

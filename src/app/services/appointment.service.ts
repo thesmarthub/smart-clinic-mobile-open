@@ -45,6 +45,31 @@ export class AppointmentService {
     );
   }
 
+  createAppointment(data): void {
+    this._genService.http
+      .post(
+        `${this._genService.baseUrl}hospital/patient-request`,
+        { data }, {params: {
+          action: "CREATE_APPOINTMENT"
+        }}
+      )
+      .subscribe(
+        (res: any) => {
+          console.log(res);
+          if (res && res?.result) {
+            alert(res?.message || "created Appointment");
+          } else {
+            alert(res?.message || "Could not create appointment");
+          }
+          this.triggerEvent(LoadAppointments);
+        },
+        (err) => {
+          alert("Failed to create appointment. Please check your connection");
+          console.log(err);
+        }
+      );
+  }
+
   triggerEvent(event: AppointmentEvent, data?) {
     if (event === LoadAppointments) {
       this.currentValues.loadingAppointments.next(true);

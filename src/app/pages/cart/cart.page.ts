@@ -41,21 +41,21 @@ export class CartPage implements OnInit, OnDestroy {
     };
     const sub1 = this.paymentService.currentValues.afterPayment.subscribe(
       (data) => {
-        alert(`SUB1 ${data}`)
         if (data) {
           this.verifyingPayment = true;
           this.paymentService.verifyPayment(data);
+          this.paymentService.clean("afterPayment")
         }
       }
     );
     const sub2 = this.paymentService.currentValues.afterVerification.subscribe(
       (data) => {
-        alert(`SUB2 ${data}`)
         this.verifyingPayment = false;
         alert(data.message);
         if (!data.failed) {
           this.closedPaymentModal();
         }
+        this.paymentService.clean("afterVerification")
       }
     );
     this.subs.push(sub1, sub2);
