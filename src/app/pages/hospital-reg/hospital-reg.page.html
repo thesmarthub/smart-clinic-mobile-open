@@ -1,0 +1,132 @@
+<ion-header *ngIf="!showNextOfKin">
+  <ion-toolbar>
+    
+    <ion-title><ion-icon (click)=" backClicked()" name="arrow-back-outline"></ion-icon></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <form [formGroup]="regForm"> -->
+  <ion-content>
+    <ion-grid class="centralize center-text"  *ngIf="!showNextOfKin">
+     
+  
+      <ion-row>
+        <ion-col class="center-text">
+    <ion-title color="primary">Create your Hospital Account</ion-title>
+    <!-- <ion-text color="primary">Create your Hospital Account</ion-text> -->
+        </ion-col>
+      </ion-row>
+      <ion-row class="center-text" size="12">
+        <ion-col>
+          <ion-card class="center-text" [formGroup]="regForm">
+            <ion-row class="extra-margin">
+              <ion-col>
+                <ion-item>
+                  <ion-input placeholder="First Name" formControlName="fname"></ion-input>
+                  <ion-icon name="person-outline" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-input placeholder="Last Name" formControlName="lname"></ion-input>
+                  <ion-icon name="person" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-input placeholder="Email Address" formControlName="email"></ion-input>
+                  <ion-icon name="mail-outline" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-input placeholder="Phone Number" formControlName="phone"></ion-input>
+                  <ion-icon name="call" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-datetime displayFormat="MMM DD YYYY" placeholder="Date of Birth" formControlName="d_o_b">
+                  </ion-datetime>
+                  <ion-icon name="calendar-outline" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-select formControlName="next_of_kin_sex" interface="popover" placeholder="Select Sex">
+                    <ion-select-option value="Female">Female</ion-select-option>
+                    <ion-select-option value="Male">Male</ion-select-option>
+                  </ion-select>
+                  <ion-icon name="person-circle" color="primary" slot="start"></ion-icon>
+                </ion-item>
+               
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-button color="primary" (click)="showKin()" expand="full" [disabled]="registering">Next
+                </ion-button>
+              </ion-col>
+            </ion-row>
+           
+          </ion-card>
+        </ion-col>
+      </ion-row>
+  
+    </ion-grid>
+  <!-- </form> -->
+
+  <ion-header *ngIf="showNextOfKin">
+    <ion-toolbar>
+      
+      <ion-title><ion-icon (click)="showKin()" name="arrow-back-outline"></ion-icon></ion-title>
+    </ion-toolbar>
+  </ion-header>
+    <ion-grid class="centralize center-text" *ngIf="showNextOfKin">
+     
+      <ion-row>
+        <ion-col class="center-text">
+    <ion-title color="primary">Next of Kin Details</ion-title>
+    <!-- <ion-text color="primary">Create your Hospital Account</ion-text> -->
+        </ion-col>
+      </ion-row>
+      <ion-row class="center-text" size="12">
+        <ion-col>
+          <ion-card class="center-text" [formGroup]="regForm">
+            <ion-row class="extra-margin">
+              <ion-col>
+                <ion-item>
+                  <ion-input placeholder="Kin First Name" formControlName="next_of_kin_fname"></ion-input>
+                  <ion-icon name="person-outline" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-input placeholder="Kin Last Name" formControlName="next_of_kin_lname"></ion-input>
+                  <ion-icon name="person" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-input placeholder="Kin Email Address" formControlName="next_of_kin_email"></ion-input>
+                  <ion-icon name="mail-outline" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-input placeholder="Kin Phone Number" formControlName="next_of_kin_phone"></ion-input>
+                  <ion-icon name="call" color="primary" slot="start"></ion-icon>
+                </ion-item>
+    
+                <ion-item>
+                  <ion-select formControlName="next_of_kin_sex" interface="popover" placeholder="Select Kin Sex">
+                    <ion-select-option value="Female">Female</ion-select-option>
+                    <ion-select-option value="Male">Male</ion-select-option>
+                  </ion-select>
+                  <ion-icon name="person-circle" color="primary" slot="start"></ion-icon>
+                </ion-item>
+                <ion-item>
+                  <ion-select formControlName="next_of_kin_relationship"  interface="popover" placeholder="Relationship with Kin">
+                    <ion-select-option *ngFor="let kin of kins" [value]="kin"> {{kin}} </ion-select-option>
+                  </ion-select>
+                  <ion-icon name="people-outline" color="primary" slot="start" ></ion-icon>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-button color="primary" expand="full" [disabled]="registering">Submit
+                </ion-button>
+              </ion-col>
+            </ion-row>
+           
+          </ion-card>
+        </ion-col>
+      </ion-row>
+  
+    </ion-grid>
+  </ion-content>

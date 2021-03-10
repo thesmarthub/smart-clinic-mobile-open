@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { LoadHospitals } from 'src/app/actions/events/hospital';
 import { Store } from 'src/app/engine/store';
@@ -13,9 +14,11 @@ export class HospitalsPage implements OnInit {
   storeCtrl = new Store()
 
   constructor(public hService: HospitalService, 
-  public atrCtrl: AlertController) { }
+  public atrCtrl: AlertController,
+  public route: Router) { }
 
   ngOnInit() {
+   
   }
 
   ionViewDidEnter() {
@@ -34,12 +37,13 @@ export class HospitalsPage implements OnInit {
           cssClass: 'secondary',
           handler: (blah) => {
             console.log('Confirm Cancel: blah');
+            console.log(this.storeCtrl.currentHospital)
           
           }
         }, {
           text: 'Register',
           handler: () => {
-            console.log('Confirm Okay');
+            this.route.navigateByUrl('/hospital-reg')
           }
         }
       ]
