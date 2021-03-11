@@ -4,6 +4,8 @@ import { AlertController } from '@ionic/angular';
 import { LoadHospitals } from 'src/app/actions/events/hospital';
 import { Store } from 'src/app/engine/store';
 import { HospitalService } from 'src/app/services/hospital.service';
+import {Location} from '@angular/common';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-hospitals',
@@ -15,7 +17,9 @@ export class HospitalsPage implements OnInit {
 
   constructor(public hService: HospitalService, 
   public atrCtrl: AlertController,
-  public route: Router) { }
+  public route: Router,
+  public _location: Location,
+  public authService: AuthService) { }
 
   ngOnInit() {
    
@@ -26,6 +30,9 @@ export class HospitalsPage implements OnInit {
   }
 
   async showConfirmAlert(item) {
+    if(this.storeCtrl.user.hospital_smart_codes.includes(item.smart_code)){
+      this.authService.fetchActiveHospitalAndProfile(item.smart_code)
+    } else {
     const alert = await this.atrCtrl.create({
       cssClass: 'my-custom-class',
       header: `Hi ${this.storeCtrl.user.fname}`,
@@ -35,14 +42,11 @@ export class HospitalsPage implements OnInit {
           text: 'Cancel',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
-            console.log('Confirm Cancel: blah');
-            console.log(this.storeCtrl.currentHospital)
-          
-          }
+          handler: (blah) => {}
         }, {
           text: 'Register',
           handler: () => {
+            this.storeCtrl.tempHospital = item
             this.route.navigateByUrl('/hospital-reg')
           }
         }
@@ -50,7 +54,9 @@ export class HospitalsPage implements OnInit {
     });
 
     await alert.present();
-  }
+  }}
       
-
+  backClicked() {
+    this._location.back();
+  }
 }

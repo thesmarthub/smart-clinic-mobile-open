@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { BehaviorSubject } from "rxjs";
 import { IAPIResponse } from "src/interfaces/general";
 import { HospitalEvent, LoadHospitals } from "../actions/events/hospital";
@@ -63,5 +64,16 @@ export class HospitalService {
       hospitals: new BehaviorSubject([]),
       loadingHospitals: new BehaviorSubject(false),
     };
+  }
+  registerInHospital( patient: any): Observable<any> {
+    return this._genService.http.post(
+      `${this._genService.baseUrl}hospital/patient-request`,
+      { data: patient }, {
+        params: {
+          action: 'REGISTER_PATIENT',
+          use_temp_hosp: 'yes',
+        },
+      }
+    );
   }
 }
