@@ -18,7 +18,7 @@ export interface IUser extends ILoginData, IRegisterData {
   next_of_kin_relationship?: string;
   next_of_kin_sex?: string;
 
-  profile_image?: string;
+  profileImage?: string;
   next_of_kin_address?: string;
   firebase_key?: string;
 }

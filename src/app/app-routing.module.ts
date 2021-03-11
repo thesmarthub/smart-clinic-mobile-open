@@ -51,6 +51,10 @@ const routes: Routes = [
   },  {
     path: 'hospital-reg',
     loadChildren: () => import('./pages/hospital-reg/hospital-reg.module').then( m => m.HospitalRegPageModule)
+  },
+  {
+    path: 'user-profile',
+    loadChildren: () => import('./pages/user-profile/user-profile.module').then( m => m.UserProfilePageModule)
   }
 
 ];
