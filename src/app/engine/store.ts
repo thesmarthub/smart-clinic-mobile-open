@@ -30,6 +30,12 @@ export class Store {
     return `${this.user.fname} ${this.user.lname}`;
   }
 
+  set profileImage(url: string) {
+    const user = this.user;
+    user.profileImage = url;
+    this.user = user;
+  }
+
   set currentHospital(data) {
     const newUser = this.user;
     newUser.currentHospital = data;

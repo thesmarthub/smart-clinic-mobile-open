@@ -9,8 +9,10 @@
     <ion-title><ion-icon (click)="backClicked()" style="color: white;" name="arrow-back-outline"></ion-icon></ion-title>
     <div class="marginalize">
       <ion-avatar slot="start">
-        <ion-img [src]="storeCtrl.user.profileImage"></ion-img>
+        <input type="file" style="display: none" #file (change)="fileChange($event)"/>  
+        <ion-img [src]="storeCtrl.user.profileImage" (click)="file.click()"></ion-img>
       </ion-avatar>
+     
       </div>
   </div>
   
@@ -20,6 +22,7 @@
   <ion-grid class="centralize center-text">
     <ion-row>
       <ion-col class="center-text">
+        <!-- <input id="fileInput" type='file' (change)="onSelectFile($event)" placeholder="Change Profile Image"> -->
         <ion-title class="txt-marginalize" color="primary" >Change Profile Image</ion-title>
         <!-- <ion-text color="primary">Create your Hospital Account</ion-text> -->
       </ion-col>
@@ -129,5 +132,6 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
 
 </ion-content>

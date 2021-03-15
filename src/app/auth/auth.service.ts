@@ -127,6 +127,7 @@ export class AuthService {
           if (res?.result) {
             console.log(res);
             this.patient_profile.next(res["result"]);
+            this.store.profileImage = res["result"].profileImage;
           } else {
             this.toaster({
               text: "Could not fetct patient. Please try again.",
@@ -182,7 +183,7 @@ export class AuthService {
       )
       .subscribe((res) => {
         this.toaster({ text: res.message, duration: 2000 });
-        this.initializeProfile(data._id);
+        this.initializeProfile(_id);
       });
   }
 

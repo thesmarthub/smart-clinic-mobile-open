@@ -7,6 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,8 +21,7 @@ export class UserProfilePage implements OnInit {
   showNextOfKin = false
   kins = ["Mother", "Father", "Brother", "Sister", "Nephew", "Niece", "Aunt", "Uncle", "Grand Mother", "Grand Father"];
 
-
-  constructor(public _location: Location,  public fb: FormBuilder,) {
+  constructor(public _location: Location,  public fb: FormBuilder, public authService:AuthService) {
     this.regForm = this.fb.group({
       fname: [this.storeCtrl.user.fname, Validators.required],
       lname: [this.storeCtrl.user.lname, Validators.required],
@@ -58,4 +58,10 @@ export class UserProfilePage implements OnInit {
   }
 
   
-}
+  fileChange(file) {
+    const formData = new FormData()
+    formData.append("files", file.target["files"][0])
+    this.authService.updateUserImage(formData, this.storeCtrl.user._id)
+  }
+  }
+  
