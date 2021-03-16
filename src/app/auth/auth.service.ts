@@ -127,6 +127,7 @@ export class AuthService {
           if (res?.result) {
             console.log(res);
             this.patient_profile.next(res["result"]);
+            this.store.user = res["result"];
           } else {
             this.toaster({
               text: "Could not fetct patient. Please try again.",
@@ -149,14 +150,14 @@ export class AuthService {
   editUserDetails(data, showNotification = true) {
     this._http
       .post<IAPIResponse<any>>(
-        `${this.baseURL}auth/edit-patient/${data._id}`,
+        `${this.baseURL}auth/edit-patient/${this.store.user._id}`,
         data
       )
       .subscribe((res) => {
         if (showNotification) {
           alert(res.message);
         }
-        this.initializeProfile(data._id);
+        this.initializeProfile(this.store.user._id);
       });
   }
 
@@ -182,7 +183,7 @@ export class AuthService {
       )
       .subscribe((res) => {
         this.toaster({ text: res.message, duration: 2000 });
-        this.initializeProfile(data._id);
+        this.initializeProfile(_id);
       });
   }
 
