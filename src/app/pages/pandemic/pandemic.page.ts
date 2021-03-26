@@ -176,6 +176,19 @@ export class PandemicPage implements OnInit {
 
   ngOnInit() {}
 
+  ionViewDidLeave() {
+    this.totalScore = 0;
+    this.tabForms.history.forEach((item) => {
+      item.touched = false;
+      item.value = false;
+    });
+    this.tabForms.examination.forEach((item) => {
+      item.touched = false;
+      item.value = false;
+    });
+    console.log("leaving pandemic component");
+  }
+
   scoreInc(value, form) {
     if (!form.touched && value === 0) {
       form.touched = true;
@@ -201,6 +214,6 @@ export class PandemicPage implements OnInit {
   }
 
   goHome() {
-    this.router.navigateByUrl("/tabs")
+    this.router.navigateByUrl("/tabs");
   }
 }

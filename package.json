@@ -36,6 +36,7 @@
     "sockjs-client": "^1.4.0",
     "toastify-js": "^1.9.3",
     "tslib": "^2.0.0",
+    "twilio-video": "^2.13.1",
     "url-parse": "^1.5.1",
     "zone.js": "~0.10.3"
   },
