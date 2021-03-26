@@ -37,13 +37,11 @@ export class Store {
   }
 
   set currentHospital(data) {
-    const newUser = this.user;
-    newUser.currentHospital = data;
-    this.user = newUser;
+    localStorage.setItem("currentHospital", JSON.stringify(data));
   }
 
   get currentHospital(): IHospital {
-    return this.user?.currentHospital;
+    return JSON.parse(localStorage.getItem("currentHospital"));
   }
 
   set tempHospital(data: IHospital) {

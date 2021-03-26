@@ -228,7 +228,7 @@ export class AuthService {
         (res) => {
           if (res?.result) {
             this.store.currentHospital = res.result;
-            this.store.user.active_hospital_smart_code = this.store.currentHospital.smart_code;
+            this.store.user.active_hospital_smart_code = res.result.smart_code;
             this.fetchProfileInHospital();
           } else {
             this.toaster({

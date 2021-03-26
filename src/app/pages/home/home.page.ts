@@ -15,10 +15,10 @@ export class HomePage implements OnInit {
       img: "/assets/004-calendar.png",
     },
     {
-      title: "bills",
-      icon: "fa fa-wallet",
-      link: "/tabs/payment",
-      img: "/assets/payment.png",
+      title: "doctors",
+      icon: "fa fa-user",
+      link: "/tabs/doctors",
+      img: "/assets/019-doctor.png",
     },
     {
       title: "prescriptions",

@@ -17,10 +17,13 @@ import {
   PushNotificationActionPerformed,
 } from "@capacitor/core";
 import { PaymentService } from "./services/payment.service";
-
 const { PushNotifications, App } = Plugins;
 
 import * as Url from "url-parse";
+import { ChatService } from "./services/chat.service";
+import { Client } from "@stomp/stompjs";
+import * as SockJS from "sockjs-client";
+import { ChatRequest } from "./models/chat-request";
 
 @Component({
   selector: "app-root",
@@ -36,13 +39,16 @@ export class AppComponent {
     private router: Router,
     private tabService: TabsService,
     private paymentService: PaymentService,
+    private chatService: ChatService,
     private androidPermissions: AndroidPermissions,
     private zone: NgZone
   ) {
     this.initializeApp();
+    // this.chatService.whatsAppTest();
   }
 
   ngOnInit() {
+    console.log("Initializing app!");
     // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
     // Android will just grant without prompting

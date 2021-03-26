@@ -58,6 +58,27 @@ const routes: Routes = [
           import("../pages/chat/chat.module").then((m) => m.ChatPageModule),
       },
       {
+        path: "doctors",
+        loadChildren: () =>
+          import("../pages/doctors/doctors.module").then(
+            (m) => m.DoctorsPageModule
+          ),
+      },
+      {
+        path: "ambulance",
+        loadChildren: () =>
+          import("../pages/ambulance/ambulance.module").then(
+            (m) => m.AmbulancePageModule
+          ),
+      },
+      {
+        path: "wallet",
+        loadChildren: () =>
+          import("../pages/wallet/wallet.module").then(
+            (m) => m.WalletPageModule
+          ),
+      },
+      {
         path: "",
         redirectTo: "/tabs/home",
         pathMatch: "full",

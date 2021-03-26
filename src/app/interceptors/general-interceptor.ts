@@ -24,7 +24,7 @@ export class GeneralInterceptorService implements HttpInterceptor {
           req.params.get("use_temp_hosp") === "yes"
             ? store.tempHospital?.smart_code
             : store.currentHospital?.smart_code,
-        patient_smart_code: store.user?.smart_code,
+        patient_smart_code: String(store.user?.smart_code),
         hospital_number: store.user?.hospital_number,
       },
     });

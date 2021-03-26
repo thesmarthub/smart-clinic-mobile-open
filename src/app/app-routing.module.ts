@@ -55,6 +55,18 @@ const routes: Routes = [
   {
     path: 'user-profile',
     loadChildren: () => import('./pages/user-profile/user-profile.module').then( m => m.UserProfilePageModule)
+  },
+  {
+    path: 'doctors',
+    loadChildren: () => import('./pages/doctors/doctors.module').then( m => m.DoctorsPageModule)
+  },
+  {
+    path: 'wallet',
+    loadChildren: () => import('./pages/wallet/wallet.module').then( m => m.WalletPageModule)
+  },
+  {
+    path: 'ambulance',
+    loadChildren: () => import('./pages/ambulance/ambulance.module').then( m => m.AmbulancePageModule)
   }
 
 ];

@@ -24,6 +24,7 @@ import * as moment from "moment";
 import { Store } from "../../engine/store";
 import { rangeGenerator } from "src/app/engine/utility";
 import { BehaviorSubject, Subscription } from "rxjs";
+import { DepartmentService } from "src/app/services/department.service";
 
 @Component({
   selector: "app-view-appointments",
@@ -46,7 +47,8 @@ export class ViewAppointmentsPage implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private actionSheetController: ActionSheetController,
-    private pickerController: PickerController
+    private pickerController: PickerController,
+    private deptService: DepartmentService
   ) {}
 
   ngOnInit() {}
@@ -213,23 +215,10 @@ export class ViewAppointmentsPage implements OnInit {
   }
 
   async presentActionSheet() {
-    const actionSheet = await this.actionSheetController.create({
-      header: "Departments",
-      buttons: this.store.currentHospital.departments.map((data) => {
-        return {
-          text: data.name,
-          role: "option",
-          icon: "option",
-          handler: () => {
-            this.selectedDepartment = JSON.parse(JSON.stringify(data));
-            this.loadTimeSlots();
-          },
-        };
-      }),
-      mode: "ios",
-    });
-
-    await actionSheet.present();
+    this.deptService.presentActionSheet((data) => {
+      this.selectedDepartment = JSON.parse(JSON.stringify(data));
+      this.loadTimeSlots();
+    },)
   }
 
   async presentPicker(slots: any[]) {

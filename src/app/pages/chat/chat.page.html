@@ -1,43 +1,54 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Chat Room</ion-title>
+    <ion-title>
+      <ion-row class="ion-justify-content-between">
+        <span>Dr. West Balo</span>
+        <ion-icon name="menu"></ion-icon>
+      </ion-row>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
-  <div class="container">
-    <div *ngFor="let msg of messageList || [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]; let e = even"
-      class="message left">
-      <!-- <img class="user-img" [src]="msg.sender?.avatarURL" alt="image" src=""> -->
+  <div class="container" id="msg">
+    <div *ngFor="let msg of chatService.chatMessages; let e = even" class="message left">
       <ion-row>
-        <ion-col [size]="e ? 0 : 3"></ion-col>
+        <ion-col [size]="msg.receiverId === store.user._id ? 0 : 3"></ion-col>
         <ion-col [size]="9">
-          <ion-card>
+          <ion-card [class]="msg.receiverId===store.user._id?'receivedMessage':'sentMessage'">
             <ion-card-content>
-              <pre class="line-wrap">hello world. This is a wonderful message.
-                Isn't it so?
-              </pre>
+              <ion-row>
+                <pre class="line-wrap">
+                  {{msg.text}}
+                </pre>
+              </ion-row>
+              <ion-row>
+                <ion-col class="ion-text-right">
+                  <small>{{msg.date | date: 'medium'}}</small>
+                </ion-col>
+              </ion-row>
             </ion-card-content>
           </ion-card>
         </ion-col>
       </ion-row>
-      <!-- <div class="msg-detail">
-        <div class="msg-info">
-        </div>
-        <div class="msg-content">
-          <span class="triangle"></span>
-          <p class="line-breaker "></p>
-        </div>
-      </div> -->
+
     </div>
+    <!-- This simply adds extra padding at the bottom so that chats are not hidden by the footer -->
+    <ion-row class="hideMe">
+    </ion-row>
   </div>
 </ion-content>
 <ion-footer>
-  <div class="input-wrap">
-    <ion-textarea #messageInput placeholder="Enter your message!" [(ngModel)]="chatMessage"
-      (keyup.enter)="sendMessage()">
-    </ion-textarea>
-    <ion-button ion-button clear icon-only item-right (click)="sendMessage()">
-      <ion-icon name="send"></ion-icon>
-    </ion-button>
-  </div>
+  <!-- <div class="input-wrap"> -->
+  <ion-row class="ion-align-items-center">
+    <ion-col size="10">
+      <ion-textarea #messageInput placeholder="Enter your message!" [(ngModel)]="chatMessage">
+      </ion-textarea>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button ion-button clear icon-only item-right (click)="sendMessage()">
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <!-- </div> -->
 </ion-footer>

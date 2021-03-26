@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Store } from "src/app/engine/store";
 import { ChatService } from "src/app/services/chat.service";
 
 @Component({
@@ -9,17 +10,23 @@ import { ChatService } from "src/app/services/chat.service";
 export class ChatPage implements OnInit {
   chatMessage;
   messageList = [];
+  store = new Store();
   constructor(public chatService: ChatService) {}
 
-  ngOnInit() {}
-
-  ionViewDidEnter() {
-    console.log("Entering messenger");
-    this.chatService.socketManager.emit("hello", { who: "me?" });
-    this.chatService.socketManager.on("userconn", (data) => {
-      console.log("Message came", data);
+  ngOnInit() {
+    this.chatService.actionNotifier.subscribe((action) => {
+      if (action === "scroll") {
+        console.log("scrolling...")
+        const content = document.getElementById("msg");
+        content.scrollIntoView(false);
+      }
     });
   }
 
-  sendMessage() {}
+  ionViewDidEnter() {}
+
+  sendMessage() {
+    this.chatService.sendMessage(this.chatMessage);
+    this.chatMessage = "";
+  }
 }

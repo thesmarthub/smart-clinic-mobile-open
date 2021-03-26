@@ -6,7 +6,7 @@ export interface IUser extends ILoginData, IRegisterData {
   currentHospital: IHospital;
   hospital_number: string;
   hospital_smart_codes: string[];
-  smart_code: string;
+  smart_code: number;
   updated_at: string;
   __v: number;
   _id: string;
