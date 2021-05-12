@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-row class="ion-justify-content-between">
+        <ion-col size="8" class="ion-align-content-center">
+          <ion-row class="ion-justify-content-evenly">
+            <span class="ion-text-wrap">{{chatService.activeReceiverName}}</span>
+          </ion-row>
+        </ion-col>
+        <ion-col size="4">
+          <ion-row class="ion-justify-content-evenly">
+            <ion-icon size="large" (click)="switchToChat()" name="chatbox-ellipses-outline"></ion-icon>
+            <ion-icon size="large" (click)="endChat()" name="close-circle-outline"></ion-icon>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="videoFeed">
+    <ion-row>
+      <ion-col id="chat" size="12">
+
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>

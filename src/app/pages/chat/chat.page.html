@@ -2,8 +2,17 @@
   <ion-toolbar color="primary">
     <ion-title>
       <ion-row class="ion-justify-content-between">
-        <span>Dr. West Balo</span>
-        <ion-icon name="menu"></ion-icon>
+        <ion-col size="8" class="ion-align-content-center">
+          <ion-row class="ion-justify-content-evenly">
+            <span class="ion-text-wrap">{{chatService.activeReceiverName}}</span>
+          </ion-row>
+        </ion-col>
+        <ion-col size="4">
+          <ion-row class="ion-justify-content-evenly">
+            <ion-icon size="large" (click)="switchToVideo()" name="videocam-outline"></ion-icon>
+            <ion-icon size="large" (click)="endChat()" name="close-circle-outline"></ion-icon>
+          </ion-row>
+        </ion-col>
       </ion-row>
     </ion-title>
   </ion-toolbar>
@@ -41,7 +50,7 @@
   <!-- <div class="input-wrap"> -->
   <ion-row class="ion-align-items-center">
     <ion-col size="10">
-      <ion-textarea #messageInput placeholder="Enter your message!" [(ngModel)]="chatMessage">
+      <ion-textarea #messageInput placeholder="Enter your message!" (keyup.enter)="sendMessage()" [(ngModel)]="chatMessage">
       </ion-textarea>
     </ion-col>
     <ion-col size="2">

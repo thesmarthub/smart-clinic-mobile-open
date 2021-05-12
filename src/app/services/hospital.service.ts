@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BehaviorSubject } from "rxjs";
+import { environment } from "src/environments/environment";
 import { IAPIResponse } from "src/interfaces/general";
 import { HospitalEvent, LoadHospitals } from "../actions/events/hospital";
 import { HospitalState } from "../actions/states/hospital";
@@ -27,14 +28,22 @@ export class HospitalService {
     });
   }
 
-  triggerEvent(event: HospitalEvent, data?) {
+  async triggerEvent(event: HospitalEvent, data?) {
     if (event === LoadHospitals) {
       this.currentValues.loadingHospitals.next(true);
-      this._genService.getData({
-        url: "hospital/fetch-hospitals",
-        params: {},
-        action: event,
-      });
+      const loadedHospitals = await this._genService.fetchOrgs("hospital");
+      if (Array.isArray(loadedHospitals)) {
+        loadedHospitals.forEach((element) => {
+          this.transformHospitalData(element);
+        });
+        this.currentValues.hospitals.next(loadedHospitals);
+      }
+      this.currentValues.loadingHospitals.next(false);
+      // this._genService.getData({
+      //   url: "hospital/fetch-hospitals",
+      //   params: {},
+      //   action: event,
+      // });
       // this._genService.getData("hospital/patient-request?action=FETCH_PATIENT_LAB_REQUESTS", {})
     }
   }
@@ -65,15 +74,22 @@ export class HospitalService {
       loadingHospitals: new BehaviorSubject(false),
     };
   }
-  registerInHospital( patient: any): Observable<any> {
+  registerInHospital(patient: any): Observable<any> {
     return this._genService.http.post(
       `${this._genService.baseUrl}hospital/patient-request`,
-      { data: patient }, {
+      { data: patient },
+      {
         params: {
-          action: 'REGISTER_PATIENT',
-          use_temp_hosp: 'yes',
+          action: "REGISTER_PATIENT",
+          use_temp_hosp: "yes",
         },
       }
     );
+  }
+
+  transformHospitalData(hospital) {
+    if (hospital.smartCode) {
+      hospital.smart_code = hospital.smartCode;
+    }
   }
 }

@@ -16,10 +16,11 @@ export class ChatService {
   chatMessages: ChatMessage[] = [];
   store = new Store();
   socket: Client = new Client({
-    brokerURL: "ws://localhost:8080/chat",
+    brokerURL: "wss://events.autoserver.smartapps.com.ng/chat",
+    // brokerURL: "ws://localhost:8080/chat",
   });
   socketSubs: StompSubscription[] = [];
-  actionNotifier: Subject<any> = new Subject()
+  actionNotifier: Subject<any> = new Subject();
   get activeChatKey() {
     return localStorage.getItem("ack");
   }
@@ -34,6 +35,22 @@ export class ChatService {
 
   set activeReceiver(arID) {
     localStorage.setItem("arID", arID);
+  }
+
+  get activeReceiverName() {
+    return localStorage.getItem("arName");
+  }
+
+  set activeReceiverName(arName) {
+    localStorage.setItem("arName", arName);
+  }
+
+  get videoAccessKey() {
+    return localStorage.getItem("vKey");
+  }
+
+  set videoAccessKey(vKey) {
+    localStorage.setItem("vKey", vKey);
   }
 
   constructor(private _http: HttpClient, private router: Router) {
@@ -81,7 +98,7 @@ export class ChatService {
       new Date()
     );
     this.chatMessages.push(chatMessage);
-    this.actionNotifier.next("scroll")
+    this.actionNotifier.next("scroll");
     this.socket.publish({
       destination: "/app/new-chat-message",
       body: JSON.stringify(chatMessage),
@@ -91,7 +108,7 @@ export class ChatService {
   receiveMessage = (message) => {
     console.log("Message received", message.body);
     this.chatMessages.push(JSON.parse(message.body));
-    this.actionNotifier.next("scroll")
+    this.actionNotifier.next("scroll");
   };
 
   sendRequest(receiverId: string) {
@@ -119,11 +136,20 @@ export class ChatService {
     });
   }
 
+  endChat() {
+    this.socketSubs.forEach((sub) => sub.unsubscribe());
+    this.router.navigateByUrl("/tabs/doctors");
+  }
+
   chatRequestListener(resumePrev = false) {
+    // Remove auto video key reqyest
+    this.requestForVideoKey();
     const acceptedChat = `/topic/accepted-chat-request/${this.store.user._id}/${this.activeChatKey}`;
     const cancelledChat = `/topic/cancelled-chat-request/${this.store.user._id}/${this.activeChatKey}`;
     const endedChat = `/topic/ended-chat/${this.store.user._id}/${this.activeChatKey}`;
     const newChatMessage = `/topic/new-chat-message/${this.store.user._id}/${this.activeChatKey}`;
+    const newVideoKey = `/topic/new-video-key/${this.store.user._id}`;
+
     if (!this.activeChatKey) {
       return;
     }
@@ -144,6 +170,17 @@ export class ChatService {
     this.createSocketSub(endedChat, (message) => {
       alert("Chat has been ended.");
       this.socketSubs.forEach((sub) => sub.unsubscribe());
+    });
+    this.createSocketSub(newVideoKey, (message) => {
+      this.videoAccessKey = message.body;
+    });
+  }
+
+  requestForVideoKey() {
+    console.log(this.store.user._id, this.activeChatKey)
+    this.socket.publish({
+      destination: "/app/video-key-request",
+      body: JSON.stringify({userId: this.store.user._id, room: this.activeChatKey})
     });
   }
 

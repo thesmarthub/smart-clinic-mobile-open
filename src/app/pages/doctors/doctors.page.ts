@@ -15,10 +15,12 @@ import { DoctorService } from "src/app/services/doctor.service";
 export class DoctorsPage implements OnInit {
   selectedDept;
   doctors: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  services: BehaviorSubject<any[]> = new BehaviorSubject([]);
   filteredDoctors: BehaviorSubject<any[]> = new BehaviorSubject([]);
   searchInput = "";
   loadingDoctors = false;
-  store = new Store()
+  store = new Store();
+  decision: "current_hospital_doctors" | "all_doctors";
   constructor(
     private _docService: DoctorService,
     private _deptService: DepartmentService,
@@ -30,6 +32,16 @@ export class DoctorsPage implements OnInit {
 
   ionViewDidEnter() {
     this.selectedDept = this._deptService.getGOPDDept();
+    this._docService.presentActionSheet(async (data) => {
+      this.decision = data;
+      if (data === "current_hospital_doctors") {
+        this._docService.fetchDoctors;
+      } else {
+        const doctors = await this._docService.fetchPrivatePractitioners();
+        this.doctors.next(doctors);
+        this.filterDoctors(this.searchInput);
+      }
+    });
     this.fetchDoctors();
     this.presentDepartments();
   }
@@ -78,8 +90,14 @@ export class DoctorsPage implements OnInit {
     this.filteredDoctors.next(filteredDoctors);
   }
 
-  initiateChat(doctor) {
+  async initiateChat(doctor) {
+    if (this.decision === "all_doctors") {
+      await this.fetchAvailableServices(doctor.id);
+    }
     this.chatService.sendRequest(doctor._id);
+    this.chatService.activeReceiverName = `${doctor.title || "" + " "}${
+      doctor.fname
+    } ${doctor.lname}`;
     // this.chatService.sendMessage(
     //   new ChatMessage(
     //     this.store.userFullName,
@@ -91,5 +109,11 @@ export class DoctorsPage implements OnInit {
     //   )
     // );
     // this.router.navigateByUrl("/tabs/chat");
+  }
+
+  async fetchAvailableServices(orgId) {
+    const services = await this._docService.fetchServicesByOrganization(orgId);
+    this.services.next(services);
+    console.log("fetched services", services)
   }
 }

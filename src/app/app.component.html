@@ -1,6 +1,6 @@
 <ion-app>
   <ion-content [scrollEvents]="true">
-    <ion-menu side="start" menuId="custom" contentId="main">
+    <ion-menu side="start" menuId="custom" contentId="main" *ngIf="store.user">
       <ion-header>
         <ion-toolbar color="primary">
           <ion-title>Smart Clinic</ion-title>
@@ -11,7 +11,7 @@
         <ion-list>
            <ion-item>
           <ion-avatar (click)="closeTab()" routerLink="/user-profile" slot="start">
-            <ion-img [src]="store.user.profileImage"></ion-img>
+            <ion-img [src]="store.user?.profileImage"></ion-img>
           </ion-avatar>
           <ion-label (click)="closeTab()" routerLink="/user-profile"><ion-text>{{store.userFullName |titlecase}}</ion-text></ion-label>
         </ion-item>

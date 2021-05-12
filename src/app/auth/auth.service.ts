@@ -8,6 +8,7 @@ import { SmartNotification } from "../engine/smart-notification";
 import { IHospital } from "../../interfaces/hospital";
 import { IAPIResponse } from "../../interfaces/general";
 import { IUser } from "../../interfaces/user";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 
 @Injectable({
   providedIn: "root",
@@ -22,9 +23,10 @@ export class AuthService {
   readonly activeComponent: ComponentRef<any>;
   readonly toaster = new SmartNotification().toaster;
 
-  constructor(private _http: HttpClient, private router: Router) {}
+  constructor(private _http: HttpClient, private router: Router, private iab: InAppBrowser) {}
 
   login(email, password) {
+    this.socialLogin(); return
     this.authListenerWithData.next({ event: "LOGGING IN" });
     this._http
       .post<IAPIResponse<IUser>>(`${this.baseURL}auth/login-patient`, {
@@ -340,6 +342,10 @@ export class AuthService {
     this.store.user = res["result"];
     this.store.addFirebaseKey(this.store.firebaseToken);
     this.editUserDetails(this.store.user, false);
+  }
+
+  socialLogin() {
+    const browser = this.iab.create("http://localhost:8080");
   }
 }
 

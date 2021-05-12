@@ -14,6 +14,7 @@ import { GeneralInterceptorService } from "./interceptors/general-interceptor";
 import { CalendarModule } from "ion2-calendar";
 import { FlutterwaveModule } from "flutterwave-angular-v3"
 import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +39,7 @@ import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
       useClass: GeneralInterceptorService,
       multi: true,
     },
+    InAppBrowser
   ],
   bootstrap: [AppComponent],
 })

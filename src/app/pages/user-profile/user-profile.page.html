@@ -10,7 +10,7 @@
     <div class="marginalize">
       <ion-avatar slot="start">
         <input type="file" style="display: none" #file (change)="fileChange($event)"/>  
-        <ion-img [src]="storeCtrl.user.profileImage" (click)="file.click()"></ion-img>
+        <ion-img [src]="storeCtrl.user?.profileImage" (click)="file.click()"></ion-img>
       </ion-avatar>
      
       </div>

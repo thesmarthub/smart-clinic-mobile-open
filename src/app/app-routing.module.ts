@@ -67,6 +67,10 @@ const routes: Routes = [
   {
     path: 'ambulance',
     loadChildren: () => import('./pages/ambulance/ambulance.module').then( m => m.AmbulancePageModule)
+  },
+  {
+    path: 'video-chat',
+    loadChildren: () => import('./pages/video-chat/video-chat.module').then( m => m.VideoChatPageModule)
   }
 
 ];
