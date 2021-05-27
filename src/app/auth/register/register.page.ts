@@ -69,7 +69,15 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  registerUser() {
+  async registerUser() {
+    if(!this.regForm.valid) {
+      const alert = await this.alertCtrl.create({
+        message: "Please enter all required information.",
+        buttons: ["OK"],
+      });
+      alert.present();
+      return 
+    }
     this.authService.register(this.regForm.value);
   }
 }

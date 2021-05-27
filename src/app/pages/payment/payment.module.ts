@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { PaymentPageRoutingModule } from './payment-routing.module';
 
 import { PaymentPage } from './payment.page';
+import { FlutterwavePageModule } from '../flutterwave/flutterwave.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PaymentPageRoutingModule
+    PaymentPageRoutingModule,
+    FlutterwavePageModule
   ],
   declarations: [PaymentPage]
 })

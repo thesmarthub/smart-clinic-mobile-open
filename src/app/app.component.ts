@@ -145,4 +145,13 @@ export class AppComponent {
     this.store.clearStore();
     this.router.navigateByUrl("/auth/login");
   }
+
+  navigateToResetPassword() {
+    this.closeTab();
+    this.router.navigate(["/auth/reset-password"], {
+      queryParams: {
+        from_menu: "yes",
+      },
+    });
+  }
 }

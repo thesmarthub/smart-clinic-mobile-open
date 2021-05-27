@@ -1,22 +1,22 @@
 <!-- <form [formGroup]="regForm"> -->
 <ion-content>
-  <ion-grid class="centralize center-text">
-    <ion-row>
+<ion-grid class="centralize center-text">
+  <!--     <ion-row>
       <ion-col>
         <ion-img src="/assets/icon-transparent.png"></ion-img>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
 
-    <ion-row>
-      <ion-col class="center-text">
-        <ion-text color="primary">Create your Smart Clinic Account</ion-text>
-      </ion-col>
-    </ion-row>
     <ion-row class="center-text" size="12">
       <ion-col>
         <ion-card class="center-text" [formGroup]="regForm">
           <ion-row class="extra-margin">
             <ion-col>
+              <!-- <ion-item> -->
+                <ion-col class="center-text">
+                  <ion-text color="primary">Almost there!</ion-text>
+                </ion-col>
+              <!-- </ion-item> -->
               <ion-item>
                 <ion-input placeholder="First Name" formControlName="fname"></ion-input>
                 <ion-icon name="person-outline" color="primary" slot="start"></ion-icon>
@@ -66,7 +66,7 @@
           <ion-row>
             <ion-col class="center-text small-text grey">
               Are you a Doctor?
-              <a routerLink="" color="primary">Click Here</a>
+              <a routerLink="" (click)="authService.registerDoctor()" color="primary">Click Here</a>
             </ion-col>
           </ion-row>
         </ion-card>

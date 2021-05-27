@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
+import { Store } from "src/app/engine/store";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -14,7 +16,23 @@ export class ResetPasswordPage implements OnInit {
   });
   subs: Subscription[] = [];
   loading = false;
-  constructor(private _authService: AuthService, private fb: FormBuilder) {}
+  changingPassword = false;
+  store = new Store();
+
+  constructor(
+    private _authService: AuthService,
+    private fb: FormBuilder,
+    private aRoute: ActivatedRoute
+  ) {
+    this.aRoute.queryParams.subscribe((params) => {
+      if (params.from_menu === "yes") {
+        this.changingPassword = true;
+        this.recoveryForm.setValue({ email: this.store.user.email });
+      } else {
+        this.changingPassword = false;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.subs.push(

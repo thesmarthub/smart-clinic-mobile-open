@@ -7,7 +7,8 @@ import { IonicModule } from "@ionic/angular";
 import { CartPageRoutingModule } from "./cart-routing.module";
 
 import { CartPage } from "./cart.page";
-import { FlutterwaveModule } from "flutterwave-angular-v3";
+import { FlutterwavePageModule } from "../flutterwave/flutterwave.module";
+
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { FlutterwaveModule } from "flutterwave-angular-v3";
     FormsModule,
     IonicModule,
     CartPageRoutingModule,
-    FlutterwaveModule,
+    FlutterwavePageModule
   ],
   declarations: [CartPage],
 })

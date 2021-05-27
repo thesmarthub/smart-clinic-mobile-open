@@ -10,7 +10,7 @@ import * as Video from "twilio-video";
 })
 export class VideoChatPage implements OnInit {
   videoConnection;
-  constructor(private chatService: ChatService, private router: Router) {}
+  constructor(public chatService: ChatService, private router: Router) {}
 
   ngOnInit() {
     // video.connect(token).then((room)=> {
@@ -74,4 +74,6 @@ export class VideoChatPage implements OnInit {
   switchToChat() {
     this.router.navigateByUrl("/tabs/chat")
   }
+
+  endChat(){}
 }

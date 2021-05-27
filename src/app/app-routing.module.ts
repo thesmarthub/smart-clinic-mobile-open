@@ -71,6 +71,10 @@ const routes: Routes = [
   {
     path: 'video-chat',
     loadChildren: () => import('./pages/video-chat/video-chat.module').then( m => m.VideoChatPageModule)
+  },
+  {
+    path: 'flutterwave',
+    loadChildren: () => import('./pages/flutterwave/flutterwave.module').then( m => m.FlutterwavePageModule)
   }
 
 ];

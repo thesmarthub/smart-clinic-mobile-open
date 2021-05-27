@@ -9,6 +9,7 @@ import { IHospital } from "../../interfaces/hospital";
 import { IAPIResponse } from "../../interfaces/general";
 import { IUser } from "../../interfaces/user";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
+import { ChatService } from "../services/chat.service";
 
 @Injectable({
   providedIn: "root",
@@ -23,10 +24,14 @@ export class AuthService {
   readonly activeComponent: ComponentRef<any>;
   readonly toaster = new SmartNotification().toaster;
 
-  constructor(private _http: HttpClient, private router: Router, private iab: InAppBrowser) {}
+  constructor(
+    private _http: HttpClient,
+    private router: Router,
+    private iab: InAppBrowser,
+    private chatService: ChatService
+  ) {}
 
   login(email, password) {
-    this.socialLogin(); return
     this.authListenerWithData.next({ event: "LOGGING IN" });
     this._http
       .post<IAPIResponse<IUser>>(`${this.baseURL}auth/login-patient`, {
@@ -37,6 +42,7 @@ export class AuthService {
         (res) => {
           // console.log(res, "loged in res")
           if (this.authSuccess(res)) {
+            this.chatService.initialize();
             this.storeAuthData(res, "LOGGED IN");
             this.fetchActiveHospitalAndProfile(
               this.store.user.active_hospital_smart_code ||
@@ -84,8 +90,7 @@ export class AuthService {
         (err) => {
           this.authListenerWithData.next({
             event: "REGISTER FAILED",
-            data:
-              "Registration may have failed. Please check your internet connection",
+            data: "Registration may have failed. Please check your internet connection",
           });
         }
       );
@@ -213,8 +218,7 @@ export class AuthService {
         (err) => {
           this.authListenerWithData.next({
             event: "RECOVERY FAILED",
-            data:
-              "Could not sent recovery request. Please check you internet connection.",
+            data: "Could not sent recovery request. Please check you internet connection.",
           });
         }
       );
@@ -242,8 +246,7 @@ export class AuthService {
         },
         (err) => {
           this.toaster({
-            text:
-              "Could not fetch active hospital. Please check your connection and try again.",
+            text: "Could not fetch active hospital. Please check your connection and try again.",
             duration: 2000,
           });
           this.authListenerWithData.next({ event: "DEFAULT" });
@@ -346,6 +349,10 @@ export class AuthService {
 
   socialLogin() {
     const browser = this.iab.create("http://localhost:8080");
+  }
+
+  registerDoctor() {
+    const browser = this.iab.create('https://docs.google.com/forms/d/e/1FAIpQLSc-UVDE0mQvNZ6MLy54yMN9tCyNG0Coy9bysGKU5xK5n0OgsQ/viewform');
   }
 }
 

@@ -22,6 +22,8 @@ export class CartPage implements OnInit, OnDestroy {
   transactionInitiated = false;
   redirectUrl = "/validate-payment";
   verifyingPayment = false;
+  readyToPay = false;
+  loading = true;
 
   subs: Subscription[] = [];
 
@@ -70,9 +72,9 @@ export class CartPage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    if (this.getTotal() < 1) {
-      this.initTransaction(true);
-    }
+    // if (this.getTotal() < 1) {
+      this.initTransaction();
+    // }
   }
 
   decreaseCartItem(product) {
@@ -86,7 +88,7 @@ export class CartPage implements OnInit, OnDestroy {
   removeCartItem(product) {
     this.transactionInitiated = false;
     this.cartService.removeProduct(product);
-    this.initTransaction(true);
+    this.initTransaction();
   }
 
   getTotal() {
@@ -100,13 +102,16 @@ export class CartPage implements OnInit, OnDestroy {
     this.modalCtrl.dismiss();
   }
 
-  async initTransaction(reloadEmpty?) {
+  async initTransaction() {
+    this.loading = true;
     if (this.cart.length < 1) {
-      this.modalCtrl.dismiss({ reload: reloadEmpty });
+      this.modalCtrl.dismiss({ reload: false });
       return;
     }
     const tx = await this.paymentService
-      .generateTxRef(this.cart.map((data) => data.id))
+      .generateTxRef(this.cart.map((data) => data.id), {
+        action: "UPDATE_BILLS"
+      })
       .then((data) => data);
     if (tx["error"]) {
       (
@@ -132,6 +137,7 @@ export class CartPage implements OnInit, OnDestroy {
     this.txRef = tx["reference"];
     this.amount = tx["amount"];
     this.transactionInitiated = true;
+    this.loading = false;
   }
 
   async makePaymentCallback(event) {

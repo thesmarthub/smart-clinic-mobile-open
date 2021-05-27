@@ -21,6 +21,7 @@ export class ChatService {
   });
   socketSubs: StompSubscription[] = [];
   actionNotifier: Subject<any> = new Subject();
+  isInitialized = false;
   get activeChatKey() {
     return localStorage.getItem("ack");
   }
@@ -54,9 +55,16 @@ export class ChatService {
   }
 
   constructor(private _http: HttpClient, private router: Router) {
-    this.generateChatKey();
-    this.socket.onConnect = this.onSocketConnect;
-    this.socket.activate();
+    this.initialize();
+  }
+
+  initialize() {
+    if (this.store.user?._id && !this.isInitialized) {
+      this.isInitialized = true;
+      this.generateChatKey();
+      this.socket.onConnect = this.onSocketConnect;
+      this.socket.activate();
+    }
   }
 
   onSocketConnect = (frame) => {
@@ -177,10 +185,13 @@ export class ChatService {
   }
 
   requestForVideoKey() {
-    console.log(this.store.user._id, this.activeChatKey)
+    console.log(this.store.user._id, this.activeChatKey);
     this.socket.publish({
       destination: "/app/video-key-request",
-      body: JSON.stringify({userId: this.store.user._id, room: this.activeChatKey})
+      body: JSON.stringify({
+        userId: this.store.user._id,
+        room: this.activeChatKey,
+      }),
     });
   }
 

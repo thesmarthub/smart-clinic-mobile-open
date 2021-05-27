@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
+import { PaymentAction } from "src/interfaces/payment";
 import {
   FetchBills,
   InitiatePayment,
@@ -89,11 +90,14 @@ export class PaymentService {
     this.currentState.next(FetchedBills);
   }
 
-  generateTxRef = async (bills: number[]) => {
+  generateTxRef = async (bills: number[], {action, amount}: {action: PaymentAction, amount?: number}) => {
     return await this.gService.http
       .post(`${this.gService.baseUrl}payment/generate-transaction-ref`, {
         bills,
-      })
+      }, {params: {
+        amount: String(amount),
+        action
+      }})
       .pipe(map((data) => data))
       .toPromise()
       .then((data) => data);
