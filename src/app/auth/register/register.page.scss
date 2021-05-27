@@ -1,10 +1,13 @@
+ion-grid{
+  background-color: #F9F9F9;
+  height: 100vh;
+}
+
 ion-img {
   height: 30px;
 }
 
-// ion-card {
-//   width: 80vw;
-// }
+
 
 .center-text {
   text-align: center;
@@ -19,7 +22,13 @@ ion-item {
 //   --border-color: var(--custom-border-color);
   // --highlight-color-valid: var(--custom-border-color);
   // --highlight-background: #0a1365;
+  
+  --background: transparent !important; // example
   margin-top: 10px
+}
+
+.all-fields{
+  padding: 10px;
 }
 
 .small-text {
@@ -38,7 +47,7 @@ ion-button {
 }
 
 .little-margin {
-    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .grey {
