@@ -1,51 +1,59 @@
+
 <form [formGroup]="loginForm" (ngSubmit)="login()">
   <ion-grid class="centralize">
-    <ion-row>
+    <div>
       <ion-col>
         <ion-img src="/assets/icon-transparent.png"></ion-img>
       </ion-col>
-    </ion-row>
-
-    <ion-row>
+    
       <ion-col class="center-text">
-        <ion-text>Sign In to your Smart Clinic Account</ion-text>
+        <ion-text color="primary">Please Sign In</ion-text>
       </ion-col>
-    </ion-row>
-    <ion-card>
-      <ion-row class="extra-margin">
+      </div>
+    
+     <!-- <ion-card> -->
+      <ion-row class="extra-margin" >
         <ion-col>
           <ion-item>
-            <ion-input formControlName="email" placeholder="Email"></ion-input>
-            <ion-icon name="mail-outline" class="default-text-color" slot="start"></ion-icon>
+            <div class="item-content">
+            <ion-input formControlName="email" placeholder="Your Email Address">
+              <span style="padding:10px;"><ion-icon name="mail-outline" class="default-text-color" slot="start"></ion-icon></span>
+            </ion-input>
+            </div>
           </ion-item>
+          <br>
           <ion-item>
-            <ion-input (keyup.enter)="login()" formControlName="password" autofocus="on" placeholder="Password"
-              type="password"></ion-input>
-            <ion-icon name="lock-closed-outline" class="default-text-color" slot="start"></ion-icon>
+            <div class="item-content">
+            <ion-input (keyup.enter)="login()" formControlName="password" autofocus="on" placeholder="Your Password"
+              type="password">
+             <span style="padding:10px;"><ion-icon name="lock-closed-outline" class="default-text-color" slot="start"></ion-icon></span>
+            </ion-input>
+            </div>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row>
+
+
+      <br>
+      <ion-row style="padding-left: 25px;">
+        <ion-col style="padding-top: 20px;">
+        <ion-text routerLink="/auth/register" color="primary" class="small-text" >Create an Account</ion-text>
+        </ion-col>
         <ion-col>
-          <ion-text routerLink="/auth/reset-password" class="small-text">Forgot Password?</ion-text>
+          <ion-button [disabled]="loading" type="submit" color="primary" >Sign In</ion-button>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-button [disabled]="loading" type="submit" color="primary" expand="full">Sign In</ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col class="center-text small-text grey">Don't have an Account? <ion-text routerLink="/auth/register"
-            color="primary">Register</ion-text>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col class="center-text small-text grey">
-          Are you a Doctor?
-          <ion-text color="secondary">Click Here</ion-text>
-        </ion-col>
-      </ion-row>
-    </ion-card>
+  
+          <div class="footer">
+          <ion-text color="primary" routerLink="/auth/reset-password" class="small-text">Forgot Password?</ion-text>
+          <br>
+          <ion-col class="center-text small-text grey">
+            Are you a Doctor?
+            <ion-text color="primary">Click Here</ion-text>
+          </ion-col> 
+          </div>
+          
   </ion-grid>
+ 
 </form>
+
