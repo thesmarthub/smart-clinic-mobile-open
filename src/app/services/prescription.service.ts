@@ -67,6 +67,7 @@ export class PrescriptionService {
         });
       });
     });
+    console.log(results)
     return results;
   };
 

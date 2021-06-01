@@ -36,7 +36,7 @@ export class HomePage implements OnInit {
       title: "Scans",
       icon: "fa fa-x-ray",
       link: "/tabs/radiology",
-      img: "/assets/ante_natal.png",
+      img: "/assets/in_bed.png",
     },
     {
       title: "Hospitals",

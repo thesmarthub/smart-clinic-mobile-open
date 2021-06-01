@@ -4,11 +4,26 @@
 }
 
 ion-text {
-  font-size: 14px;
-  font-weight: bolder;
+
   color: #6c47af;
 }
 
 .align-right {
   text-align: right;
+}
+.centralize {
+  text-align: center;
+  align-self: center;
+}
+
+.grey-text{
+  color: grey;
+}
+
+.pending{
+  color: goldenrod;
+}
+
+.completed{
+  color: green;
 }
