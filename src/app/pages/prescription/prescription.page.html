@@ -2,35 +2,48 @@
 <ion-toolbar>
   <ion-title color="primary">Prescriptions</ion-title>
 </ion-toolbar>
-<ion-searchbar color=""></ion-searchbar>
+<!-- <ion-searchbar color=""></ion-searchbar> -->
+
+<ion-item style="padding-left: 100px; padding-right: 100px;" >
+  <ion-img src="/assets/001-drug.png"></ion-img>
+</ion-item>
+
 <ion-content class="centralize">
   <ion-spinner *ngIf="pService.currentValues.loadingPrescriptions | async"></ion-spinner>
   <ion-list>
     <ion-item *ngFor="let item of pService.currentValues?.prescriptions | async">
       <ion-grid>
-        <ion-row>
+        <ion-row  *ngIf="!item.prescription" size="5">
+          <ion-col class="align-right ">
+            <ion-label><small class="grey-text">{{item?.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
+            <ion-label><small [class.pending]="item.status === 'pending' " [class.dispensed]="item.status === 'dispensed' "  class="grey-text">{{item?.status}}</small></ion-label>
+          </ion-col>
+
           <ion-col [size]="item.prescription ? 12 : 7">
             <ion-row>
-              <ion-text color="primary">{{item?.item_name}}</ion-text>
+              <ion-text>{{item?.item_name}}</ion-text>
+        
+
             </ion-row>
-          </ion-col>
-          <ion-col class="align-right" *ngIf="!item.prescription" size="5">
-            <ion-label><small>{{item?.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
-          </ion-col>
+          </ion-col> 
         </ion-row>
+
         <ion-row *ngIf="item.prescription">
+          <ion-col class="align-right" size="5">
+            <ion-label><small class="grey-text">{{item?.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
+            <ion-label><small [class.pending]="item.status === 'pending' " [class.dispensed]="item.status === 'dispensed' " >{{item?.status |titlecase}}</small></ion-label>
+          </ion-col>
+
           <ion-col size="7">
             <ion-label><small>{{item?.prescription}}</small></ion-label>
           </ion-col>
-          <ion-col class="align-right" size="5">
-            <ion-label><small>{{item?.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
-          </ion-col>
+         
 
         </ion-row>
       </ion-grid>
     </ion-item>
   </ion-list>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button>PAY</ion-fab-button>
-  </ion-fab>
+  </ion-fab> -->
 </ion-content>
