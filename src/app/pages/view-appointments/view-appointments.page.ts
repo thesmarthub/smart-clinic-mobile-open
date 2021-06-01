@@ -32,6 +32,16 @@ import { DepartmentService } from "src/app/services/department.service";
   styleUrls: ["./view-appointments.page.scss"],
 })
 export class ViewAppointmentsPage implements OnInit {
+  today = new Date();
+  currentHour = this.today.getHours();
+  timeOftheDay;
+  viewAll = false;
+  pastAppointments = [];
+  futureAppointments = []
+  pastAppt = false;
+  futureAppt = true;
+  
+
   daysConfig: DayConfig[] = [];
   store = new Store();
   loading: HTMLIonLoadingElement;
@@ -54,6 +64,8 @@ export class ViewAppointmentsPage implements OnInit {
   ngOnInit() {}
 
   ionViewDidEnter() {
+    this.getDay();
+    this.getBothPastandFuture();
     this.aService.triggerEvent(LoadAppointments);
     const sub1 = this.aService.currentValues.timeSlots.subscribe(
       (data: any[]) => {
@@ -84,6 +96,7 @@ export class ViewAppointmentsPage implements OnInit {
     );
     this.fresh = false;
     this.tempSubs.push(sub1);
+  
   }
 
   ionViewDidLeave() {
@@ -274,4 +287,43 @@ export class ViewAppointmentsPage implements OnInit {
     });
     picker.present();
   }
+
+  getDay(){
+    if (this.currentHour < 12) {
+    this.timeOftheDay = "Good Morning"
+     } else if (this.currentHour < 16) {
+        this.timeOftheDay = "Good AfterNoon"
+    } else {
+      this.timeOftheDay = "Good Evening"
 }
+  }
+
+  getBothPastandFuture(){
+    this.aService.currentValues.appointments.subscribe((data)=>{  
+      console.log(data)
+      if(!data)return
+     this.pastAppointments = data.filter(item=> moment(item.appointment_time).startOf("day") < moment().startOf("day"))
+     this.futureAppointments = data.filter(item=> moment(item.appointment_time).startOf("day") > moment().startOf("day"))
+      })
+    }
+
+    appts(appointment){
+      if(appointment === 'past'){
+        this.pastAppt = true
+      }else{
+        this.pastAppt = false
+      }
+      if(appointment === 'future'){
+        this.futureAppt = true
+      }else{
+        this.futureAppt = false
+      }
+
+     
+      
+    }
+
+    
+  }
+
+

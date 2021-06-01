@@ -1,24 +1,107 @@
+<!-- <ion-content> -->
 <ion-toolbar>
-  <ion-searchbar placeholder="Filter Appointments"></ion-searchbar>
+  <ion-title color="primary">Appointments</ion-title>
 </ion-toolbar>
+
+<ion-item>
+  <ion-text>{{timeOftheDay}}, {{store.user?.fname}}</ion-text>
+</ion-item>
+
+
+ 
+  
+  <!-- <ion-grid class="centralize"> -->
+    <!-- <ion-text class="big-font strong-font">Hi {{store.user?.fname}}, {{timeOftheDay}}</ion-text> -->
+    <!-- <ion-col>
+      <ion-img src="/assets/004-calendar.png"></ion-img>
+    </ion-col>
+  </ion-grid> -->
+
+  <!-- <ion-toolbar>
+    <ion-title color="primary">Your next appointment</ion-title>
+    <ion-text class=" grey-text">Thursday 21, 2022</ion-text>
+  </ion-toolbar> -->
+  
+
+  <ion-card>
+    <ion-card-header>
+      
+      <ion-card-subtitle>Your next appointment</ion-card-subtitle>
+      <ion-card-subtitle>
+        <span style="padding:20px; color: blueviolet;"><ion-icon name="alarm" ></ion-icon></span>
+        {{futureAppointments[0]?.appointment_time |date:'medium'}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <span style="padding:20px; color: goldenrod;"><ion-icon name="person" ></ion-icon></span>
+        {{futureAppointments[0]?.doctor_name?futureAppointments[0]?.doctor_name: 'Not yet Assigned' |titlecase}}
+      </ion-card-subtitle>
+      <ion-card-subtitle>
+        <span style="padding:20px; color: blue;" ><ion-icon name="pin" ></ion-icon></span>
+        {{futureAppointments[0]?.department?.name || futureAppointments[0]?.service_name || futureAppointments[0]?.smart_code |uppercase}}
+      </ion-card-subtitle>
+    </ion-card-header> 
+  </ion-card>
+
+  
+    <ion-row class="pad small-text">
+      <ion-col>
+        <ion-text (click)="appts('past')" style="color: gray !important;">Past</ion-text>
+      </ion-col>
+      <ion-col>
+        <ion-text (click)="appts('future')">Future</ion-text>
+      </ion-col>
+    </ion-row>
+    
+  
+
+  <!-- <ion-text style="padding: 20px;" class="centralize">View All</ion-text> -->
+  <!-- </ion-content> -->
+ 
+   
+ 
+  
+
+
+
+
+ <!-- <ion-toolbar>
+  <ion-searchbar placeholder="Filter Appointments"></ion-searchbar>
+</ion-toolbar> -->
 <ion-content class="centralize">
   <ion-spinner *ngIf="aService.currentValues.loadingAppointments | async"></ion-spinner>
-  <ion-list>
-    <ion-item *ngFor="let item of aService.currentValues.appointments | async">
+  <ion-text  *ngIf="aService.currentValues.loadingAppointments| async">
+    <span color='primary'><ion-icon name="alert"></ion-icon></span> No Appointment
+  </ion-text>
+ 
+  <ion-list *ngIf="futureAppt">
+    <ion-item *ngFor="let future of futureAppointments">
       <ion-grid>
-        <ion-row>
-          <ion-col size="12">
-            <ion-text color="primary">{{item?.service_name || item.smart_code}}</ion-text>
-          </ion-col>
-        </ion-row>
-        <ion-row>
+        <ion-row class="grey-text">
           <ion-col class="small-margin" size="7">
             <ion-label>
-              <small>{{item?.department?.name || item.service_name || item.smart_code}}</small>
+              <small>{{future?.department?.name || future.service_name || future.smart_code |uppercase}}</small>
             </ion-label>
           </ion-col>
           <ion-col size="5" class="align-right">
-            <ion-label><small>{{item.appointment_time | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
+            <ion-label><small>{{future.appointment_time | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="pastAppt">
+    <ion-item *ngFor="let past of pastAppointments">
+      <ion-grid>
+     
+        <ion-row class="grey-text">
+          <ion-col class="small-margin" size="7">
+            <ion-label>
+              <small>{{past?.department?.name || past.service_name || past.smart_code |uppercase}}</small>
+            </ion-label>
+          </ion-col>
+          <ion-col size="5" class="align-right">
+            <ion-label><small>{{past.appointment_time | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
           </ion-col>
         </ion-row>
       </ion-grid>
