@@ -47,10 +47,11 @@
           <div class="footer">
           <ion-text color="primary" routerLink="/auth/reset-password" class="small-text">Forgot Password?</ion-text>
           <br>
-          <ion-col class="center-text small-text grey">
-            Are you a Doctor?
-            <ion-text color="primary">Click Here</ion-text>
-          </ion-col> 
+            
+          <ion-col class="center-text small-text grey" style="padding-top: 15px;">
+            <ion-text>  Are you a Doctor?
+              <a routerLink="" (click)=" _authService.registerDoctor()" color="primary">Click Here</a></ion-text>
+        </ion-col>
           </div>
           
   </ion-grid>
