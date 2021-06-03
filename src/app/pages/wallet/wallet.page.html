@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-item>
-    <ion-text>Balance <span class="bolden">{{5000 | number}}</span></ion-text>
+    <ion-text>Balance <span class="bolden">{{walletBalance | number}}</span></ion-text>
   </ion-item>
 
   <ion-card>
@@ -21,8 +21,8 @@
           <ion-input [(ngModel)]="amount" type="number" placeholder="Enter Amount"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-button *ngIf="loading" (click)="initTransaction()">Next</ion-button>
-          <app-flutterwave [amount]="amount" [transactionRef]="txRef" *ngIf="!loading"></app-flutterwave>
+          <ion-button [disabled]="loading" *ngIf="showNext" (click)="initTransaction()">Next</ion-button>
+          <app-flutterwave [amount]="amount" [transactionRef]="txRef" *ngIf="!showNext"></app-flutterwave>
 
         </ion-item>
       </ion-col>

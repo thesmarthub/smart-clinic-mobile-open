@@ -148,10 +148,4 @@ export class CartPage implements OnInit, OnDestroy {
     console.log("Modal closed");
     this.modalCtrl.dismiss({ reload: true });
   }
-
-  checkout() {
-    this.paymentService.payNow({
-      cart: this.cart,
-    });
-  }
 }

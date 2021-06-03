@@ -8,9 +8,13 @@ import { PaymentService } from "src/app/services/payment.service";
   styleUrls: ["./wallet.page.scss"],
 })
 export class WalletPage implements OnInit {
-  loading = true;
+  showNext = true;
+  loading = false;
   amount;
   txRef;
+  walletBalance: number;
+  interval;
+
   constructor(
     public paymentService: PaymentService,
     private alertCtrl: AlertController
@@ -18,9 +22,29 @@ export class WalletPage implements OnInit {
 
   ngOnInit() {}
 
+  ionViewDidEnter() {
+    this.fetchWalletBalance();
+    this.interval = setInterval(() => this.fetchWalletBalance(), 15000);
+  }
+
+  ionViewDidLeave() {
+    this.amount = null;
+    this.walletBalance = null;
+    clearInterval(this.interval);
+  }
+
   generatePayment() {}
 
+  async fetchWalletBalance() {
+    console.log("fetching wallet balance");
+    const walletBalance = await this.paymentService.fetchWalletBalance();
+    if (typeof walletBalance !== "boolean") {
+      this.walletBalance = walletBalance;
+    }
+  }
+
   async initTransaction() {
+    this.showNext = true;
     this.loading = true;
     const tx = await this.paymentService
       .generateTxRef([], { action: "UPDATE_SMART_WALLET", amount: this.amount })
@@ -32,6 +56,8 @@ export class WalletPage implements OnInit {
           buttons: ["Ok"],
         })
       ).present();
+      this.loading = false;
+      this.showNext = true;
       return;
     }
 
@@ -40,9 +66,11 @@ export class WalletPage implements OnInit {
     setTimeout(() => {
       this.amount = 0;
       this.txRef = "";
-      this.loading = true;
+      this.loading = false;
+      this.showNext = true;
     }, 15000);
 
+    this.showNext = false;
     this.loading = false;
   }
 }

@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
+import { APIResult } from "src/interfaces/api";
 import { PaymentAction } from "src/interfaces/payment";
 import {
   FetchBills,
@@ -90,14 +91,23 @@ export class PaymentService {
     this.currentState.next(FetchedBills);
   }
 
-  generateTxRef = async (bills: number[], {action, amount}: {action: PaymentAction, amount?: number}) => {
+  generateTxRef = async (
+    bills: number[],
+    { action, amount }: { action: PaymentAction; amount?: number }
+  ) => {
     return await this.gService.http
-      .post(`${this.gService.baseUrl}payment/generate-transaction-ref`, {
-        bills,
-      }, {params: {
-        amount: String(amount),
-        action
-      }})
+      .post(
+        `${this.gService.baseUrl}payment/generate-transaction-ref`,
+        {
+          bills,
+        },
+        {
+          params: {
+            amount: String(amount),
+            action,
+          },
+        }
+      )
       .pipe(map((data) => data))
       .toPromise()
       .then((data) => data);
@@ -113,56 +123,6 @@ export class PaymentService {
       this.currentValues.initiatingPayment.next(false);
       this.currentState.next(InitiatedPayment);
     }
-  }
-
-  async payNow({ cart }) {
-    console.log(cart);
-    this.creatingLink = true;
-    localStorage.setItem("after_payment", "/home/payment/pending");
-    // const redirectUrl = window.location.origin + '/home/payment/paid-cons';
-
-    const paymentURL = `${this.gService.baseUrl}payment/flutterwave/`;
-    // const paymentURL = "http://localhost:7004/flutterwave/";
-    const billIds = cart.map((bill) => {
-      return bill.id;
-    });
-    const amount = cart.reduce((prevValue, cartItem) => {
-      return (
-        prevValue + cartItem.amount_paid_per_unit * cartItem.number_of_units
-      );
-    }, 0);
-    this._http
-      .post(
-        `${paymentURL}init?amount=${amount}&email=${this.store.user.email}&patient_name=${this.store.userFullName}&phone=${this.store.user.phone}`,
-        { bills: billIds }
-      )
-      .subscribe(
-        async (res) => {
-          if (res && res["result"] && res["result"]["data"]) {
-            window.location.href =
-              res["result"]["data"]["authorization_url"] ??
-              res["result"]["data"]["link"];
-          } else {
-            console.log(res);
-            const alert = await this.alertCtrl.create({
-              message: "Could not initiate payment",
-              header: "Payment Error",
-              buttons: ["OK"],
-            });
-            await alert.present();
-          }
-        },
-        async (err) => {
-          console.log(err);
-          const alert = await this.alertCtrl.create({
-            message: "Please check your connection",
-            header: "Payment Error",
-            buttons: ["OK"],
-          });
-          await alert.present();
-        },
-        () => (this.creatingLink = false)
-      );
   }
 
   verifyPayment(queryParams) {
@@ -195,6 +155,15 @@ export class PaymentService {
           });
         }
       );
+  }
+
+  async fetchWalletBalance() {
+    return await this.gService.http
+      .get<APIResult<number>>(`${this.gService.baseUrl}payment/wallet-balance`)
+      .pipe(map((data) => data.result))
+      .toPromise()
+      .then((data) => data)
+      .catch((e) => false);
   }
 
   clean(prop) {

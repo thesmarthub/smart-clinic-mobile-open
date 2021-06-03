@@ -5,4 +5,12 @@ export type API =
   | "hospital/fetch-hospitals"
   | "hospital/patient-request"
   | "payment/flutterwave/init"
-  | "payment/generate-transaction-ref";
+  | "payment/generate-transaction-ref"
+  | "payment/wallet-balance";
+
+export interface APIResult<T> {
+  message: string;
+  result: T;
+  error: boolean;
+  code: string;
+}
