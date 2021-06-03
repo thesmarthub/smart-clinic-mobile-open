@@ -5,7 +5,7 @@ import {
   LoadRadiologyRequests,
   RadiologyEvent,
 } from "../actions/events/radiology";
-import { RadiologyState } from "../actions/states/radiology";
+import { LoadingRadiologyRequests, RadiologyState } from "../actions/states/radiology";
 import { GeneralService } from "./general.service";
 
 @Injectable({
@@ -34,7 +34,7 @@ export class RadiologyService {
 
     data.forEach((element) => {
       element?.requests?.forEach((request) => {
-        console.log(request);
+        // console.log(request);
         const modified: Record<string, any> = {
           _id: element._id,
           appointment: element.appointment,
@@ -49,6 +49,7 @@ export class RadiologyService {
           service_cost: request.test?.service_cost,
           service_department_route: request.test?.service_department_route,
           smart_code: request.test?.smart_code,
+          completed:element.completed
         };
         result.push(modified);
       });
@@ -78,6 +79,7 @@ export class RadiologyService {
       if (Array.isArray(value.result)) {
         this.currentValues.radiologyRequests.next(
           this.normalizeRadiologyData(value.result)
+         
         );
       } else {
         throw "RADIOLOGY: RESPONSE FORMAT IS INVALID";

@@ -49,6 +49,7 @@ export class WalletPage implements OnInit {
     const tx = await this.paymentService
       .generateTxRef([], { action: "UPDATE_SMART_WALLET", amount: this.amount })
       .then((data) => data);
+      
     if (tx["error"]) {
       (
         await this.alertCtrl.create({

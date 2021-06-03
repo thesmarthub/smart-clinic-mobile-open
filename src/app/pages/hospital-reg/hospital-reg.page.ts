@@ -41,12 +41,12 @@ export class HospitalRegPage implements OnInit {
       state: [this.storeCtrl.user.state],
       address: [this.storeCtrl.user.address],
       profile_image: [this.storeCtrl.user.profileImage, Validators.required],
-      next_of_kin_fname: ["", Validators.required],
-      next_of_kin_lname: ["", Validators.required],
-      next_of_kin_email: ["", Validators.required],
-      next_of_kin_phone: ["", Validators.required],
-      next_of_kin_sex: ["", Validators.required],
-      next_of_kin_relationship: ["", Validators.required],
+      next_of_kin_fname: ["" ],
+      next_of_kin_lname: ["" ],
+      next_of_kin_email: ["" ],
+      next_of_kin_phone: ["" ],
+      next_of_kin_sex: [""],
+      next_of_kin_relationship: [""],
     });
   }
 
@@ -65,7 +65,7 @@ export class HospitalRegPage implements OnInit {
 
   backClicked() {
     this._location.back();
-    console.log(this.authService.fetchActiveHospitalAndProfile)
+    // console.log(this.authService.fetchActiveHospitalAndProfile)
 
   }
 

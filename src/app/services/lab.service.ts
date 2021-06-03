@@ -31,7 +31,7 @@ export class LabService {
 
     data.forEach((element) => {
       element?.requests?.forEach((request) => {
-        console.log(request);
+        // console.log(request);
         const modified: Record<string, any> = {
           _id: element._id,
           appointment: element.appointment,
@@ -46,11 +46,12 @@ export class LabService {
           service_cost: request.test?.service_cost,
           service_department_route: request.test?.service_department_route,
           smart_code: request.test?.smart_code,
+          status:element.status
         };
         result.push(modified);
       });
     });
-    console.log(result);
+    // console.log(result);
     return result;
   }
 
