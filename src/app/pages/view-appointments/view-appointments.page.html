@@ -1,56 +1,10 @@
 <!-- <ion-content> -->
-<ion-toolbar>
+<!-- <ion-toolbar>
   <ion-title color="primary">Appointments</ion-title>
-</ion-toolbar>
-
-<ion-item>
-  <ion-text>{{timeOftheDay}}, {{store.user?.fname}}</ion-text>
-</ion-item>
+</ion-toolbar> -->
 
 
- 
-  
-  <!-- <ion-grid class="centralize"> -->
-    <!-- <ion-text class="big-font strong-font">Hi {{store.user?.fname}}, {{timeOftheDay}}</ion-text> -->
-    <!-- <ion-col>
-      <ion-img src="/assets/004-calendar.png"></ion-img>
-    </ion-col>
-  </ion-grid> -->
 
-  <!-- <ion-toolbar>
-    <ion-title color="primary">Your next appointment</ion-title>
-    <ion-text class=" grey-text">Thursday 21, 2022</ion-text>
-  </ion-toolbar> -->
-  
-
-  <ion-card>
-    <ion-card-header>
-      
-      <ion-card-subtitle>Your next appointment</ion-card-subtitle>
-      <ion-card-subtitle>
-        <span style="padding:20px; color: blueviolet;"><ion-icon name="alarm" ></ion-icon></span>
-        {{futureAppointments[0]?.appointment_time |date:'medium'}}
-      </ion-card-subtitle>
-      <ion-card-subtitle>
-        <span style="padding:20px; color: goldenrod;"><ion-icon name="person" ></ion-icon></span>
-        {{futureAppointments[0]?.doctor_name?futureAppointments[0]?.doctor_name: 'Not yet Assigned' |titlecase}}
-      </ion-card-subtitle>
-      <ion-card-subtitle>
-        <span style="padding:20px; color: blue;" ><ion-icon name="pin" ></ion-icon></span>
-        {{futureAppointments[0]?.department?.name || futureAppointments[0]?.service_name || futureAppointments[0]?.smart_code |uppercase}}
-      </ion-card-subtitle>
-    </ion-card-header> 
-  </ion-card>
-
-  
-    <ion-row class="pad small-text">
-      <ion-col>
-        <ion-text (click)="appts('past')" style="color: gray !important;">Past</ion-text>
-      </ion-col>
-      <ion-col>
-        <ion-text (click)="appts('future')">Future</ion-text>
-      </ion-col>
-    </ion-row>
     
   
 
@@ -67,7 +21,43 @@
  <!-- <ion-toolbar>
   <ion-searchbar placeholder="Filter Appointments"></ion-searchbar>
 </ion-toolbar> -->
-<ion-content class="centralize">
+<ion-content>
+  <!-- <ion-item> -->
+    <ion-img style="height: 250px;" src="/assets/appt-time.jpg"></ion-img>
+    <!-- </ion-item> -->
+    <ion-item>
+      <ion-text>{{timeOftheDay}}, {{store.user?.fname}}</ion-text>
+    </ion-item>
+    
+      
+      <ion-card>
+        <ion-card-header>
+          
+          <ion-card-subtitle>Your next appointment</ion-card-subtitle>
+          <ion-card-subtitle>
+            <span style="padding:20px; color: blueviolet;"><ion-icon name="alarm" ></ion-icon></span>
+            {{futureAppointments[0]?.appointment_time |date:'medium'}}
+          </ion-card-subtitle>
+          <ion-card-subtitle>
+            <span style="padding:20px; color: goldenrod;"><ion-icon name="person" ></ion-icon></span>
+            {{futureAppointments[0]?.doctor_name?futureAppointments[0]?.doctor_name: 'Not yet Assigned' |titlecase}}
+          </ion-card-subtitle>
+          <ion-card-subtitle>
+            <span style="padding:20px; color: blue;" ><ion-icon name="pin" ></ion-icon></span>
+            {{futureAppointments[0]?.department?.name || futureAppointments[0]?.service_name || futureAppointments[0]?.smart_code |uppercase}}
+          </ion-card-subtitle>
+        </ion-card-header> 
+      </ion-card>
+    
+      
+        <ion-row class="pad small-text">
+          <ion-col>
+            <ion-text (click)="appts('past')" style="color: gray !important;">Past</ion-text>
+          </ion-col>
+          <ion-col>
+            <ion-text (click)="appts('future')">Future</ion-text>
+          </ion-col>
+        </ion-row>
   <ion-spinner *ngIf="aService.currentValues.loadingAppointments | async"></ion-spinner>
   <ion-text  *ngIf="aService.currentValues.loadingAppointments| async">
     <span color='primary'><ion-icon name="alert"></ion-icon></span> No Appointment

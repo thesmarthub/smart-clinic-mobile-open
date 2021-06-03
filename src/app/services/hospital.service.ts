@@ -31,7 +31,12 @@ export class HospitalService {
   async triggerEvent(event: HospitalEvent, data?) {
     if (event === LoadHospitals) {
       this.currentValues.loadingHospitals.next(true);
-      const loadedHospitals = await this._genService.fetchOrgs("hospital");
+      const loadedHospitals =  this._genService.getData({
+        url: "hospital/fetch-hospitals",
+        params: {},
+        action: event,
+      });
+      // this._genService.getData("hospital/patient-request?action=FETCH_PATIENT_LAB_REQUESTS", {})
       if (Array.isArray(loadedHospitals)) {
         loadedHospitals.forEach((element) => {
           this.transformHospitalData(element);
@@ -39,12 +44,7 @@ export class HospitalService {
         this.currentValues.hospitals.next(loadedHospitals);
       }
       this.currentValues.loadingHospitals.next(false);
-      // this._genService.getData({
-      //   url: "hospital/fetch-hospitals",
-      //   params: {},
-      //   action: event,
-      // });
-      // this._genService.getData("hospital/patient-request?action=FETCH_PATIENT_LAB_REQUESTS", {})
+     
     }
   }
 
