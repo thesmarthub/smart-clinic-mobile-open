@@ -38,7 +38,7 @@ export class WalletPage implements OnInit {
   generatePayment() {}
 
   async fetchWalletBalance() {
-    console.log("fetching wallet balance");
+    // console.log("fetching wallet balance");
     const walletBalance = await this.paymentService.fetchWalletBalance();
     if (typeof walletBalance !== "boolean") {
       this.walletBalance = walletBalance;
@@ -46,9 +46,9 @@ export class WalletPage implements OnInit {
   }
 
   walletTransactions() {
-    console.log('fetch transactions');
+    // console.log('fetch transactions');
      this.paymentService.fetchWalletTransactions().subscribe((data)=>{
-      console.log(data)
+      // console.log(data)
       this.transactions = data
     })
     
