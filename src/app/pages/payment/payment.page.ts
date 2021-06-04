@@ -122,4 +122,6 @@ export class PaymentPage implements OnInit {
     }
     node.addEventListener("animationend", handleAnimationEnd);
   }
+
+  
 }

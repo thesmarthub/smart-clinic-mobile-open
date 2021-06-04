@@ -100,6 +100,7 @@ export class PaymentService {
         `${this.gService.baseUrl}payment/generate-transaction-ref`,
         {
           bills,
+          
         },
         {
           params: {
@@ -164,6 +165,11 @@ export class PaymentService {
       .toPromise()
       .then((data) => data)
       .catch((e) => false);
+  }
+
+  fetchWalletTransactions(){
+    return this._http.get<APIResult<object[]>>(`${this.gService.baseUrl}payment/patient-transactions`,{params:{action:'UPDATE_SMART_WALLET'}})
+    .pipe(map((data)=> data.result.filter((res:Record<string, any>)=>{return res.action === 'UPDATE_SMART_WALLET'})))
   }
 
   clean(prop) {

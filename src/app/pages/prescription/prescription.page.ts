@@ -15,4 +15,8 @@ export class PrescriptionPage implements OnInit {
   ionViewDidEnter() {
     this.pService.triggerEvent(LoadPrescriptions);
   }
+
+  call(){
+    window.open('08062190101');
+  }
 }

@@ -14,6 +14,7 @@ export class WalletPage implements OnInit {
   txRef;
   walletBalance: number;
   interval;
+  transactions;
 
   constructor(
     public paymentService: PaymentService,
@@ -24,6 +25,7 @@ export class WalletPage implements OnInit {
 
   ionViewDidEnter() {
     this.fetchWalletBalance();
+    this.walletTransactions();
     this.interval = setInterval(() => this.fetchWalletBalance(), 15000);
   }
 
@@ -41,6 +43,15 @@ export class WalletPage implements OnInit {
     if (typeof walletBalance !== "boolean") {
       this.walletBalance = walletBalance;
     }
+  }
+
+  walletTransactions() {
+    console.log('fetch transactions');
+     this.paymentService.fetchWalletTransactions().subscribe((data)=>{
+      console.log(data)
+      this.transactions = data
+    })
+    
   }
 
   async initTransaction() {
