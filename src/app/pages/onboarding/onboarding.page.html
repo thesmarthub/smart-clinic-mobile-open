@@ -1,0 +1,98 @@
+
+  <ion-content *ngIf="welcome">
+  <div class="center">
+    <ion-col>
+      <ion-title class="grey-text move-right">Welcome To</ion-title>
+      <ion-img style="height: 250px;" src="/assets/icon.png"></ion-img>
+      <ion-title class="grey-text">The Smart Clinic</ion-title>
+      <ion-item>
+      <ion-text class="grey-text move-right">Smartclinic is a solution that links patients (using the Smartclinic Mobile) with Doctors or hospitals (using the Smartclinic EMR) from the comfort of their homes.</ion-text>
+      </ion-item>
+    </ion-col>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)='next()'>
+    <ion-fab-button>
+      <ion-icon name="arrow-forward-circle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-content *ngIf="appointments">
+  <div class="center">
+    <ion-col>
+      <ion-img src="/assets/appt-time.jpg"></ion-img>
+      <ion-title class="grey-text">Schedule Appointments</ion-title>
+      <ion-item>
+      <ion-text class="grey-text move-right">Ability to book and view Appointments in your preffered hospital with your preffered Doctor</ion-text>
+      </ion-item>
+    </ion-col>
+  </div>
+
+   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)='nextNotifications()'>
+    <ion-fab-button>
+      <ion-icon name="arrow-forward-circle" ></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content> 
+
+<ion-content  *ngIf="notifications">
+  <div class="center">
+    <ion-col>
+      <ion-img src="/assets/notifications.jpg"></ion-img>
+      <ion-title style="color: grey;">Notifications</ion-title>
+      <ion-item>
+      <ion-text style="text-align: center; color: grey;">Get notified when prescriptions, x-ray scans and lab results are ready</ion-text>
+      </ion-item>
+    </ion-col>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)='nextHospitals()'>
+    <ion-fab-button>
+      <ion-icon name="arrow-forward-circle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-content *ngIf='hospitals'>
+  <div class="center">
+    <ion-col>
+      <ion-img src="/assets/health.jpg"></ion-img>
+      
+      <ion-title style="color: grey;">View and register in any<br> available hospital<br>across Nigeria</ion-title>
+      <ion-item>
+      
+      </ion-item>
+    </ion-col>
+  </div>
+
+   <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)='nextPayment()'>
+    <ion-fab-button>
+      <ion-icon name="arrow-forward-circle"></ion-icon>
+    </ion-fab-button>
+   </ion-fab>
+</ion-content>
+
+<ion-content *ngIf='payment'>
+  <div class="center">
+    <ion-col>
+      <ion-img src="/assets/bill.jpg"></ion-img>
+      
+      <ion-title style="color: grey;">Payment and Wallet</ion-title>
+      <ion-item>
+      <ion-text style="text-align: center; color: grey;">Get hospital bills and make hospital payment from your using any payment method including wallet</ion-text>
+      </ion-item>
+    </ion-col>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <a routerLink="/"> <ion-fab-button>
+       <ion-icon name="arrow-forward-circle"></ion-icon>
+    </ion-fab-button></a>
+    <ion-text routerLink="/" color='primary'><small>Get Started</small></ion-text>
+  </ion-fab>
+</ion-content>
+
+
+
+
+

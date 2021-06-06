@@ -1,21 +1,3 @@
-<!-- <ion-content> -->
-<!-- <ion-toolbar>
-  <ion-title color="primary">Appointments</ion-title>
-</ion-toolbar> -->
-
-
-
-    
-  
-
-  <!-- <ion-text style="padding: 20px;" class="centralize">View All</ion-text> -->
-  <!-- </ion-content> -->
- 
-   
- 
-  
-
-
 
 
  <!-- <ion-toolbar>
@@ -59,8 +41,8 @@
           </ion-col>
         </ion-row>
   <ion-spinner *ngIf="aService.currentValues.loadingAppointments | async"></ion-spinner>
-  <ion-text  *ngIf="aService.currentValues.loadingAppointments| async">
-    <span color='primary'><ion-icon name="alert"></ion-icon></span> No Appointment
+  <ion-text class="grey-text"  *ngIf="aService.currentValues.appointments| async">
+    <span><ion-icon name="alert"></ion-icon></span> No Appointment
   </ion-text>
  
   <ion-list *ngIf="futureAppt">

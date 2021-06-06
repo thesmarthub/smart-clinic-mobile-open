@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
   subs: Subscription[] = [];
 
   constructor(
-    private _authService: AuthService,
+    public _authService: AuthService,
     private fb: FormBuilder,
     private alertCtrl: AlertController,
     private gService: GeneralService

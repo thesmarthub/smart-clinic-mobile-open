@@ -21,6 +21,9 @@
 <ion-content class="centralize">
   <ion-img src="/assets/pharm-pic.jpg"></ion-img>
   <ion-spinner *ngIf="pService.currentValues.loadingPrescriptions | async"></ion-spinner>
+  <ion-text  *ngIf="pService.currentValues.prescriptions| async">
+    <span><ion-icon name="alert"></ion-icon></span> No Prescriptions
+  </ion-text>
   <ion-list>
     <ion-item *ngFor="let item of pService.currentValues?.prescriptions | async">
       <ion-grid>

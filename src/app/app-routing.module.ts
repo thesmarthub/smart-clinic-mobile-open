@@ -48,7 +48,8 @@ const routes: Routes = [
   {
     path: 'pandemic',
     loadChildren: () => import('./pages/pandemic/pandemic.module').then( m => m.PandemicPageModule)
-  },  {
+  },
+  {
     path: 'hospital-reg',
     loadChildren: () => import('./pages/hospital-reg/hospital-reg.module').then( m => m.HospitalRegPageModule)
   },
@@ -75,6 +76,10 @@ const routes: Routes = [
   {
     path: 'flutterwave',
     loadChildren: () => import('./pages/flutterwave/flutterwave.module').then( m => m.FlutterwavePageModule)
+  },
+  {
+    path: 'onboarding',
+    loadChildren: () => import('./pages/onboarding/onboarding.module').then( m => m.OnboardingPageModule)
   }
 
 ];
