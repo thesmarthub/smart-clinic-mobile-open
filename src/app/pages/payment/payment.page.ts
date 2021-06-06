@@ -31,6 +31,7 @@ export class PaymentPage implements OnInit {
   }
 
   ionViewDidEnter() {
+    this.fetchWalletBalance();
     this.fetchBills();
   }
 
