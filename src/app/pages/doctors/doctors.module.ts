@@ -8,6 +8,9 @@ import { DoctorsPageRoutingModule } from './doctors-routing.module';
 
 import { DoctorsPage } from './doctors.page';
 
+import { CallNumber } from '@ionic-native/call-number/ngx';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +18,7 @@ import { DoctorsPage } from './doctors.page';
     IonicModule,
     DoctorsPageRoutingModule
   ],
-  declarations: [DoctorsPage]
+  declarations: [DoctorsPage],
+  providers: [CallNumber]
 })
 export class DoctorsPageModule {}

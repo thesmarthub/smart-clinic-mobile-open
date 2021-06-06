@@ -6,6 +6,7 @@ import { ChatMessage } from "src/app/models/chat-message";
 import { ChatService } from "src/app/services/chat.service";
 import { DepartmentService } from "src/app/services/department.service";
 import { DoctorService } from "src/app/services/doctor.service";
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @Component({
   selector: "app-doctors",
@@ -25,23 +26,24 @@ export class DoctorsPage implements OnInit {
     private _docService: DoctorService,
     private _deptService: DepartmentService,
     private router: Router,
-    private chatService: ChatService
+    private chatService: ChatService,
+    private callNumber: CallNumber
   ) {}
 
   ngOnInit() {}
 
   ionViewDidEnter() {
-    this.selectedDept = this._deptService.getGOPDDept();
-    this._docService.presentActionSheet(async (data) => {
-      this.decision = data;
-      if (data === "current_hospital_doctors") {
-        this._docService.fetchDoctors;
-      } else {
-        const doctors = await this._docService.fetchPrivatePractitioners();
-        this.doctors.next(doctors);
-        this.filterDoctors(this.searchInput);
-      }
-    });
+    // this.selectedDept = this._deptService.getGOPDDept();
+    // this._docService.presentActionSheet(async (data) => {
+    //   this.decision = data;
+    //   if (data === "current_hospital_doctors") {
+    //     this._docService.fetchDoctors;
+    //   } else {
+    //     const doctors = await this._docService.fetchPrivatePractitioners();
+    //     this.doctors.next(doctors);
+    //     this.filterDoctors(this.searchInput);
+    //   }
+    // });
     this.fetchDoctors();
     this.presentDepartments();
   }
@@ -115,5 +117,12 @@ export class DoctorsPage implements OnInit {
     const services = await this._docService.fetchServicesByOrganization(orgId);
     this.services.next(services);
     console.log("fetched services", services)
+  }
+
+  makeCall(number?) {
+    if(!number) number = this.store.currentHospital.phone1;
+    this.callNumber.callNumber(number, true)
+  .then(res => console.log('Launched dialer!', res))
+  .catch(err => console.log('Error launching dialer', err));
   }
 }

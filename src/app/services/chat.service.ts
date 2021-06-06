@@ -102,7 +102,7 @@ export class ChatService {
       this.activeReceiver,
       message,
       this.activeChatKey,
-      this.store.user.smart_code,
+      this.store.user?.smart_code,
       new Date()
     );
     this.chatMessages.push(chatMessage);
@@ -130,11 +130,11 @@ export class ChatService {
     }
     this.activeChatKey = this.randomId();
     const chatRequest = new ChatRequest(
-      this.store.user._id,
+      this.store.user?._id,
       receiverId,
       this.activeChatKey,
       `${this.store.userFullName} wants to chat.`,
-      this.store.user.smart_code,
+      this.store.user?.smart_code,
       new Date()
     );
     this.chatRequestListener();
@@ -152,11 +152,11 @@ export class ChatService {
   chatRequestListener(resumePrev = false) {
     // Remove auto video key reqyest
     this.requestForVideoKey();
-    const acceptedChat = `/topic/accepted-chat-request/${this.store.user._id}/${this.activeChatKey}`;
-    const cancelledChat = `/topic/cancelled-chat-request/${this.store.user._id}/${this.activeChatKey}`;
-    const endedChat = `/topic/ended-chat/${this.store.user._id}/${this.activeChatKey}`;
-    const newChatMessage = `/topic/new-chat-message/${this.store.user._id}/${this.activeChatKey}`;
-    const newVideoKey = `/topic/new-video-key/${this.store.user._id}`;
+    const acceptedChat = `/topic/accepted-chat-request/${this.store.user?._id}/${this.activeChatKey}`;
+    const cancelledChat = `/topic/cancelled-chat-request/${this.store.user?._id}/${this.activeChatKey}`;
+    const endedChat = `/topic/ended-chat/${this.store.user?._id}/${this.activeChatKey}`;
+    const newChatMessage = `/topic/new-chat-message/${this.store.user?._id}/${this.activeChatKey}`;
+    const newVideoKey = `/topic/new-video-key/${this.store.user?._id}`;
 
     if (!this.activeChatKey) {
       return;
@@ -185,11 +185,11 @@ export class ChatService {
   }
 
   requestForVideoKey() {
-    console.log(this.store.user._id, this.activeChatKey);
+    console.log(this.store.user?._id, this.activeChatKey);
     this.socket.publish({
       destination: "/app/video-key-request",
       body: JSON.stringify({
-        userId: this.store.user._id,
+        userId: this.store.user?._id,
         room: this.activeChatKey,
       }),
     });
