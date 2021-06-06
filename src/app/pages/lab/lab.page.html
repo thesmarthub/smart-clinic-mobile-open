@@ -11,6 +11,9 @@
   <!-- </ion-item> -->
   <ion-spinner *ngIf="lService.currentValues.loadingLabRequests | async"></ion-spinner>
   <ion-list>
+    <ion-text class="grey-text" style="font-size: 28px;" *ngIf="lService.currentValues?.labRequests.value?.length < 1 && !lService.currentValues.loadingLabRequests.value">
+      <span><ion-icon name="alert"></ion-icon></span> No Lab Requests
+    </ion-text>
     <ion-item *ngFor="let item of lService.currentValues.labRequests | async">
       <ion-grid>
         <ion-row>

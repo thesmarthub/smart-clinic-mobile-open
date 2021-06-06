@@ -16,7 +16,7 @@
 
   <ion-card style="background-color: #6c47af; color: white;">
     <ion-card-content>
-      <ion-text>Wallet Balance: ₦0</ion-text>
+      <ion-text>Wallet Balance: ₦{{walletBalance | number}}</ion-text>
       <!-- <ion-button>Fund Wallet</ion-button> -->
     </ion-card-content>
   </ion-card>
@@ -27,8 +27,13 @@
     </ion-fab-button>
   </ion-fab>
 
+  <ion-spinner *ngIf="pService.currentValues.loadingBills | async"></ion-spinner>
+ 
   <!-- <ion-spinner *ngIf="rService.currentValues.loadingRadiologyRequests | async"></ion-spinner> -->
   <ion-list >
+    <ion-text class="grey-text" style="font-size: 28px;" *ngIf="pService.currentValues?.pendingBills.value?.length < 1 && !pService.currentValues.loadingBills.value">
+      <span><ion-icon name="alert"></ion-icon></span> No Bills
+    </ion-text>
     <ion-item *ngFor="let p of pService.currentValues.pendingBills | async">
       <ion-grid>
                 <ion-row>

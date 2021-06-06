@@ -16,6 +16,7 @@ import { CartPage } from "../cart/cart.page";
 export class PaymentPage implements OnInit {
   cart = [];
   products = [];
+  walletBalance: number;
   cartItemCount: BehaviorSubject<number>;
   subs: Subscription[] = [];
   @ViewChild("cart", { static: false, read: ElementRef }) fab: ElementRef;
@@ -62,6 +63,15 @@ export class PaymentPage implements OnInit {
       action,
       start_date: moment().subtract(3, "months").toDate(),
     });
+  }
+
+  async fetchWalletBalance() {
+    console.log("fetching wallet balance");
+
+    const walletBalance = await this.pService.fetchWalletBalance();
+    if (typeof walletBalance !== "boolean") {
+      this.walletBalance = walletBalance;
+    }
   }
 
   unsub() {

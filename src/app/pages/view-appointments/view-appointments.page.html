@@ -40,10 +40,11 @@
             <ion-text (click)="appts('future')">Future</ion-text>
           </ion-col>
         </ion-row>
-  <ion-spinner *ngIf="aService.currentValues.loadingAppointments | async"></ion-spinner>
-  <ion-text class="grey-text"  *ngIf="aService.currentValues.appointments| async">
-    <span><ion-icon name="alert"></ion-icon></span> No Appointment
-  </ion-text>
+
+        <ion-spinner *ngIf="aService.currentValues.loadingAppointments | async"></ion-spinner>
+        <ion-text class="grey-text" style="font-size: 28px;" *ngIf="aService.currentValues?.appointments.value?.length < 1 && !aService.currentValues.loadingAppointments.value">
+          <span><ion-icon name="alert"></ion-icon></span> No Appointments
+        </ion-text>
  
   <ion-list *ngIf="futureAppt">
     <ion-item *ngFor="let future of futureAppointments">

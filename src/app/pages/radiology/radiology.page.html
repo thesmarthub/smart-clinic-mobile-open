@@ -9,6 +9,9 @@
   <ion-img src="/assets/test.png"></ion-img>
   <ion-spinner *ngIf="rService.currentValues.loadingRadiologyRequests | async"></ion-spinner>
   <ion-list >
+    <ion-text class="grey-text" style="font-size: 28px;" *ngIf="rService.currentValues?.radiologyRequests.value?.length < 1 && !rService.currentValues.loadingRadiologyRequests.value">
+      <span><ion-icon name="alert"></ion-icon></span> No Scans 
+    </ion-text>
     <ion-item *ngFor="let item of rService.currentValues.radiologyRequests | async">
       <ion-grid>
                 <ion-row>

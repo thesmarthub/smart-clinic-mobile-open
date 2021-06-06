@@ -36,6 +36,7 @@ export class PaymentService {
   currentState = new BehaviorSubject(PaymentState);
   store = new Store();
   creatingLink = false;
+  
 
   constructor(
     private gService: GeneralService,

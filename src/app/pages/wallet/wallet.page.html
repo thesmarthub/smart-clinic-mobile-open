@@ -38,6 +38,11 @@
   <ion-item>
     <ion-text>Activities</ion-text>
   </ion-item>
+
+  <ion-spinner *ngIf="loadingActivities"></ion-spinner>
+  <ion-text class="grey-text" style="font-size: 28px;" *ngIf="transactions.length < 1 && !loadingActivities">
+    <span><ion-icon name="alert"></ion-icon></span> No Activities
+  </ion-text>
   <ion-list>
     <ion-item *ngFor="let item of transactions; let i=index">
       <ion-grid>

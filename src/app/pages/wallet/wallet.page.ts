@@ -14,16 +14,18 @@ export class WalletPage implements OnInit {
   txRef;
   walletBalance: number;
   interval;
-  transactions;
+  transactions = [];
+  loadingActivities = true
 
   constructor(
     public paymentService: PaymentService,
     private alertCtrl: AlertController
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ionViewDidEnter() {
+    this.loadingActivities = true
     this.fetchWalletBalance();
     this.walletTransactions();
     this.interval = setInterval(() => this.fetchWalletBalance(), 15000);
@@ -35,10 +37,11 @@ export class WalletPage implements OnInit {
     clearInterval(this.interval);
   }
 
-  generatePayment() {}
+  generatePayment() { }
 
   async fetchWalletBalance() {
     // console.log("fetching wallet balance");
+
     const walletBalance = await this.paymentService.fetchWalletBalance();
     if (typeof walletBalance !== "boolean") {
       this.walletBalance = walletBalance;
@@ -46,12 +49,12 @@ export class WalletPage implements OnInit {
   }
 
   walletTransactions() {
-    // console.log('fetch transactions');
-     this.paymentService.fetchWalletTransactions().subscribe((data)=>{
-      // console.log(data)
+    // this.loadingActivities = true
+    this.paymentService.fetchWalletTransactions().subscribe((data) => {
       this.transactions = data
+      this.loadingActivities = false
     })
-    
+
   }
 
   async initTransaction() {
@@ -60,7 +63,7 @@ export class WalletPage implements OnInit {
     const tx = await this.paymentService
       .generateTxRef([], { action: "UPDATE_SMART_WALLET", amount: this.amount })
       .then((data) => data);
-      
+
     if (tx["error"]) {
       (
         await this.alertCtrl.create({
