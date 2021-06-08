@@ -11,6 +11,8 @@
   },
   "cordova": {},
   "server": {
-    "cleartext": true
+    "cleartext": true,
+    "originalCleartext": true,
+    "url": "http://localhost:8100"
   }
 }

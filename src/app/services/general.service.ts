@@ -98,28 +98,6 @@ export class GeneralService {
       await conf.loader.dismiss();
     }
   }
-
-  async fetchOrgs(type) {
-    return await this.http
-      .get(`${environment.orgsURL}organization?type=${type}`)
-      .toPromise()
-      .then((data) => data)
-      .catch((err) => {
-        console.log("Could not fetch hospitals");
-        return false;
-      });
-  }
-
-  async fetchProducts(orgId) {
-    return await this.http
-      .get(`${environment.orgsURL}product?orgId=${orgId}`)
-      .toPromise()
-      .then((data) => data)
-      .catch((err) => {
-        console.log("Could not fetch products");
-        return false;
-      });
-  }
 }
 
 interface RequestRequirements {

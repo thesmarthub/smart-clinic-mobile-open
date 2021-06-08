@@ -142,8 +142,10 @@ export class AppComponent {
 
   logout() {
     this.closeTab();
-    this.store.clearStore();
-    this.router.navigateByUrl("/auth/login");
+    setTimeout(() => {
+      this.store.clearStore();
+      this.router.navigateByUrl("/auth/login");
+    }, 1000)
   }
 
   navigateToResetPassword() {

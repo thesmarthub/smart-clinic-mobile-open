@@ -264,6 +264,7 @@ export class AuthService {
       })
       .subscribe(
         (res) => {
+          // console.log("Profile in hospital", res)
           const userClone = this.store.user;
 
           if (res?.result?.hospital_number) {
@@ -277,6 +278,8 @@ export class AuthService {
             }
 
             this.store.user = userClone;
+
+            // console.log("after cloning", this.store.user)
             this.authListenerWithData.next({ event: "LOGGED IN" });
             this.toaster({
               text: `Welcome, ${this.store.user.fname}`,

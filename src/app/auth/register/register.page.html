@@ -1,83 +1,96 @@
-
 <ion-content>
-<ion-grid class="centralize center-text">
+  <ion-grid class="centralize center-text">
 
     <ion-row class="center-text" size="12">
       <ion-col>
-        <div class="center-text" [formGroup]="regForm">
+        <form class="center-text" [formGroup]="regForm" (submit)="registerUser()">
           <!-- <ion-row class="extra-margin"> -->
-            <ion-col>
-               <!-- <ion-item>
+          <ion-col>
+            <!-- <ion-item>
                 <ion-col class="center-text">
                   <ion-text color="primary">You are almost there</ion-text>
                 </ion-col>
               </ion-item>  -->
-              <div class="all-fields">
+            <div class="all-fields">
               <ion-item>
                 <ion-input placeholder="First Name" formControlName="fname">
-                  <span class="little-margin"><ion-icon name="person-outline" color="primary" slot="start"></ion-icon></span>
+                  <span class="little-margin">
+                    <ion-icon name="person-outline" color="primary" slot="start"></ion-icon>
+                  </span>
                 </ion-input>
-              
+
               </ion-item>
               <ion-item>
                 <ion-input placeholder="Last Name" formControlName="lname">
-                  <span class="little-margin"><ion-icon name="person" color="primary" slot="start"></ion-icon></span>
+                  <span class="little-margin">
+                    <ion-icon name="person" color="primary" slot="start"></ion-icon>
+                  </span>
                 </ion-input>
-                
+
               </ion-item>
               <ion-item>
                 <ion-input placeholder="Email Address" formControlName="email">
-                  <span class="little-margin"><ion-icon name="mail-outline" color="primary" slot="start"></ion-icon></span>
+                  <span class="little-margin">
+                    <ion-icon name="mail-outline" color="primary" slot="start"></ion-icon>
+                  </span>
                 </ion-input>
-               
+
               </ion-item>
               <ion-item>
                 <ion-input placeholder="Phone Number" formControlName="phone">
-                  <span class="little-margin" ><ion-icon name="call" color="primary" slot="start"></ion-icon></span>
+                  <span class="little-margin">
+                    <ion-icon name="call" color="primary" slot="start"></ion-icon>
+                  </span>
                 </ion-input>
-               
+
               </ion-item>
               <ion-item>
-                <span class="little-margin"><ion-icon name="calendar-outline" color="primary" slot="start"></ion-icon></span>
+                <span class="little-margin">
+                  <ion-icon name="calendar-outline" color="primary" slot="start"></ion-icon>
+                </span>
                 <ion-datetime displayFormat="MMM DD YYYY" placeholder="Date of Birth" formControlName="d_o_b">
                 </ion-datetime>
               </ion-item>
               <ion-item>
-                <span class="little-margin" ><ion-icon name="person-circle" color="primary" slot="start"></ion-icon></span>
-                <ion-select interface="popover" placeholder="Select Sex">
+                <span class="little-margin">
+                  <ion-icon name="person-circle" color="primary" slot="start"></ion-icon>
+                </span>
+                <ion-select interface="popover" placeholder="Select Sex" formControlName="sex">
                   <ion-select-option value="Female">Female</ion-select-option>
                   <ion-select-option value="Male">Male</ion-select-option>
                 </ion-select>
               </ion-item>
               <ion-item>
                 <ion-input autofocus="on" type="password" placeholder="Password" formControlName="password">
-                  <span> <ion-icon class="little-margin" name="lock-closed-outline" color="primary" slot="start"></ion-icon></span>
+                  <span>
+                    <ion-icon class="little-margin" name="lock-closed-outline" color="primary" slot="start"></ion-icon>
+                  </span>
                 </ion-input>
-               
+
               </ion-item>
-              </div>
-            </ion-col>
+            </div>
+          </ion-col>
           <!-- </ion-row> -->
 
 
 
-          <ion-row >
+          <ion-row>
             <ion-col style="padding-top: 20px;" class="small-text grey">Have an Account?
-              <ion-text routerLink="/" color="primary">Sign In</ion-text></ion-col>
+              <ion-text routerLink="/" color="primary">Sign In</ion-text>
+            </ion-col>
             <ion-col>
-              <ion-button color="primary" expand="full" (click)="registerUser()" [disabled]="registering">Sign Up
+              <ion-button color="primary" expand="full" type="submit" [disabled]="regForm.invalid">Sign Up
               </ion-button>
             </ion-col>
           </ion-row>
 
-          
-            <ion-col class="center-text small-text grey" style="padding-top: 15px;">
-              <ion-text>  Are you a Doctor?
-                <a routerLink="" (click)="authService.registerDoctor()" color="primary">Click Here</a></ion-text>
+
+          <ion-col class="center-text small-text grey" style="padding-top: 15px;">
+            <ion-text> Are you a Doctor?
+              <a routerLink="" (click)="authService.registerDoctor()" color="primary">Click Here</a>
+            </ion-text>
           </ion-col>
-           
-        
-        </div>
+        </form>
       </ion-col>
     </ion-row>
 

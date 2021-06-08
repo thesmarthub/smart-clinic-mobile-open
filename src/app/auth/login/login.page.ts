@@ -63,9 +63,10 @@ export class LoginPage implements OnInit {
       this.showAlert("Please enter valid email and password.")
       return;
     }
+
     this._authService.login(
-      this.loginForm.value.email,
-      this.loginForm.value.password
+      this.loginForm.value.email.trim(),
+      this.loginForm.value.password.trim()
     );
   }
 

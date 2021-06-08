@@ -23,7 +23,7 @@ export class RegisterPage implements OnInit {
     message: "Please wait...",
     currentEvent: "",
     expectedEvent: "REGISTERING",
-  };;
+  };
 
   constructor(
     private fb: FormBuilder,
@@ -35,10 +35,10 @@ export class RegisterPage implements OnInit {
     this.regForm = this.fb.group({
       fname: ["", Validators.required],
       lname: ["", Validators.required],
-      email: ["", Validators.required],
+      email: ["", Validators.required, Validators.email],
       phone: ["", Validators.required],
-      password: ["", Validators.required],
-      d_o_b: ["", Validators.required],
+      password: ["", Validators.required, Validators.minLength(8)],
+      d_o_b: ["", Validators.required,],
       sex: ["", Validators.required],
     });
   }
@@ -70,13 +70,19 @@ export class RegisterPage implements OnInit {
   }
 
   async registerUser() {
-    if(!this.regForm.valid) {
+    Object.keys(this.regForm.value).forEach(
+      (key) => (this.regForm.value[key] = this.regForm.value[key].trim())
+    );
+
+    console.log(this.regForm.value);
+
+    if (!this.regForm.valid) {
       const alert = await this.alertCtrl.create({
         message: "Please enter all required information.",
         buttons: ["OK"],
       });
       alert.present();
-      return 
+      return;
     }
     this.authService.register(this.regForm.value);
   }

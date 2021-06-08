@@ -93,9 +93,6 @@ export class DoctorsPage implements OnInit {
   }
 
   async initiateChat(doctor) {
-    if (this.decision === "all_doctors") {
-      await this.fetchAvailableServices(doctor.id);
-    }
     this.chatService.sendRequest(doctor._id);
     this.chatService.activeReceiverName = `${doctor.title || "" + " "}${
       doctor.fname
@@ -111,12 +108,6 @@ export class DoctorsPage implements OnInit {
     //   )
     // );
     // this.router.navigateByUrl("/tabs/chat");
-  }
-
-  async fetchAvailableServices(orgId) {
-    const services = await this._docService.fetchServicesByOrganization(orgId);
-    this.services.next(services);
-    console.log("fetched services", services)
   }
 
   makeCall(number?) {
