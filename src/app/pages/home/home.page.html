@@ -15,11 +15,11 @@
  
 <ion-header class="head-border">
   <ion-row>
-    <ion-avatar>
+    <ion-avatar (click)="eventTrigger(openMenu)">
       <ion-img class="top-img" [src]="store.user?.profileImage"></ion-img>
     </ion-avatar>
     <ion-row>
-      <ion-text style="font-size: 20px; padding: 15px" color="primary"
+      <ion-text class="top-text"
         >Hi, {{store.user?.fname}} {{store.user?.lname}} <br />
         <span class="grey-text"><small>Hope you are well today</small></span>
       </ion-text>

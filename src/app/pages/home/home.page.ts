@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
+import { MenuController } from "@ionic/angular";
 import { Store } from "src/app/engine/store";
+import { TabsService } from "src/app/services/tabs.service";
+import { OpenMenu, TabEvent } from "src/app/actions/events/tab";
 
 @Component({
   selector: "app-home",
@@ -7,6 +10,7 @@ import { Store } from "src/app/engine/store";
   styleUrls: ["./home.page.scss"],
 })
 export class HomePage implements OnInit {
+   openMenu = OpenMenu;
   cards = [
     {
       title: "Appointments",
@@ -53,9 +57,30 @@ export class HomePage implements OnInit {
   ];
 
   store = new Store()
-  constructor() {}
+  constructor(private menu: MenuController, private tService: TabsService) {
+    this.tService.currentValues.menuAction.subscribe((action) => {
+      if (action === "open") {
+        this.openCustom();
+      } else if (action === "close") {
+        this.closeCustom();
+      }
+    })};
 
   ngOnInit() {
     console.log("Home Page loaded");
+  }
+
+  
+  eventTrigger(event: TabEvent) {
+    this.tService.triggerEvent(event)
+  }
+
+  openCustom() {
+    this.menu.enable(true, "custom");
+    this.menu.open("custom");
+  }
+
+  closeCustom() {
+    this.menu.close("custom");
   }
 }
