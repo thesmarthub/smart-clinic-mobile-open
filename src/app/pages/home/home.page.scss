@@ -10,17 +10,21 @@
   // margin-bottom: 7px;
 }
 
-.top-img{
-  height: 40px;
-  width: 40px;
-  margin-left: 25px;
-  margin-top: 20px;
+ion-avatar {
+  padding: 8px;
+  border: 1px solid #6c47af;
 }
 
-.top-text{
-  font-size: 20px; 
+.top-img {
+  height: 40px;
+  width: 40px;
+  margin: 20px;
+}
+
+.top-text {
+  font-size: 20px;
   padding: 13px;
-   color: #6c47af
+  color: #6c47af;
 }
 
 .link-card {
@@ -28,12 +32,12 @@
   max-width: 40vw;
   color: #6c47af;
   font-weight: bold;
-  box-shadow: 0 1px 2px rgba(108,71,175), 0 3px 3px rgba(108,71,175) !important;
+  box-shadow: 0 1px 2px rgba(108, 71, 175), 0 3px 3px rgba(108, 71, 175) !important;
   // max-height: 20vw;
 }
-.head-border{
-  box-shadow: 0px 0px 2px 1px rgba(108,71,175), 0px 0px 2px 1px rgba(108,71,175) !important;
-
+.head-border {
+  box-shadow: 0px 0px 2px 1px rgba(108, 71, 175),
+    0px 0px 2px 1px rgba(108, 71, 175) !important;
 }
 .marginalize {
   margin-top: 5%;
@@ -41,7 +45,7 @@
   // z-index: -1;
 }
 
-.squ{
+.squ {
   background-color: #6c47af;
   height: 70px;
   width: 100%;
@@ -53,34 +57,32 @@
   color: grey;
 }
 
-.appt{
+.appt {
   background-color: #6c47af;
-  color:white;
-  font-weight: bold;
-}
-.doctors{
-  background-color:mediumvioletred ;
   color: white;
   font-weight: bold;
 }
-.prescriptions{
-  background-color:mediumorchid;
+.doctors {
+  background-color: mediumvioletred;
+  color: white;
+  font-weight: bold;
+}
+.prescriptions {
+  background-color: mediumorchid;
   color: white;
 }
-.lab{
-  background-color:#6c47af;
+.lab {
+  background-color: #6c47af;
   color: white;
 }
-.scans{
-  background-color:indigo;
+.scans {
+  background-color: indigo;
   color: white;
 }
-.hospitals{
-  background-color:darkmagenta;
+.hospitals {
+  background-color: darkmagenta;
   color: white;
 }
-
-
 
 // .icon-img{
 //   max-height: 2.2em;
@@ -88,27 +90,35 @@
 //   margin-bottom: 1em;
 // }
 
-.img-border{
+.img-border {
   text-align: center;
   border: 1px solid #6c47af;
   border-radius: 2em;
   max-width: 2.5em;
   min-width: 2.5em;
-  min-height:2.5em ;
+  min-height: 2.5em;
   max-height: 2.5em;
   padding: 8px;
   margin-bottom: 1em;
 }
 
-.hospital-card{
-background-color: #6c47af;
-color: white;
-text-align: center;
-
+.hospital-card {
+  background-color: #6c47af;
+  color: white;
+  text-align: center;
+  margin-bottom: 0px;
 }
 
-.white-text{
+.white-text {
   color: white;
   font-weight: bold;
 }
 
+.smoke-text {
+  color: rgb(240, 234, 234);
+  // font-weight: bold;
+}
+
+.question {
+  width: 100vw;
+}

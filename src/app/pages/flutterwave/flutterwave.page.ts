@@ -15,6 +15,7 @@ export class FlutterwavePage implements OnInit {
 
   @Input() amount
   @Input() transactionRef
+  paymentText = "Pay Now"
 
   store = new Store();
 
@@ -50,6 +51,8 @@ export class FlutterwavePage implements OnInit {
     if(!this.action) {
       throw new Error("Action is require. 'UPDATE_BILLS', 'UPDATE_HOSPITAL_WALLET' or 'UPDATE_SMART_WALLET'")
     }
+
+    this.paymentText = `Pay ${this.amount} Naira now.`
   }
 
   makePaymentCallback(response: PaymentSuccessResponse): void {
