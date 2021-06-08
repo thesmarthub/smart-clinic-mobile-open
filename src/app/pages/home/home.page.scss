@@ -5,58 +5,110 @@
   // background-color: red;
 }
 
-ion-img {
+.img-card {
   height: 60px;
-  margin-bottom: 7px;
+  // margin-bottom: 7px;
 }
 
-.spacer {
-  margin: 20px 0px 0px 0px;
+.top-img{
+  height: 40px;
+  width: 40px;
+  margin-left: 25px;
+  margin-top: 20px;
 }
 
-.big-font {
-  font-size: larger;
+.top-text{
+  font-size: 20px; 
+  padding: 13px;
+   color: #6c47af
 }
 
-.strong-font {
-  font-weight: bolder;
+.link-card {
+  border-radius: 5px;
+  max-width: 40vw;
+  color: #6c47af;
+  font-weight: bold;
+  box-shadow: 0 1px 2px rgba(108,71,175), 0 3px 3px rgba(108,71,175) !important;
+  // max-height: 20vw;
+}
+.head-border{
+  box-shadow: 0px 0px 2px 1px rgba(108,71,175), 0px 0px 2px 1px rgba(108,71,175) !important;
+
+}
+.marginalize {
+  margin-top: 5%;
+  margin-left: 15%;
+  // z-index: -1;
 }
 
-.top-row {
-  margin: 15px;
+.squ{
   background-color: #6c47af;
+  height: 70px;
+  width: 100%;
+  border-bottom-left-radius: 150px 100px;
+  border-bottom-right-radius: 150px 100px;
+}
+
+.grey-text {
+  color: grey;
+}
+
+.appt{
+  background-color: #6c47af;
+  color:white;
+  font-weight: bold;
+}
+.doctors{
+  background-color:mediumvioletred ;
+  color: white;
+  font-weight: bold;
+}
+.prescriptions{
+  background-color:mediumorchid;
+  color: white;
+}
+.lab{
+  background-color:#6c47af;
+  color: white;
+}
+.scans{
+  background-color:indigo;
+  color: white;
+}
+.hospitals{
+  background-color:darkmagenta;
   color: white;
 }
 
-.bottom-row {
-  padding-bottom: 50px;
-  border-radius: 30px;
-  margin-left: 10px;
-  margin-right: 10px;
-  background-color: white;
-  // color: white;
-}
 
-ion-card {
-  border-radius: 10px;
-  // box-shadow: 0px 0px 3px 2px #6c47af !important;
-  box-shadow: 0 1px 2px rgba(108,71,175), 0 3px 3px rgba(108,71,175) !important;
-  // box-shadow: 0 1px 3px rgba(108,71,175), 0 1px 2px rgba(108,71,175);
-  // transition: all 0.3s cubic-bezier(.25,.8,.25,1);
-}
 
-// ion-card:hover {
-//   box-shadow: 0 14px 28px rgba(108,71,175), 0 10px 10px rgba(108,71,175);
+// .icon-img{
+//   max-height: 2.2em;
+//   max-width: 2.2em;
+//   margin-bottom: 1em;
 // }
 
-ion-grid {
-  background-color: #6c47af !important;
-  height: 100% !important;
+.img-border{
+  text-align: center;
+  border: 1px solid #6c47af;
+  border-radius: 2em;
+  max-width: 2.5em;
+  min-width: 2.5em;
+  min-height:2.5em ;
+  max-height: 2.5em;
+  padding: 8px;
+  margin-bottom: 1em;
 }
 
-ion-content {
-  background-color: #6c47af !important;
+.hospital-card{
+background-color: #6c47af;
+color: white;
+text-align: center;
+
 }
-// ion-content {
-//   --ion-background-color: green;
-// }
+
+.white-text{
+  color: white;
+  font-weight: bold;
+}
+
