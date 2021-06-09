@@ -32,11 +32,11 @@
             routerLink="/pandemic"
             class="profile-list"
           >
-            <ion-icon class="profile-icon" name="medkit"></ion-icon> Covid
-            Checker
+            <ion-icon class="profile-icon" name="medkit"></ion-icon><span class="profile-list-new"> Covid
+            Checker </span>
           </ion-item>
-          <ion-item (click)="navigateToResetPassword()" class="profile-list">
-            <ion-icon class="profile-icon" name="key"></ion-icon> Security
+          <ion-item (click)="navigateToResetPassword()">
+            <ion-icon class="profile-icon" name="key"></ion-icon><span class="profile-list-new"> Security</span>
           </ion-item>
           <ion-item (click)="navigateToResetPassword()">
             <a
@@ -61,7 +61,7 @@
           </ion-item>
 
           <ion-item (click)="logout()" >
-            <ion-icon name="log-out" class="sign-out"></ion-icon>Log Out
+            <ion-icon name="log-out" style="color: indianred;"></ion-icon><span  style="color:indianred; padding-left: 0.5em;">Log Out</span>
           </ion-item>
         </ion-list>
       </ion-content>
