@@ -40,6 +40,8 @@ export class ViewAppointmentsPage implements OnInit {
   futureAppointments = []
   pastAppt = false;
   futureAppt = true;
+  active;
+  appt ="" ;
   
 
   daysConfig: DayConfig[] = [];
@@ -64,6 +66,7 @@ export class ViewAppointmentsPage implements OnInit {
   ngOnInit() {}
 
   ionViewDidEnter() {
+    
     this.getDay();
     this.getBothPastandFuture();
     this.aService.triggerEvent(LoadAppointments);
@@ -310,6 +313,7 @@ export class ViewAppointmentsPage implements OnInit {
     appts(appointment){
       if(appointment === 'past'){
         this.pastAppt = true
+        
       }else{
         this.pastAppt = false
       }
@@ -318,10 +322,16 @@ export class ViewAppointmentsPage implements OnInit {
       }else{
         this.futureAppt = false
       }
-
-     
-      
+ 
     }
+
+    // checkingAppt(){
+    //   if(this.pastAppt && this.pastAppointments?.length > 1){
+    //     this.appt = 'No future Appointment'
+    //   }else{
+    //     this.appt = ''
+    //   }
+    // }
 
     
   }
