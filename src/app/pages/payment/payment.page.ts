@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import * as moment from "moment";
 import { BehaviorSubject, Subscription } from "rxjs";
@@ -19,12 +20,22 @@ export class PaymentPage implements OnInit {
   walletBalance: number;
   cartItemCount: BehaviorSubject<number>;
   subs: Subscription[] = [];
+  billType;
   @ViewChild("cart", { static: false, read: ElementRef }) fab: ElementRef;
   constructor(
     public pService: PaymentService,
     public cartService: CartService,
+    public aRoute: ActivatedRoute,
     private modalCtrl: ModalController
-  ) {}
+  ) {
+    this.aRoute.queryParams.subscribe((data) => {
+      if (data?.department_route) {
+        this.pService.departmentRoute = data.department_route
+      } else {
+        this.pService.departmentRoute = null
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadData();
@@ -134,5 +145,5 @@ export class PaymentPage implements OnInit {
     node.addEventListener("animationend", handleAnimationEnd);
   }
 
-  
+
 }
