@@ -12,7 +12,7 @@
             <ion-img [src]="store.user?.profileImage"></ion-img>
           </ion-avatar>
           <ion-label>
-            <ion-text>{{
+            <ion-text style="color: grey;">{{
               store.userFullName | titlecase
             }}</ion-text> </ion-label
           ><br />
@@ -30,13 +30,13 @@
           <ion-item
             (click)="closeTab()"
             routerLink="/pandemic"
-            class="profile-list"
+            class="profile-list-new "
           >
-            <ion-icon class="profile-icon" name="medkit"></ion-icon><span class="profile-list-new"> Covid
-            Checker </span>
+            <ion-icon class="profile-icon" name="medkit"></ion-icon> <span class="profile-list-new">Covid
+            Checker</span>
           </ion-item>
           <ion-item (click)="navigateToResetPassword()">
-            <ion-icon class="profile-icon" name="key"></ion-icon><span class="profile-list-new"> Security</span>
+            <ion-icon class="profile-icon" name="key"></ion-icon> <span class="profile-list-new">Security</span>
           </ion-item>
           <ion-item (click)="navigateToResetPassword()">
             <a
@@ -44,8 +44,8 @@
               href="https://api.whatsapp.com/send?phone=2348058033969&text=Hello!%20I%27m%20contacting%20you%20from%20smart-clinic%20mobile app"
               target="_blank"
               name="chat_with_us"
-              ><ion-icon class="profile-icon" name="chatbubbles"> </ion-icon>
-              Chat with us</a
+              ><ion-icon class="profile-icon" name="chatbubbles"> </ion-icon><span class="profile-list">
+              Chat with us</span></a
             >
           </ion-item>
           <ion-item (click)="navigateToResetPassword()" class="profile-list">
@@ -60,12 +60,12 @@
             >
           </ion-item>
 
-          <ion-item (click)="logout()" >
-            <ion-icon name="log-out" style="color: indianred;"></ion-icon><span  style="color:indianred; padding-left: 0.5em;">Log Out</span>
+          <ion-item (click)="logout()">
+            <ion-icon name="log-out" style="color: red;" class="profile-icon"></ion-icon><span class="log-out">Log Out</span>
           </ion-item>
         </ion-list>
       </ion-content>
-      <ion-label class="grey-text"><ion-text>Version 3.1.1</ion-text></ion-label>
+      <ion-label class="grey-text"><ion-text>Version 1.0.0</ion-text></ion-label>
     </ion-menu>
     <ion-router-outlet id="main"></ion-router-outlet>
   </ion-content>

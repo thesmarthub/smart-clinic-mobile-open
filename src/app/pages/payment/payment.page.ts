@@ -9,6 +9,7 @@ import { PaymentService } from "src/app/services/payment.service";
 import { ApiAction } from "src/interfaces/action";
 import { CartPage } from "../cart/cart.page";
 
+
 @Component({
   selector: "app-payment",
   templateUrl: "./payment.page.html",
@@ -26,7 +27,8 @@ export class PaymentPage implements OnInit {
     public pService: PaymentService,
     public cartService: CartService,
     public aRoute: ActivatedRoute,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    // private badge: Badge
   ) {
     this.aRoute.queryParams.subscribe((data) => {
       if (data?.department_route) {
