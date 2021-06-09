@@ -5,6 +5,7 @@ import { TabsService } from "src/app/services/tabs.service";
 import { OpenMenu, TabEvent } from "src/app/actions/events/tab";
 import { Observer } from "rxjs";
 import { App } from "@capacitor/core";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-home",
@@ -65,8 +66,8 @@ export class HomePage implements OnInit {
     private menu: MenuController,
     private tService: TabsService,
     private platform: Platform,
-    private routerOutlet: IonRouterOutlet,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router
   ) {
     this.tService.currentValues.menuAction.subscribe((action) => {
       if (action === "open") {
@@ -75,11 +76,11 @@ export class HomePage implements OnInit {
         this.closeCustom();
       }
     });
-    this.platform.backButton.subscribeWithPriority(-1, async () => {
-      await this.confirmExitApp();
-      return
-      // if (!this.routerOutlet.canGoBack()) {
-      // }
+    this.platform.backButton.subscribe(async () => {
+      if(this.router.url === "/tabs/home") {
+        await this.confirmExitApp();
+        return
+      }
     });
   }
 
@@ -102,8 +103,9 @@ export class HomePage implements OnInit {
 
   async confirmExitApp() {
     const confirmAlert = await this.alertCtrl.create({
-      header: "Salir",
-      message: "¿ Esta seguro que desea salir de la aplicación ?",
+      cssClass: "custom-alert",
+      header: "Exit App",
+      message: "Are you sure you want to leave?",
       buttons: [
         {
           text: "No",

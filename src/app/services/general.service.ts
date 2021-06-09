@@ -97,6 +97,11 @@ export class GeneralService {
             await conf.loader.present();
           } else {
             conf.loader = await createLoader();
+            setTimeout(() => {
+              if (conf.loader?.isConnected) {
+                conf.loader.dismiss();
+              }
+            }, 30000);
           }
           break;
 
@@ -115,10 +120,15 @@ export class GeneralService {
       }
       conf.loader = await createLoader();
       await conf.loader.present();
+      setTimeout(() => {
+        if (conf.loader?.isConnected) {
+          conf.loader.dismiss();
+        }
+      }, 30000);
     } else if (conf.loader) {
       await conf.loader.dismiss();
     }
-  }
+  };
 }
 
 interface RequestRequirements {

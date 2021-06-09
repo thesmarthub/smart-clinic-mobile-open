@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import { IDepartment, IHospital } from "src/interfaces/hospital";
 import { IUser } from "src/interfaces/user";
 
@@ -44,17 +45,6 @@ export class Store {
     return JSON.parse(localStorage.getItem("currentHospital"));
   }
 
-  set tempHospital(data: IHospital) {
-    localStorage.setItem("tempHospital", JSON.stringify(data));
-  }
-
-  get tempHospital(): IHospital {
-    if (!localStorage.getItem("tempHospital")) {
-      return;
-    }
-    return JSON.parse(localStorage.getItem("tempHospital"));
-  }
-
   set department(data) {
     localStorage.setItem("department", JSON.stringify(data));
   }
@@ -68,6 +58,18 @@ export class Store {
 
   get staff() {
     return JSON.parse(localStorage.getItem("staff"));
+  }
+
+  set lastLoginTime(time: moment.Moment) {
+    localStorage.setItem("lastLoginTime", time.toString());
+  }
+
+  get lastLoginTime() {
+    return moment(localStorage.getItem("lastLoginTime"));
+  }
+
+  get notNeedLogin() {
+    return this.lastLoginTime.add(5, "minutes").isAfter(moment());
   }
 
   addFirebaseKey(key) {

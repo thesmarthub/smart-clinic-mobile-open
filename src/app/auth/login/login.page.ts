@@ -1,7 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { AlertController } from "@ionic/angular";
 import { Subscription } from "rxjs/internal/Subscription";
+import { Store } from "src/app/engine/store";
 import { GeneralService } from "src/app/services/general.service";
 import { AuthService } from "../auth.service";
 
@@ -40,7 +42,7 @@ export class LoginPage implements OnInit {
         }
         if (status.event === "LOGIN FAILED") {
           console.log("Failed to login!!!", status);
-          this.gService.presentLoading(this.loaderConf, "close")
+          this.gService.presentLoading(this.loaderConf, "close");
           this.showAlert(status.data);
           // this._authService.toaster({ text: status.data, duration: 2000 });
         }
@@ -56,13 +58,17 @@ export class LoginPage implements OnInit {
     });
   }
 
+  ionViewDidEnter() {
+    new Store().clearStore();
+  }
+
   ionViewDidLeave() {
     this.gService.presentLoading(this.loaderConf, "close");
   }
 
   login() {
     if (!this.loginForm.value.email || !this.loginForm.value.password) {
-      this.showAlert("Please enter valid email and password.")
+      this.showAlert("Please enter valid email and password.");
       return;
     }
 

@@ -10,6 +10,7 @@ import { IAPIResponse } from "../../interfaces/general";
 import { IUser } from "../../interfaces/user";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { ChatService } from "../services/chat.service";
+import * as moment from "moment";
 
 @Injectable({
   providedIn: "root",
@@ -233,15 +234,13 @@ export class AuthService {
       .subscribe(
         (res) => {
           if (res?.result) {
-            this.store.currentHospital = res.result;
-            this.store.user.active_hospital_smart_code = res.result.smart_code;
-            this.fetchProfileInHospital();
+            this.fetchProfileInHospital(res.result);
           } else {
             this.toaster({
               text: "Could not fetch active hospital. Please try again.",
               duration: 2000,
             });
-            this.authListenerWithData.next({ event: "DEFAULT" });
+            this.authListenerWithData.next({ event: "LOGIN FAILED" });
           }
         },
         (err) => {
@@ -254,12 +253,13 @@ export class AuthService {
       );
   }
 
-  fetchProfileInHospital(mustFetch = true, selectedHospital?: IHospital) {
+  fetchProfileInHospital(selectedHospital: IHospital) {
+    console.log(selectedHospital)
     this._http
       .get<IAPIResponse<IUser>>(`${this.baseURL}hospital/patient-request`, {
         params: {
           action: "FETCH_PATIENT_PROFILE",
-          use_temp_hosp: mustFetch ? "no" : "yes",
+          hospital_smart_code: selectedHospital.smart_code,
         },
       })
       .subscribe(
@@ -271,6 +271,10 @@ export class AuthService {
             userClone.hospital_number = res.result.hospital_number;
 
             if (selectedHospital) {
+              this.editUserDetails(
+                { active_hospital_smart_code: selectedHospital.smart_code },
+                false
+              );
               userClone.active_hospital_smart_code =
                 selectedHospital.smart_code;
               userClone.currentHospital = selectedHospital;
@@ -288,19 +292,18 @@ export class AuthService {
             this.router.navigateByUrl("/tabs/home");
           } else if (
             this.store.user.active_hospital_smart_code !==
-              "SMART_CLINIC_DEFAULT" &&
-            mustFetch
+            "SMART_CLINIC_DEFAULT"
           ) {
             const currentHospitalClone = this.store.currentHospital;
             currentHospitalClone["smart_code"] = "SMART_CLINIC_DEFAULT";
             this.store.currentHospital = currentHospitalClone;
 
-            this.fetchProfileInHospital();
-          } else if (mustFetch) {
-            // this.toaster('Could not find profile in hospital');
-            this.defaultHospitalRegistration();
+            this.fetchProfileInHospital(this.store.currentHospital);
+            // } else if (mustFetch) {
+            //   // this.toaster('Could not find profile in hospital');
+            //   this.defaultHospitalRegistration();
 
-            this.authListenerWithData.next({ event: "DEFAULT" });
+            //   this.authListenerWithData.next({ event: "DEFAULT" });
           } else {
             this.toaster({
               text: "Could not find profile in hospital",
@@ -346,6 +349,7 @@ export class AuthService {
     // this.authListenerWithData.next({ event: action });
     this.store.token = res["token"];
     this.store.user = res["result"];
+    this.store.lastLoginTime = moment();
     this.store.addFirebaseKey(this.store.firebaseToken);
     this.editUserDetails(this.store.user, false);
   }
@@ -355,7 +359,9 @@ export class AuthService {
   }
 
   registerDoctor() {
-    const browser = this.iab.create('https://docs.google.com/forms/d/e/1FAIpQLSc-UVDE0mQvNZ6MLy54yMN9tCyNG0Coy9bysGKU5xK5n0OgsQ/viewform');
+    const browser = this.iab.create(
+      "https://docs.google.com/forms/d/e/1FAIpQLSc-UVDE0mQvNZ6MLy54yMN9tCyNG0Coy9bysGKU5xK5n0OgsQ/viewform"
+    );
   }
 }
 

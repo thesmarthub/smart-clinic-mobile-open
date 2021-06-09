@@ -46,7 +46,7 @@ export class HospitalsPage implements OnInit {
         }, {
           text: 'Register',
           handler: () => {
-            this.storeCtrl.tempHospital = item
+            this.hService.tempHospital = item
             this.route.navigateByUrl('/hospital-reg')
           }
         }

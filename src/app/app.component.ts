@@ -48,6 +48,9 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    if (this.store.notNeedLogin) {
+      this.router.navigate(["/tabs/home"]);
+    }
     console.log("Initializing app!");
     // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
