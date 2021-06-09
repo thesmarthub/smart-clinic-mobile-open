@@ -35,14 +35,12 @@ export class LoginPage implements OnInit {
     this.subs.push(
       this._authService.authListenerWithData.subscribe((status) => {
         this.loaderConf.currentEvent = status.event;
-        this.gService.presentLoading(this.loaderConf);
         if (status.event === "LOGGING IN") {
-          this.loading = true;
-        } else {
-          this.loading = false;
+          this.gService.presentLoading(this.loaderConf);
         }
         if (status.event === "LOGIN FAILED") {
           console.log("Failed to login!!!", status);
+          this.gService.presentLoading(this.loaderConf, "close")
           this.showAlert(status.data);
           // this._authService.toaster({ text: status.data, duration: 2000 });
         }
@@ -56,6 +54,10 @@ export class LoginPage implements OnInit {
         sub.unsubscribe();
       }
     });
+  }
+
+  ionViewDidLeave() {
+    this.gService.presentLoading(this.loaderConf, "close");
   }
 
   login() {

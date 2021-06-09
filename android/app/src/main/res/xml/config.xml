@@ -6,6 +6,10 @@
     <param name="android-package" value="mx.ferreyra.callnumber.CFCallNumber"/>
   </feature>
 
+  <feature name="Device">
+    <param name="android-package" value="org.apache.cordova.device.Device"/>
+  </feature>
+
   <feature name="InAppBrowser">
     <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser"/>
   </feature>

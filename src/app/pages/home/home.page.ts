@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { MenuController } from "@ionic/angular";
+import { AlertController, IonRouterOutlet, MenuController, Platform } from "@ionic/angular";
 import { Store } from "src/app/engine/store";
 import { TabsService } from "src/app/services/tabs.service";
 import { OpenMenu, TabEvent } from "src/app/actions/events/tab";
+import { Observer } from "rxjs";
+import { App } from "@capacitor/core";
 
 @Component({
   selector: "app-home",
@@ -10,69 +12,83 @@ import { OpenMenu, TabEvent } from "src/app/actions/events/tab";
   styleUrls: ["./home.page.scss"],
 })
 export class HomePage implements OnInit {
-   openMenu = OpenMenu;
+  openMenu = OpenMenu;
   cards = [
     {
       title: "Appointments",
       icon: "fa fa-calendar",
       link: "/tabs/view-appointments",
       img: "/assets/004-calendar.png",
-      bgColor: "appt"
+      bgColor: "appt",
     },
     {
       title: "Talk to Doctor",
       icon: "fa fa-user",
       link: "/tabs/doctors",
       img: "/assets/019-doctor.png",
-      bgColor: "doctors"
+      bgColor: "doctors",
     },
     {
       title: "Prescriptions",
       icon: "fa fa-prescription",
       link: "/tabs/prescription",
       img: "/assets/001-drug.png",
-      bgColor: "doctors"
+      bgColor: "doctors",
     },
     {
       title: "Laboratory",
       icon: "fa fa-vials",
       link: "/tabs/lab",
       img: "/assets/003-research.png",
-      bgColor: "appt"
+      bgColor: "appt",
     },
     {
       title: "Scans",
       icon: "fa fa-x-ray",
       link: "/tabs/radiology",
       img: "/assets/in_bed.png",
-      bgColor: "appt"
+      bgColor: "appt",
     },
     {
       title: "Hospitals",
       icon: "fa fa-building",
       link: "/tabs/hospitals",
       img: "/assets/012-hospital-1.png",
-      bgColor: "doctors"
+      bgColor: "doctors",
     },
   ];
 
-  store = new Store()
-  constructor(private menu: MenuController, private tService: TabsService) {
+  store = new Store();
+  backButton: Observer<any>;
+
+  constructor(
+    private menu: MenuController,
+    private tService: TabsService,
+    private platform: Platform,
+    private routerOutlet: IonRouterOutlet,
+    private alertCtrl: AlertController
+  ) {
     this.tService.currentValues.menuAction.subscribe((action) => {
       if (action === "open") {
         this.openCustom();
       } else if (action === "close") {
         this.closeCustom();
       }
-    })};
+    });
+    this.platform.backButton.subscribeWithPriority(-1, async () => {
+      await this.confirmExitApp();
+      return
+      // if (!this.routerOutlet.canGoBack()) {
+      // }
+    });
+  }
 
   ngOnInit() {
     console.log("Home Page loaded");
   }
 
-  
   eventTrigger(event: TabEvent) {
-    this.tService.triggerEvent(event)
+    this.tService.triggerEvent(event);
   }
 
   openCustom() {
@@ -82,5 +98,29 @@ export class HomePage implements OnInit {
 
   closeCustom() {
     this.menu.close("custom");
+  }
+
+  async confirmExitApp() {
+    const confirmAlert = await this.alertCtrl.create({
+      header: "Salir",
+      message: "¿ Esta seguro que desea salir de la aplicación ?",
+      buttons: [
+        {
+          text: "No",
+          handler: () => {
+            confirmAlert.dismiss();
+            return;
+          },
+        },
+        {
+          text: "Yes",
+          handler: () => {
+            navigator["app"].exitApp();
+          },
+        },
+      ],
+    });
+
+    return await confirmAlert.present();
   }
 }

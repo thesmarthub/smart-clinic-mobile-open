@@ -83,16 +83,37 @@ export class GeneralService {
     );
   };
 
-  async presentLoading(conf) {
-    console.log(conf);
+  presentLoading = async (conf, action?: "open" | "close") => {
+    const createLoader = async () => {
+      return await this.loadingController.create({
+        message: conf.message,
+        spinner: "bubbles",
+      });
+    };
+    if (action) {
+      switch (action) {
+        case "open":
+          if (conf.loader) {
+            await conf.loader.present();
+          } else {
+            conf.loader = await createLoader();
+          }
+          break;
+
+        default:
+          if (conf.loader) {
+            await conf.loader.dismiss();
+          }
+          break;
+      }
+      return;
+    }
+
     if (conf.currentEvent === conf.expectedEvent) {
       if (conf.loader) {
         await conf.loader.dismiss();
       }
-      conf.loader = await this.loadingController.create({
-        message: conf.message,
-        spinner: "bubbles",
-      });
+      conf.loader = await createLoader();
       await conf.loader.present();
     } else if (conf.loader) {
       await conf.loader.dismiss();
