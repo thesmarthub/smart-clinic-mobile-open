@@ -1,29 +1,71 @@
 <ion-app>
   <ion-content [scrollEvents]="true">
     <ion-menu side="start" menuId="custom" contentId="main" *ngIf="store.user">
-      <ion-header>
-        <ion-toolbar color="primary">
-          <ion-title>Smart Clinic</ion-title>
-        </ion-toolbar>
-      </ion-header>
+   
       <ion-content>
-       
-        <ion-list>
-           <ion-item>
-          <ion-avatar (click)="closeTab()" routerLink="/user-profile" slot="start">
+        <div class="profile">
+          <ion-avatar
+            class="profile-img"
+            (click)="closeTab()"
+            routerLink="/user-profile"
+          >
             <ion-img [src]="store.user?.profileImage"></ion-img>
           </ion-avatar>
-          <ion-label (click)="closeTab()" routerLink="/user-profile"><ion-text>{{store.userFullName |titlecase}}</ion-text></ion-label>
-        </ion-item>
-          <!-- <ion-item></ion-item> -->
-          <ion-item (click)="closeTab()" routerLink="/user-profile">My Profile</ion-item>
-          <!-- <ion-item>Menu Item</ion-item> -->
-          <ion-item (click)="closeTab()" routerLink="/pandemic">Covid Checker</ion-item>
-          <ion-item (click)="navigateToResetPassword();">Security</ion-item>
+          <ion-label>
+            <ion-text>{{
+              store.userFullName | titlecase
+            }}</ion-text> </ion-label
+          ><br />
+          <ion-label>
+            <ion-text color="primary">{{
+              store.user.smart_code
+            }}</ion-text> </ion-label
+          ><br />
+          <ion-button (click)="closeTab()" routerLink="/user-profile"
+            >Profile</ion-button
+          >
+        </div>
 
-          <ion-item (click)="logout()" color="danger">Sign Out</ion-item>
+        <ion-list>
+          <ion-item
+            (click)="closeTab()"
+            routerLink="/pandemic"
+            class="profile-list"
+          >
+            <ion-icon class="profile-icon" name="medkit"></ion-icon> Covid
+            Checker
+          </ion-item>
+          <ion-item (click)="navigateToResetPassword()" class="profile-list">
+            <ion-icon class="profile-icon" name="key"></ion-icon> Security
+          </ion-item>
+          <ion-item (click)="navigateToResetPassword()">
+            <a
+              class="chat-menu"
+              href="https://api.whatsapp.com/send?phone=2348058033969&text=Hello!%20I%27m%20contacting%20you%20from%20smart-clinic%20mobile app"
+              target="_blank"
+              name="chat_with_us"
+              ><ion-icon class="profile-icon" name="chatbubbles"> </ion-icon>
+              Chat with us</a
+            >
+          </ion-item>
+          <ion-item (click)="navigateToResetPassword()" class="profile-list">
+            <a
+              style="text-decoration: none"
+              href="https://smartapps.com.ng"
+              target="_blank"
+              name="chat_with_us"
+            >
+              <ion-icon class="profile-icon" name="bookmarks"></ion-icon> About
+              Us</a
+            >
+          </ion-item>
+
+          <ion-item (click)="logout()" >
+            <ion-icon name="log-out" class="sign-out"></ion-icon>Log Out
+          </ion-item>
         </ion-list>
       </ion-content>
+      <ion-label class="grey-text"><ion-text>Version 3.1.1</ion-text></ion-label>
     </ion-menu>
     <ion-router-outlet id="main"></ion-router-outlet>
   </ion-content>
