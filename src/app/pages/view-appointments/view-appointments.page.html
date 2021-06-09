@@ -42,10 +42,10 @@
 
   <ion-row class="pad small-text">
     <ion-col>
-      <ion-text (click)="appts('past')" style="color: gray !important">Past</ion-text>
+      <ion-text (click)="appts('past')" [class]="isPast ? active : ''">Past</ion-text>
     </ion-col>
     <ion-col>
-      <ion-text (click)="appts('future')">Future</ion-text>
+      <ion-text (click)="appts('future')" [class]="!isPast ? active : ''">Future</ion-text>
     </ion-col>
   </ion-row>
 
@@ -57,13 +57,13 @@
     </span> No Appointments
   </ion-text>
 
-  <ion-text *ngIf="!futureAppointments[0]?.appointment_time && futureAppt  && aService.currentValues?.appointments.value?.length > 1 " class="grey-text"><ion-icon name="alert"></ion-icon> No future Appointment
+  <ion-text *ngIf="!futureAppointments[0]?.appointment_time && !isPast  && aService.currentValues?.appointments.value?.length > 1 " class="grey-text"><ion-icon name="alert"></ion-icon> No future Appointment
 </ion-text>
-  <ion-text *ngIf="!pastAppointments[0]?.appointment_time && pastAppt  && aService.currentValues?.appointments.value?.length > 1 " class="grey-text"><ion-icon name="alert"></ion-icon> No Past Appointment
+  <ion-text *ngIf="!pastAppointments[0]?.appointment_time && isPast  && aService.currentValues?.appointments.value?.length > 1 " class="grey-text"><ion-icon name="alert"></ion-icon> No Past Appointment
 </ion-text>
 
 
-  <ion-list *ngIf="futureAppt">
+  <ion-list *ngIf="!isPast">
    
       <ion-item *ngFor="let future of futureAppointments">
         <ion-grid>
@@ -83,7 +83,7 @@
       </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="pastAppt">
+  <ion-list *ngIf="isPast">
     <ion-item *ngFor="let past of pastAppointments">
       <ion-grid>
         <ion-row class="grey-text">

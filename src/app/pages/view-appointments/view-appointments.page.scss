@@ -37,8 +37,19 @@ ion-spinner {
   margin: auto;
 }
 
-.active{
+// .active{
+//   color: #6c47af;
+//   font-size: larger;
+// }
+
+.active-color{
+  // text-decoration: underline;
   color: #6c47af;
-  font-size: larger;
+  font-weight: bolder;
+}
+
+.default-color{
+  color: grey;
+  // text-decoration: underline;
 }
 

@@ -26,6 +26,7 @@ import { rangeGenerator } from "src/app/engine/utility";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { DepartmentService } from "src/app/services/department.service";
 
+
 @Component({
   selector: "app-view-appointments",
   templateUrl: "./view-appointments.page.html",
@@ -38,9 +39,8 @@ export class ViewAppointmentsPage implements OnInit {
   viewAll = false;
   pastAppointments = [];
   futureAppointments = []
-  pastAppt = false;
-  futureAppt = true;
-  active;
+  isPast = false;
+  active = 'active-color'
   appt ="" ;
   
 
@@ -310,28 +310,15 @@ export class ViewAppointmentsPage implements OnInit {
       })
     }
 
-    appts(appointment){
-      if(appointment === 'past'){
-        this.pastAppt = true
-        
-      }else{
-        this.pastAppt = false
+    appts(apptType: "past" | "future"){
+      if(apptType === "past") {
+        this.isPast = true
+      } else {
+        this.isPast = false
       }
-      if(appointment === 'future'){
-        this.futureAppt = true
-      }else{
-        this.futureAppt = false
-      }
- 
     }
 
-    // checkingAppt(){
-    //   if(this.pastAppt && this.pastAppointments?.length > 1){
-    //     this.appt = 'No future Appointment'
-    //   }else{
-    //     this.appt = ''
-    //   }
-    // }
+ 
 
     
   }
