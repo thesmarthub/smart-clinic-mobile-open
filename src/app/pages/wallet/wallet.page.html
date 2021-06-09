@@ -52,7 +52,7 @@
           </ion-col>
           <ion-col size="4">
             <ion-label><small class="grey-text">{{item.verified_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
-           <ion-text [class.green-text]="item.status === 'successful'" [class.red-text]="item.status === 'failed'">{{item.status |titlecase}}</ion-text>
+           <ion-text [class.green-text]="item.status === 'successful'" [class.red-text]="item.status === 'failed'"><small>{{item.status |titlecase}}</small></ion-text>
           </ion-col>
           <ion-col size="3">
             <ion-label><small color='primary'>{{item.payment_type|uppercase}}</small></ion-label>
