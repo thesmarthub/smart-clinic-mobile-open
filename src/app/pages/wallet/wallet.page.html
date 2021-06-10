@@ -1,6 +1,8 @@
-<!-- <ion-toolbar>
-    <ion-title>My Wallet</ion-title>
-  </ion-toolbar> -->
+<ion-toolbar>
+  <ion-title color="primary">
+    <ion-icon (click)="goBack()" name="arrow-back"></ion-icon> My Wallet
+  </ion-title>
+</ion-toolbar>
 
 <!-- <ion-item style="padding-left: 100px; padding-right: 100px;" > -->
 <ion-item>
@@ -9,7 +11,7 @@
       <!-- <ion-item> -->
       <ion-text>Balance:</ion-text>
       <br>
-      <ion-text class="balance">&#8358;{{walletBalance | number}}</ion-text>
+      <ion-text >&#8358; <span class="balance">{{walletBalance | number}}</span></ion-text>
       <!-- </ion-item> -->
     </ion-col>
     <ion-col size="7">
@@ -19,7 +21,8 @@
         </ion-item>
         <ion-item>
           <ion-button [disabled]="loading" *ngIf="showNext" (click)="initTransaction()">Next</ion-button>
-          <app-flutterwave [amount]="amount" [transactionRef]="txRef" *ngIf="!showNext"></app-flutterwave>
+          <app-flutterwave [amount]="amount" [subaccounts]="subaccounts" [transactionRef]="txRef" *ngIf="!showNext">
+          </app-flutterwave>
           <!-- <ion-button *ngIf="loading" (click)="initTransaction()">Next</ion-button>
         <app-flutterwave
           [amount]="amount"
@@ -41,7 +44,9 @@
 
   <ion-spinner *ngIf="loadingActivities"></ion-spinner>
   <ion-text class="grey-text" style="font-size: 28px;" *ngIf="transactions.length < 1 && !loadingActivities">
-    <span><ion-icon name="alert"></ion-icon></span> No Activities
+    <span>
+      <ion-icon name="alert"></ion-icon>
+    </span> No Activities
   </ion-text>
   <ion-list>
     <ion-item *ngFor="let item of transactions; let i=index">
@@ -51,8 +56,11 @@
             <ion-icon color='primary' name="information-circle-outline"></ion-icon>
           </ion-col>
           <ion-col size="4">
-            <ion-label><small class="grey-text">{{item.verified_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
-           <ion-text [class.green-text]="item.status === 'successful'" [class.red-text]="item.status === 'failed'"><small>{{item.status |titlecase}}</small></ion-text>
+            <ion-label><small class="grey-text">{{item.verified_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small>
+            </ion-label>
+            <ion-text [class.green-text]="item.status === 'successful'" [class.red-text]="item.status === 'failed'">
+              <small>{{item.status |titlecase}}</small>
+            </ion-text>
           </ion-col>
           <ion-col size="3">
             <ion-label><small color='primary'>{{item.payment_type|uppercase}}</small></ion-label>

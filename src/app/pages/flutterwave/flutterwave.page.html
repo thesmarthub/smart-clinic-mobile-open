@@ -5,8 +5,9 @@
 </ion-header>
 
 <ion-content> -->
-  <flutterwave-make-payment [public_key]="publicKey" [amount]="amount" currency='NGN' payment_options="card" redirect_url=""
+<!-- <flutterwave-make-payment [public_key]="publicKey" [amount]="amount" currency='NGN' payment_options="card" redirect_url=""
     [text]="paymentText" [customer]="customerDetails" [customizations]="customizations" [meta]="meta"
     [tx_ref]="transactionRef" (callback)="makePaymentCallback($event)" (close)="closedPaymentModal()">
-  </flutterwave-make-payment>
+  </flutterwave-make-payment> -->
+<ion-button color="primary" (click)="makePayment()">{{this.paymentText}}</ion-button>
 <!-- </ion-content> -->

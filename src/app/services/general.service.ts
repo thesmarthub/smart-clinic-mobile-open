@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { LoadingController } from "@ionic/angular";
+import { AlertController, LoadingController } from "@ionic/angular";
 import { BehaviorSubject } from "rxjs";
 import { ApiAction } from "src/interfaces/action";
 import { API } from "src/interfaces/api";
@@ -83,51 +83,52 @@ export class GeneralService {
     );
   };
 
-  presentLoading = async (conf, action?: "open" | "close") => {
+  presentLoading = async (
+    conf: { message: string; loader?: HTMLIonLoadingElement },
+    action?: "open" | "close"
+  ) => {
     const createLoader = async () => {
-      return await this.loadingController.create({
+      return this.loadingController.create({
         message: conf.message,
         spinner: "bubbles",
       });
     };
+    if (!conf.loader) {
+      conf.loader = await createLoader();
+    }
     if (action) {
       switch (action) {
         case "open":
-          if (conf.loader) {
-            await conf.loader.present();
-          } else {
-            conf.loader = await createLoader();
-            setTimeout(() => {
-              if (conf.loader?.isConnected) {
-                conf.loader.dismiss();
-              }
-            }, 30000);
-          }
+          conf.loader.present();
+          setTimeout(() => {
+            if (conf.loader?.isConnected) {
+              conf.loader.dismiss();
+            }
+          }, 30000);
+
           break;
 
         default:
-          if (conf.loader) {
-            await conf.loader.dismiss();
-          }
+          await conf.loader.dismiss();
           break;
       }
       return;
     }
 
-    if (conf.currentEvent === conf.expectedEvent) {
-      if (conf.loader) {
-        await conf.loader.dismiss();
-      }
-      conf.loader = await createLoader();
-      await conf.loader.present();
-      setTimeout(() => {
-        if (conf.loader?.isConnected) {
-          conf.loader.dismiss();
-        }
-      }, 30000);
-    } else if (conf.loader) {
-      await conf.loader.dismiss();
-    }
+    // if (conf.currentEvent === conf.expectedEvent) {
+    //   if (conf.loader) {
+    //     await conf.loader.dismiss();
+    //   }
+    //   conf.loader = await createLoader();
+    //   await conf.loader.present();
+    //   setTimeout(() => {
+    //     if (conf.loader?.isConnected) {
+    //       conf.loader.dismiss();
+    //     }
+    //   }, 30000);
+    // } else if (conf.loader) {
+    //   await conf.loader.dismiss();
+    // }
   };
 }
 

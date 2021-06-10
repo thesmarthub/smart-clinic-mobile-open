@@ -6,7 +6,9 @@ import { ChatMessage } from "src/app/models/chat-message";
 import { ChatService } from "src/app/services/chat.service";
 import { DepartmentService } from "src/app/services/department.service";
 import { DoctorService } from "src/app/services/doctor.service";
-import { CallNumber } from '@ionic-native/call-number/ngx';
+import { CallNumber } from "@ionic-native/call-number/ngx";
+import { PaymentService } from "src/app/services/payment.service";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-doctors",
@@ -27,7 +29,9 @@ export class DoctorsPage implements OnInit {
     private _deptService: DepartmentService,
     private router: Router,
     private chatService: ChatService,
-    private callNumber: CallNumber
+    private callNumber: CallNumber,
+    private _paymentService: PaymentService,
+    private _alertCtrl: AlertController
   ) {}
 
   ngOnInit() {}
@@ -44,6 +48,7 @@ export class DoctorsPage implements OnInit {
     //     this.filterDoctors(this.searchInput);
     //   }
     // });
+
     this.fetchDoctors();
     this.presentDepartments();
   }
@@ -56,6 +61,12 @@ export class DoctorsPage implements OnInit {
     this.selectedDept = data;
     this.fetchDoctors();
   };
+
+  async fetchWalletBalance() {
+    const walletBalance = await this._paymentService.fetchWalletBalance();
+
+    return walletBalance;
+  }
 
   fetchDoctors() {
     console.log("Fetch doctors");
@@ -110,10 +121,41 @@ export class DoctorsPage implements OnInit {
     // this.router.navigateByUrl("/tabs/chat");
   }
 
-  makeCall(number?) {
-    if(!number) number = this.store.currentHospital.phone1;
-    this.callNumber.callNumber(number, true)
-  .then(res => console.log('Launched dialer!', res))
-  .catch(err => console.log('Error launching dialer', err));
+  async makeCall(number?) {
+    const walletBalance = await this.fetchWalletBalance();
+    if (!walletBalance || walletBalance < 170) {
+      const alertCtrl = await this._alertCtrl.create({
+        header: `Insufficient Funds`,
+        message: `You must have at least 550 naira in your wallet. You currently have ${
+          walletBalance || 0
+        } naira.`,
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+            cssClass: "secondary",
+            handler: (blah) => {},
+          },
+          {
+            text: "Fund Wallet",
+            handler: () => {
+              this.router.navigate(["/wallet"], {
+                queryParams: {
+                  showBack: "yes",
+                },
+              });
+            },
+          },
+        ],
+      });
+
+      await alertCtrl.present();
+      return;
+    }
+    if (!number) number = this.store.currentHospital.phone1;
+    this.callNumber
+      .callNumber(number, true)
+      .then((res) => console.log("Launched dialer!", res))
+      .catch((err) => console.log("Error launching dialer", err));
   }
 }

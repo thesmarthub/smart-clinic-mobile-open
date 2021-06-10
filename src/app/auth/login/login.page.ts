@@ -21,8 +21,6 @@ export class LoginPage implements OnInit {
   loading = false;
   loaderConf = {
     message: "Please wait...",
-    currentEvent: "",
-    expectedEvent: "LOGGING IN",
   };
   subs: Subscription[] = [];
 
@@ -36,9 +34,11 @@ export class LoginPage implements OnInit {
   ngOnInit(): void {
     this.subs.push(
       this._authService.authListenerWithData.subscribe((status) => {
-        this.loaderConf.currentEvent = status.event;
         if (status.event === "LOGGING IN") {
-          this.gService.presentLoading(this.loaderConf);
+          this.gService.presentLoading(this.loaderConf, "open");
+        }
+        if (status.event === "LOGGED IN") {
+          this.gService.presentLoading(this.loaderConf, "close");
         }
         if (status.event === "LOGIN FAILED") {
           console.log("Failed to login!!!", status);

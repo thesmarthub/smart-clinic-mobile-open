@@ -1,4 +1,6 @@
+import { Location } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { AlertController } from "@ionic/angular";
 import { PaymentService } from "src/app/services/payment.service";
 
@@ -12,20 +14,30 @@ export class WalletPage implements OnInit {
   loading = false;
   amount;
   txRef;
+  subaccounts;
   walletBalance: number;
   interval;
   transactions = [];
-  loadingActivities = true
+  loadingActivities = true;
+  showBack = false;
 
   constructor(
     public paymentService: PaymentService,
-    private alertCtrl: AlertController
-  ) { }
+    private alertCtrl: AlertController,
+    private aRoute: ActivatedRoute,
+    private location: Location
+  ) {
+    this.aRoute.queryParams.subscribe((data) => {
+      if(data?.showBack === "yes") {
+        this.showBack = true;
+      } 
+    })
+  }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ionViewDidEnter() {
-    this.loadingActivities = true
+    this.loadingActivities = true;
     this.fetchWalletBalance();
     this.walletTransactions();
     this.interval = setInterval(() => this.fetchWalletBalance(), 15000);
@@ -37,7 +49,11 @@ export class WalletPage implements OnInit {
     clearInterval(this.interval);
   }
 
-  generatePayment() { }
+  goBack() {
+    this.location.back();
+  }
+
+  generatePayment() {}
 
   async fetchWalletBalance() {
     // console.log("fetching wallet balance");
@@ -46,15 +62,15 @@ export class WalletPage implements OnInit {
     if (typeof walletBalance !== "boolean") {
       this.walletBalance = walletBalance;
     }
+    
   }
 
   walletTransactions() {
     // this.loadingActivities = true
     this.paymentService.fetchWalletTransactions().subscribe((data) => {
-      this.transactions = data
-      this.loadingActivities = false
-    })
-
+      this.transactions = data;
+      this.loadingActivities = false;
+    });
   }
 
   async initTransaction() {
@@ -78,6 +94,7 @@ export class WalletPage implements OnInit {
 
     this.txRef = tx["reference"];
     this.amount = tx["amount"];
+    this.subaccounts = tx["subaccounts"];
     setTimeout(() => {
       this.amount = 0;
       this.txRef = "";

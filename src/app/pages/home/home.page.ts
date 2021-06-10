@@ -85,6 +85,9 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
+    if(!this.store.user || !this.store.currentHospital) {
+      this.router.navigate(["/auth/login"])
+    }
     console.log("Home Page loaded");
   }
 

@@ -21,7 +21,7 @@
     </ion-card-content>
   </ion-card>
   <ion-fab (click)="openCart()" #cart vertical="bottom" horizontal="end" slot="fixed">
-    <div class="counter card-length">{{ cartItemCount | async }}</div>
+    <div class="counter card-length">{{ this.cartService.getCartItemCount() | async }}</div>
     <ion-icon name="cart" class="cart-icon"></ion-icon>
   </ion-fab>
 
@@ -37,7 +37,7 @@
     </ion-text>
     <ion-item *ngFor="let p of pService.currentValues.pendingBills | async">
       <ion-grid>
-        <ion-row fill="clear" (click)="updateCart(p)">
+        <ion-row fill="clear">
           <ion-col size=5>
             <ion-label class="grey-text"><small>{{ p.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small>
             </ion-label>
@@ -55,6 +55,7 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+    <br><br>
   </ion-list>
 
 

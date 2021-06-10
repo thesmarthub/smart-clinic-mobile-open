@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { BehaviorSubject } from "rxjs";
+import { catchError, map } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { IAPIResponse } from "src/interfaces/general";
 import { IHospital } from "src/interfaces/hospital";
@@ -91,5 +92,24 @@ export class HospitalService {
     if (hospital.smartCode) {
       hospital.smart_code = hospital.smartCode;
     }
+  }
+
+  async checkHospitalStatus(hospital: IHospital) {
+    return await this._genService.http
+      .get<{ message: string }>(
+        `${this._genService.baseUrl}hospital/patient-request`,
+        {
+          params: {
+            hospital_smart_code: hospital.smart_code,
+            action: "PING_HOSPITAL"
+          },
+        }
+      )
+      .pipe(
+        map((data) => data.message === "pong"),
+        catchError((err) => {
+          return of(false);
+        })
+      );
   }
 }

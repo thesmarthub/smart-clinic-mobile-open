@@ -65,7 +65,10 @@ export class Store {
   }
 
   get lastLoginTime() {
-    return moment(localStorage.getItem("lastLoginTime"));
+    const toReturn = localStorage.getItem("lastLoginTime")
+      ? moment(localStorage.getItem("lastLoginTime"))
+      : moment().subtract(10, "minute");
+    return toReturn;
   }
 
   get notNeedLogin() {

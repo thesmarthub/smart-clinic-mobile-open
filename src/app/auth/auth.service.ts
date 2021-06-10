@@ -126,7 +126,7 @@ export class AuthService {
         }
       );
   }
-  initializeProfile(id) {
+  initializeProfile(id, hospitalNumber?) {
     // this.authListenerWithData.next({ event: 'LOGGING IN' });
     this._http
       .get<IAPIResponse<any>>(`${this.baseURL}auth/get-patient/${id}`)
@@ -134,6 +134,9 @@ export class AuthService {
         (res: any) => {
           if (res?.result) {
             console.log(res);
+            if (hospitalNumber) {
+              res["result"].hospital_number = hospitalNumber;
+            }
             this.patient_profile.next(res["result"]);
             this.store.user = res["result"];
           } else {
@@ -165,7 +168,7 @@ export class AuthService {
         if (showNotification) {
           alert(res.message);
         }
-        this.initializeProfile(this.store.user._id);
+        this.initializeProfile(this.store.user._id, this.store.user.hospital_number);
       });
   }
 
@@ -191,7 +194,7 @@ export class AuthService {
       )
       .subscribe((res) => {
         this.toaster({ text: res.message, duration: 2000 });
-        this.initializeProfile(_id);
+        this.initializeProfile(_id, this.store.user.hospital_number);
       });
   }
 
@@ -225,7 +228,7 @@ export class AuthService {
       );
   }
 
-  fetchActiveHospitalAndProfile(smartCode) {
+  fetchActiveHospitalAndProfile(smartCode, callback = () => {}) {
     this.authListenerWithData.next({ event: "FETCHING HOSPITAL PROFILE" });
     this._http
       .get<IAPIResponse<IHospital>>(
@@ -234,7 +237,7 @@ export class AuthService {
       .subscribe(
         (res) => {
           if (res?.result) {
-            this.fetchProfileInHospital(res.result);
+            this.fetchProfileInHospital(res.result, callback);
           } else {
             this.toaster({
               text: "Could not fetch active hospital. Please try again.",
@@ -253,8 +256,8 @@ export class AuthService {
       );
   }
 
-  fetchProfileInHospital(selectedHospital: IHospital) {
-    console.log(selectedHospital)
+  fetchProfileInHospital(selectedHospital: IHospital, callback = () => {}) {
+    console.log(selectedHospital);
     this._http
       .get<IAPIResponse<IUser>>(`${this.baseURL}hospital/patient-request`, {
         params: {
@@ -290,10 +293,7 @@ export class AuthService {
               duration: 2000,
             });
             this.router.navigateByUrl("/tabs/home");
-          } else if (
-            this.store.user.active_hospital_smart_code !==
-            "SMART_CLINIC_DEFAULT"
-          ) {
+          } else if (selectedHospital.smart_code !== "SMART_CLINIC_DEFAULT") {
             const currentHospitalClone = this.store.currentHospital;
             currentHospitalClone["smart_code"] = "SMART_CLINIC_DEFAULT";
             this.store.currentHospital = currentHospitalClone;
@@ -322,10 +322,14 @@ export class AuthService {
             duration: 2000,
           });
           this.authListenerWithData.next({ event: "DEFAULT" });
+        },
+        () => {
+          callback();
         }
       );
   }
 
+  //Should be deprecated in favor of a more reliable solurioin
   defaultHospitalRegistration() {
     this._http
       .post<IAPIResponse<IUser>>(

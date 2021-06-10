@@ -35,6 +35,7 @@ export class CartPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.cartService.cartModal = this.modalCtrl;
     this.cart = this.cartService.getCart();
     this.customerDetails = {
       name: this.store.userFullName,
@@ -46,18 +47,19 @@ export class CartPage implements OnInit, OnDestroy {
         if (data) {
           this.verifyingPayment = true;
           this.paymentService.verifyPayment(data);
-          this.paymentService.clean("afterPayment")
+          this.paymentService.clean("afterPayment");
         }
       }
     );
     const sub2 = this.paymentService.currentValues.afterVerification.subscribe(
       (data) => {
-        this.verifyingPayment = false;
-        alert(data.message);
-        if (!data.failed) {
-          this.closedPaymentModal();
+        if (data) {
+          this.verifyingPayment = false;
+          if (!data?.failed) {
+            this.closedPaymentModal();
+          }
+          this.paymentService.clean("afterVerification");
         }
-        this.paymentService.clean("afterVerification")
       }
     );
     this.subs.push(sub1, sub2);
@@ -73,7 +75,7 @@ export class CartPage implements OnInit, OnDestroy {
 
   ionViewDidEnter() {
     // if (this.getTotal() < 1) {
-      this.initTransaction();
+    this.initTransaction();
     // }
   }
 
@@ -109,9 +111,12 @@ export class CartPage implements OnInit, OnDestroy {
       return;
     }
     const tx = await this.paymentService
-      .generateTxRef(this.cart.map((data) => data.id), {
-        action: "UPDATE_BILLS"
-      })
+      .generateTxRef(
+        this.cart.map((data) => data.id),
+        {
+          action: "UPDATE_BILLS",
+        }
+      )
       .then((data) => data);
     if (tx["error"]) {
       (
