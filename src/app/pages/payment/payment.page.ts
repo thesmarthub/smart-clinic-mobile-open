@@ -48,6 +48,10 @@ export class PaymentPage implements OnInit {
     this.fetchBills();
   }
 
+  ionViewDidLeave() {
+    this.pService.departmentRoute = null;
+  }
+
   loadData() {
     this.cart = this.cartService.getCart();
     this.cartItemCount = this.cartService.getCartItemCount();
