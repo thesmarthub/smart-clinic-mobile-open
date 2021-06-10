@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import * as moment from "moment";
 import { BehaviorSubject, Subscription } from "rxjs";
@@ -7,6 +8,7 @@ import { CartService } from "src/app/services/cart.service";
 import { PaymentService } from "src/app/services/payment.service";
 import { ApiAction } from "src/interfaces/action";
 import { CartPage } from "../cart/cart.page";
+
 
 @Component({
   selector: "app-payment",
@@ -19,12 +21,23 @@ export class PaymentPage implements OnInit {
   walletBalance: number;
   cartItemCount: BehaviorSubject<number>;
   subs: Subscription[] = [];
+  billType;
   @ViewChild("cart", { static: false, read: ElementRef }) fab: ElementRef;
   constructor(
     public pService: PaymentService,
     public cartService: CartService,
-    private modalCtrl: ModalController
-  ) {}
+    public aRoute: ActivatedRoute,
+    private modalCtrl: ModalController,
+    // private badge: Badge
+  ) {
+    this.aRoute.queryParams.subscribe((data) => {
+      if (data?.department_route) {
+        this.pService.departmentRoute = data.department_route
+      } else {
+        this.pService.departmentRoute = null
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadData();
@@ -33,6 +46,10 @@ export class PaymentPage implements OnInit {
   ionViewDidEnter() {
     this.fetchWalletBalance();
     this.fetchBills();
+  }
+
+  ionViewDidLeave() {
+    this.pService.departmentRoute = null;
   }
 
   loadData() {
@@ -134,5 +151,5 @@ export class PaymentPage implements OnInit {
     node.addEventListener("animationend", handleAnimationEnd);
   }
 
-  
+
 }

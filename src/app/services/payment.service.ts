@@ -36,7 +36,7 @@ export class PaymentService {
   currentState = new BehaviorSubject(PaymentState);
   store = new Store();
   creatingLink = false;
-  
+  departmentRoute = null
 
   constructor(
     private gService: GeneralService,
@@ -75,11 +75,22 @@ export class PaymentService {
       return {
         paidBills: [],
         pendingBills: [],
+        drugBills: [],
       };
     }
     return {
-      paidBills: bills?.filter((bill) => bill.payment_status === true),
-      pendingBills: bills?.filter((bill) => bill.payment_status === false),
+      paidBills: bills?.filter((bill) => {
+        if (this.departmentRoute && bill.department_route !== this.departmentRoute) {
+          return false
+        }
+        return bill.payment_status === true
+      }),
+      pendingBills: bills?.filter((bill) => {
+        if (this.departmentRoute && bill.department_route !== this.departmentRoute) {
+          return false
+        }
+        return bill.payment_status === false
+      }),
     };
   }
 
@@ -101,7 +112,7 @@ export class PaymentService {
         `${this.gService.baseUrl}payment/generate-transaction-ref`,
         {
           bills,
-          
+
         },
         {
           params: {
@@ -168,9 +179,9 @@ export class PaymentService {
       .catch((e) => false);
   }
 
-  fetchWalletTransactions(){
-    return this._http.get<APIResult<object[]>>(`${this.gService.baseUrl}payment/patient-transactions`,{params:{action:'UPDATE_SMART_WALLET'}})
-    .pipe(map((data)=> data.result.filter((res:Record<string, any>)=>{return res.action === 'UPDATE_SMART_WALLET'})))
+  fetchWalletTransactions() {
+    return this._http.get<APIResult<object[]>>(`${this.gService.baseUrl}payment/patient-transactions`, { params: { action: 'UPDATE_SMART_WALLET' } })
+      .pipe(map((data) => data.result.filter((res: Record<string, any>) => { return res.action === 'UPDATE_SMART_WALLET' })))
   }
 
   clean(prop) {
