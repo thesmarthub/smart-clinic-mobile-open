@@ -31,12 +31,21 @@ ion-icon {
 
 ion-tab-button{
     background-color: transparent;
-    ion-icon{
-        color: #6c47af;
-    }
-    ion-label{
-        color: #6c47af;
-    }
+    // ion-icon{
+    //     // color: #6c47af;
+    //     color: grey;
+    // }
+    // ion-label{
+    //     color: #6c47af;
+    // }
+}
+
+.active{
+    color: #6c47af;
+}
+
+.icon-btn{
+    color: grey;
 }
 
 // .tab-left-border{
