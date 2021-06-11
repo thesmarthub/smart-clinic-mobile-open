@@ -13,72 +13,6 @@
 
 <br> -->
 
-<!-- <ion-header class="head-border">
-  <ion-row>
-    <ion-avatar (click)="eventTrigger(openMenu)">
-      <ion-img [src]="store.user?.profileImage"></ion-img>
-    </ion-avatar>
-    <ion-row>
-      <ion-text class="top-text">Hi, {{store.user?.fname}} {{store.user?.lname}}
-      </ion-text>
-    </ion-row>
-  </ion-row>
-</ion-header> -->
-
-<!-- <ion-card class="hospital-card" size='6'>
-  <ion-card-content>
-    <ion-row>
-      <ion-text>CURRENT HOSPITAL</ion-text>
-    </ion-row>
-    <ion-row>
-      <ion-text>{{store.currentHospital.name}}</ion-text>
-    </ion-row>
-  </ion-card-content>
-</ion-card> -->
-
-<!-- <ion-content>
-  <div>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12">
-          <ion-card class="hospital-card">
-            <ion-card-header>
-              <ion-card-subtitle class="smoke-text">Current Hospital</ion-card-subtitle>
-              <ion-card-title class="white-text">{{store.currentHospital.name}}</ion-card-title>
-            </ion-card-header>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-
-  
-    <div class="ion-justify-content-center centralize question">
-      <ion-text style="font-size: 20px" color="primary">What would you like to do?
-      </ion-text>
-    </div>
-  
-
-  <div class="bottom-row">
-    <ion-grid>
-      <ion-row>
-        <ion-col *ngFor="let card of cards" size="6">
-          <ion-card class="link-card" [routerLink]="card.link">
-            <ion-card-content>
-              <div class="img-border">
-                <ion-img class="icon-img" [src]="card.img"></ion-img>
-              </div>
-              <ion-text>{{card.title}}</ion-text>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
-</ion-content> -->
-
-
-
 <div class="bck">
   <ion-grid>
     <ion-row>
@@ -110,10 +44,6 @@
     </ion-grid>
   </div>
 
-    <!-- <ion-text style="font-size: 20px" color="primary">What would you like to do?
-  </ion-text> -->
-
-
   <ion-grid>
     <ion-row>
       <ion-col size="6" *ngFor="let card of cards">
@@ -136,5 +66,5 @@
       </ion-col>
       </ion-row>
 </ion-grid>
-<!-- </ion-content> -->
+
 </div>

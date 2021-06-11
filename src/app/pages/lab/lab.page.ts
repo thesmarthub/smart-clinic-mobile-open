@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { LoadLabRequests } from 'src/app/actions/events/lab';
 import { LoadedLabRequests } from 'src/app/actions/states/lab';
@@ -10,13 +11,17 @@ import { LabService } from 'src/app/services/lab.service';
 })
 export class LabPage implements OnInit {
 
-  constructor(public lService: LabService) { }
+  constructor(public lService: LabService, public location: Location) { }
 
   ngOnInit() {
   }
 
   ionViewDidEnter() {
     this.lService.triggerEvent(LoadLabRequests)
+  }
+
+  goBack(){
+    this.location.back()
   }
 
 }

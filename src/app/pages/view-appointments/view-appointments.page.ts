@@ -25,6 +25,7 @@ import { Store } from "../../engine/store";
 import { rangeGenerator } from "src/app/engine/utility";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { DepartmentService } from "src/app/services/department.service";
+import { Location } from "@angular/common"
 
 
 @Component({
@@ -60,7 +61,8 @@ export class ViewAppointmentsPage implements OnInit {
     private alertController: AlertController,
     private actionSheetController: ActionSheetController,
     private pickerController: PickerController,
-    private deptService: DepartmentService
+    private deptService: DepartmentService,
+    public location: Location
   ) {}
 
   ngOnInit() {}
@@ -318,7 +320,9 @@ export class ViewAppointmentsPage implements OnInit {
       }
     }
 
- 
+    goBack(){
+      this.location.back()
+    }
 
     
   }

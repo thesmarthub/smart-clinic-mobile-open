@@ -8,6 +8,7 @@ import { CartService } from "src/app/services/cart.service";
 import { PaymentService } from "src/app/services/payment.service";
 import { ApiAction } from "src/interfaces/action";
 import { CartPage } from "../cart/cart.page";
+import { Location } from "@angular/common"
 
 
 @Component({
@@ -28,6 +29,7 @@ export class PaymentPage implements OnInit {
     public cartService: CartService,
     public aRoute: ActivatedRoute,
     private modalCtrl: ModalController,
+    public location: Location
     // private badge: Badge
   ) {
     this.aRoute.queryParams.subscribe((data) => {
@@ -151,5 +153,7 @@ export class PaymentPage implements OnInit {
     node.addEventListener("animationend", handleAnimationEnd);
   }
 
-
+  goBack(){
+    this.location.back()
+  }
 }
