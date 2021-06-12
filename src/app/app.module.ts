@@ -15,12 +15,14 @@ import { CalendarModule } from "ion2-calendar";
 import { FlutterwaveModule } from "flutterwave-angular-v3"
 import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
