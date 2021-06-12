@@ -10,6 +10,7 @@ import { TabsService } from "../services/tabs.service";
   styleUrls: ["tabs.page.scss"],
 })
 export class TabsPage {
+  isActive = false
   openMenu = OpenMenu;
   constructor(private menu: MenuController, private tService: TabsService, private router:Router) {
     this.tService.currentValues.menuAction.subscribe((action) => {

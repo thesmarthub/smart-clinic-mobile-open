@@ -1,7 +1,7 @@
 <!-- <ion-header> -->
-<!-- <ion-toolbar>
-  <ion-title color="primary">Scan Requests</ion-title>
-</ion-toolbar> -->
+<ion-toolbar (click)='goBack()'>
+  <ion-title color="primary"><ion-icon name="arrow-back" ></ion-icon> Scan Requests</ion-title>
+</ion-toolbar>
 <!-- <ion-searchbar color=""></ion-searchbar> -->
 <!-- <ion-item class="centralize" > -->
   <!-- </ion-item> -->
@@ -17,7 +17,7 @@
                 <ion-row>
                 <ion-col>
               <ion-label><small class="grey-text">{{item.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
-              <ion-label><small [class.pending]="item.completed === false" [class.completed]="item.completed === true">{{item.completed === true?'Completed':'Pending'}}</small></ion-label>
+              <ion-label><small [class.pending]="item.completed === false" [class.completed]="item.completed === true">{{item.completed === true?'Completed & Ready':'Pending'}}</small></ion-label>
               </ion-col>
               <ion-col>
               <ion-text color='primary'>{{item.service_name}}</ion-text>

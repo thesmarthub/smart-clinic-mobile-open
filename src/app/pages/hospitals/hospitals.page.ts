@@ -92,4 +92,6 @@ export class HospitalsPage implements OnInit {
   backClicked() {
     this._location.back();
   }
+
+ 
 }
