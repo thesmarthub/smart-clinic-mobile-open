@@ -80,7 +80,11 @@ const routes: Routes = [
   {
     path: 'onboarding',
     loadChildren: () => import('./pages/onboarding/onboarding.module').then( m => m.OnboardingPageModule)
-  }
+  },
+  {
+    path: 'start-screen',
+    loadChildren: () => import('./pages/start-screen/start-screen.module').then(m => m.StartScreenPageModule)
+  },
 
 ];
 @NgModule({

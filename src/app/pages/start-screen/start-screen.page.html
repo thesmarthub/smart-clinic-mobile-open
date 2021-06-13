@@ -88,24 +88,27 @@ Hello world
     <div class="doc">
       <ion-img style="height: 250px;" src="/assets/006-man.png"></ion-img>
       <ion-list>
-        <ion-radio-group value="biff">
+        <ion-radio-group value="biff" 
+        [(ngModel)]='selectedRadioGroup'
+        name='radio-group'
+        (ionChange)='radioGroupChange($event)'>
           <ion-list-header>
-            <ion-title color="primary">Please Join in as?</ion-title>
+            <ion-title color="primary">Are you a Doctor?</ion-title>
           </ion-list-header>
       
           <ion-item>
-            <ion-label color="primary">A User</ion-label>
-            <ion-radio slot="start" value="user"></ion-radio>
+            <ion-label color="primary">Yes, I am</ion-label>
+            <ion-radio value="doctor"></ion-radio>
           </ion-item>
       
           <ion-item>
-            <ion-label color="primary"> A Doctor</ion-label>
-            <ion-radio slot="start" value="doctor"></ion-radio>
+            <ion-label color="primary"> No, I'm not</ion-label>
+            <ion-radio value="user" ></ion-radio>
           </ion-item>
       
          
         </ion-radio-group>
       </ion-list>
     </div>
-    <ion-button style="float: right; margin-right: 10px;" routerLink="/onboarding" >Next</ion-button>
+    <ion-button style="float: right; margin-right: 10px;" (click)='nextPage()' >Next</ion-button>
   </div>

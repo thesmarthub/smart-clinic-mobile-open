@@ -10,6 +10,7 @@ import { Subscription } from "rxjs";
 import { GeneralService } from "src/app/services/general.service";
 import { AuthService } from "../auth.service";
 
+
 @Component({
   selector: "app-register",
   templateUrl: "./register.page.html",
@@ -30,7 +31,8 @@ export class RegisterPage implements OnInit {
     public authService: AuthService,
     private alertCtrl: AlertController,
     private loadingController: LoadingController,
-    private gService: GeneralService
+    private gService: GeneralService,
+ 
   ) {
     this.regForm = this.fb.group({
       fname: ["", Validators.required],
@@ -86,4 +88,6 @@ export class RegisterPage implements OnInit {
     }
     this.authService.register(this.regForm.value);
   }
+
+
 }

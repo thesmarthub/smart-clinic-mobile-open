@@ -56,6 +56,14 @@ export class Store {
     localStorage.setItem("staff", JSON.stringify(data));
   }
 
+  set userType(data){
+    localStorage.setItem("userType", JSON.stringify(data))
+  }
+
+  get userType(){
+    return JSON.parse(localStorage.getItem("userType"));
+  }
+
   get staff() {
     return JSON.parse(localStorage.getItem("staff"));
   }

@@ -1,6 +1,11 @@
+<ion-toolbar>
+ <ion-title><ion-icon name="close" color='primary' routerLink="/onboarding"></ion-icon></ion-title>
+  
+</ion-toolbar>
+
 <ion-content>
   <ion-grid class="centralize center-text">
-
+<ion-title color='primary'>Create an account</ion-title>
     <ion-row class="center-text" size="12">
       <ion-col>
         <form class="center-text" [formGroup]="regForm" (submit)="registerUser()">
@@ -85,11 +90,11 @@
           </ion-row>
 
 
-          <ion-col class="center-text small-text grey" style="padding-top: 15px;">
+          <!-- <ion-col class="center-text small-text grey" style="padding-top: 15px;">
             <ion-text> Are you a Doctor?
               <a routerLink="" (click)="authService.registerDoctor()" color="primary">Click Here</a>
             </ion-text>
-          </ion-col>
+          </ion-col> -->
         </form>
       </ion-col>
     </ion-row>

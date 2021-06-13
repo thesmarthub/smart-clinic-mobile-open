@@ -1,6 +1,11 @@
 
+<ion-toolbar>
+  <ion-title><ion-icon name="close" color='primary' routerLink="/onboarding"></ion-icon></ion-title>
+ </ion-toolbar>
+
 <form [formGroup]="loginForm" (ngSubmit)="login()">
   <ion-grid class="centralize">
+    <ion-title>Welcome Back</ion-title>
     <div>
       <ion-col>
         <ion-img src="/assets/icon-transparent.png"></ion-img>
@@ -47,11 +52,11 @@
           <div class="footer">
           <ion-text color="primary" routerLink="/auth/reset-password" class="small-text">Forgot Password?</ion-text>
           <br>
-            
+<!--             
           <ion-col class="center-text small-text grey" style="padding-top: 15px;">
             <ion-text>  Are you a Doctor?
               <a routerLink="" (click)="_authService.registerDoctor()" color="primary">Click Here</a></ion-text>
-        </ion-col>
+        </ion-col> -->
           </div>
           
   </ion-grid>
