@@ -1,40 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-onboarding',
-  templateUrl: './onboarding.page.html',
-  styleUrls: ['./onboarding.page.scss'],
+  selector: "app-onboarding",
+  templateUrl: "./onboarding.page.html",
+  styleUrls: ["./onboarding.page.scss"],
 })
 export class OnboardingPage implements OnInit {
-  welcome = true;
-  appointments = false;
-  notifications = false;
-  hospitals = false;
-  payment = false;
+  constructor() {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  next(){
-    this.appointments = true;
-    this.welcome = false
-  }
-
-  nextNotifications(){
-    this.notifications = true
-    this.appointments = false
-  }
-
-  nextHospitals(){
-    this.hospitals = true
-    this.notifications = false
-  }
-
-  nextPayment(){
-    this.payment = true
-    this.hospitals = false
-  }
-
+  slideOpts = {
+    initialSlide: 0,
+    speed: 200,
+    autoplay: {
+      delay: 5000,
+    },
+    
+  };
 }

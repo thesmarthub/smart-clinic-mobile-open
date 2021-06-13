@@ -1,0 +1,111 @@
+<!-- 
+<div id="overlay" onclick="off()">
+Hello world
+</div>
+<div class="overall" style="padding:20px">
+  <ion-col>
+    <ion-img src="/assets/icon.png"></ion-img>
+  </ion-col>
+</div> -->
+
+<div class="main-div" *ngIf="!doctorQuestion">
+
+<a [class]="frameClass" style="--img:url(/assets/icon.png);--w:80vmin;--h:80vmin;">
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div>
+  <div class="slice"></div></a>
+
+  <!-- <ion-item> -->
+    <!-- </ion-item> -->
+    
+    <ion-text style="padding: 20%;" color='primary'>...Healthcare Everywhere</ion-text>
+  </div>
+
+  
+  
+  <div *ngIf="doctorQuestion">
+    <div class="doc">
+      <ion-img style="height: 250px;" src="/assets/006-man.png"></ion-img>
+      <ion-list>
+        <ion-radio-group value="biff">
+          <ion-list-header>
+            <ion-title color="primary">Please Join in as?</ion-title>
+          </ion-list-header>
+      
+          <ion-item>
+            <ion-label color="primary">A User</ion-label>
+            <ion-radio slot="start" value="user"></ion-radio>
+          </ion-item>
+      
+          <ion-item>
+            <ion-label color="primary"> A Doctor</ion-label>
+            <ion-radio slot="start" value="doctor"></ion-radio>
+          </ion-item>
+      
+         
+        </ion-radio-group>
+      </ion-list>
+    </div>
+    <ion-button style="float: right; margin-right: 10px;" routerLink="/onboarding" >Next</ion-button>
+  </div>

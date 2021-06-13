@@ -24,7 +24,11 @@ const routes: Routes = [
   {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+  },  {
+    path: 'start-screen',
+    loadChildren: () => import('./start-screen/start-screen.module').then( m => m.StartScreenPageModule)
   },
+
 
 
 ];

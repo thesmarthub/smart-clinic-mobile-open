@@ -84,8 +84,8 @@ export class DoctorsPage implements OnInit {
             console.log("Groups list fetched successfully", groupList);
 
             /* you can display the list of groups available using groupList */
-            groupList.forEach(group => {
-              CometChat.leaveGroup(group.getGuid()).then(
+            groupList.forEach((group: CometChat.Group) => {
+              CometChat.leaveGroup(group?.getGuid()).then(
                 hasLeft => {
                   console.log("Group left successfully:", hasLeft);
                 },
