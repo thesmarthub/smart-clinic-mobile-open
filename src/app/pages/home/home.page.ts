@@ -59,6 +59,23 @@ export class HomePage implements OnInit {
     },
   ];
 
+  doctorsCards = [
+    {
+      title: "Appointments",
+      icon: "fa fa-calendar",
+      link: "/tabs/view-appointments",
+      img: "/assets/004-calendar.png",
+      bgColor: "appt",
+    },
+    {
+      title: "Talk to Doctor",
+      icon: "fa fa-user",
+      link: "/tabs/doctors",
+      img: "/assets/019-doctor.png",
+      bgColor: "doctors",
+    },   
+  ];
+
   store = new Store();
   backButton: Observer<any>;
 

@@ -7,8 +7,14 @@
 
 .img-card {
   height: 30px;
-  
-  // margin-bottom: 7px;
+
+}
+
+
+.doc-img-card {
+  height: 80px;
+  margin-bottom: 100px;
+
 }
 
 ion-avatar {
@@ -162,6 +168,16 @@ cursor: pointer;
   -moz-box-shadow: none;
   box-shadow: none;
 }
+
+.doc-img-design{
+  border-radius: 0.5em;
+  // padding: 30px;
+  text-align: center;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
 
 .menu{
   padding: 0.3em; 
