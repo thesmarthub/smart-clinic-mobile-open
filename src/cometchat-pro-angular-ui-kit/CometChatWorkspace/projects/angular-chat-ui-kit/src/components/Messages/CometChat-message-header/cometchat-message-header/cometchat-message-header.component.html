@@ -43,6 +43,9 @@
       *ngIf="checkNotBlocked"
       (click)="videoCall()"
     ></div>
-    <div class="chatOptionStyle detailsOption" (click)="openUserDetail()"></div>
+    <div class="chatOptionStyle" *ngIf="checkNotBlocked" (click)="endChat()">
+      End
+    </div>
+    <!-- <div class="chatOptionStyle detailsOption" (click)="openUserDetail()"></div> -->
   </div>
 </div>

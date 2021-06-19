@@ -10,105 +10,104 @@ Hello world
 
 <div class="main-div" *ngIf="!doctorQuestion">
 
-<a [class]="frameClass" style="--img:url(/assets/icon.png);--w:80vmin;--h:80vmin;">
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div>
-  <div class="slice"></div></a>
+  <a [class]="frameClass" style="--img:url(/assets/icon.png);--w:80vmin;--h:80vmin;">
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+    <div class="slice"></div>
+  </a>
 
   <!-- <ion-item> -->
-    <!-- </ion-item> -->
-    
-    <ion-text style="padding: 20%;" color='primary'>...Healthcare Everywhere</ion-text>
-  </div>
+  <!-- </ion-item> -->
 
-  
-  
-  <div *ngIf="doctorQuestion">
-    <div class="doc">
-      <ion-img style="height: 250px;" src="/assets/006-man.png"></ion-img>
-      <ion-list>
-        <ion-radio-group value="biff" 
-        [(ngModel)]='selectedRadioGroup'
-        name='radio-group'
+  <ion-text style="padding: 20%;" color='primary'>...Healthcare Everywhere</ion-text>
+</div>
+
+
+
+<div *ngIf="doctorQuestion">
+  <div class="doc">
+    <ion-img style="height: 250px;" src="/assets/006-man.png"></ion-img>
+    <ion-list>
+      <ion-radio-group value="biff" [(ngModel)]='selectedRadioGroup' name='radio-group'
         (ionChange)='radioGroupChange($event)'>
-          <ion-list-header>
-            <ion-title color="primary">Are you a Doctor?</ion-title>
-          </ion-list-header>
-      
-          <ion-item>
-            <ion-label color="primary">Yes, I am</ion-label>
-            <ion-radio value="doctor"></ion-radio>
-          </ion-item>
-      
-          <ion-item>
-            <ion-label color="primary"> No, I'm not</ion-label>
-            <ion-radio value="user" ></ion-radio>
-          </ion-item>
-      
-         
-        </ion-radio-group>
-      </ion-list>
-    </div>
-    <ion-button style="float: right; margin-right: 10px;" (click)='nextPage()' >Next</ion-button>
+        <ion-list-header>
+          <ion-title color="primary">Are you a Doctor?</ion-title>
+        </ion-list-header>
+
+        <ion-item>
+          <ion-label color="primary"> No, I'm not</ion-label>
+          <ion-radio value="user"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="primary">Yes, I am</ion-label>
+          <ion-radio value="doctor"></ion-radio>
+        </ion-item>
+
+
+      </ion-radio-group>
+    </ion-list>
   </div>
+  <ion-button style="float: right; margin-right: 10px;" (click)='nextPage()'>Next</ion-button>
+</div>

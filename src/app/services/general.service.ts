@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AlertController, LoadingController } from "@ionic/angular";
 import { BehaviorSubject } from "rxjs";
 import { ApiAction } from "src/interfaces/action";
@@ -130,6 +131,10 @@ export class GeneralService {
     //   await conf.loader.dismiss();
     // }
   };
+
+  resetQueryParams(router: Router, route: ActivatedRoute) {
+    router.navigate(['.'], { relativeTo: route, queryParams: {}});
+  }
 }
 
 interface RequestRequirements {

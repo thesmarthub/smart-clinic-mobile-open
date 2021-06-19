@@ -8,9 +8,10 @@ import { DepartmentService } from "src/app/services/department.service";
 import { DoctorService } from "src/app/services/doctor.service";
 import { CallNumber } from "@ionic-native/call-number/ngx";
 import { PaymentService } from "src/app/services/payment.service";
-import { AlertController } from "@ionic/angular";
+import { AlertController, LoadingController } from "@ionic/angular";
 import { CometChat } from "@cometchat-pro/chat";
 import { IStaff } from "src/interfaces/staff";
+import CometChatManager from "src/cometchat-pro-angular-ui-kit/CometChatWorkspace/projects/angular-chat-ui-kit/src/utils/controller";
 
 @Component({
   selector: "app-doctors",
@@ -34,14 +35,21 @@ export class DoctorsPage implements OnInit {
     private chatService: ChatService,
     private callNumber: CallNumber,
     private _paymentService: PaymentService,
-    private _alertCtrl: AlertController
+    private _alertCtrl: AlertController,
+    private _loadingCtrl: LoadingController
   ) {}
 
-  ngOnInit() {
-    this.initialize();
+  ngOnInit() {}
+
+  ionViewDidLeave() {
+    this.displayChatView = false;
   }
 
-  initialize() {
+  async initialize() {
+    const loggedInUser = await CometChat.getLoggedinUser().catch(e => null);
+    if (loggedInUser?.getName()) {
+      return this.setupChat(loggedInUser);
+    }
     const appID = "3474634cc00cc93";
     const region = "US";
     const appSetting = new CometChat.AppSettingsBuilder()
@@ -58,70 +66,134 @@ export class DoctorsPage implements OnInit {
       (error) => {
         console.log("AUTH FAILED");
         console.log("Initialization failed with error:", error);
+        setTimeout(() => {
+          this.initialize();
+        }, 5000);
         // Check the reason for error and take appropriate action.
       }
     );
   }
 
   login() {
-    console.log("Trying to login!!!");
-    const authKey = "689e527b4fdef76814a24c0b3b6e062d13ba681a";
-    const uid = "SUPERHERO2";
+    console.log("authkey", this.store.cometAuthKey);
+    this._loadingCtrl.create();
 
-    CometChat.login(uid, authKey).then(
-      async (user) => {
-        console.log("Login Successful:", { user });
-        // const groups = await CometChat.getJoinedGroups();
-        // console.log("My groups ", groups);
+    CometChat.login(this.store.cometAuthKey)
+      .then(
+        async (user) => {
+          console.log("login successful", user)
+          this.setupChat(user);
 
-        var groupsRequest = new CometChat.GroupsRequestBuilder()
-          .setLimit(10)
-          .build();
+          // const groups = await CometChat.getJoinedGroups();
+          // console.log("My groups ", groups);
 
-        groupsRequest.fetchNext().then(
-          (groupList) => {
-            /* groupList will be the list of Group class */
-            console.log("Groups list fetched successfully", groupList);
+          // var groupsRequest = new CometChat.GroupsRequestBuilder()
+          //   .setLimit(10)
+          //   .build();
 
-            /* you can display the list of groups available using groupList */
-            groupList.forEach((group: CometChat.Group) => {
-              CometChat.leaveGroup(group?.getGuid()).then(
-                hasLeft => {
-                  console.log("Group left successfully:", hasLeft);
-                },
-                error => {
-                  console.log("Group leaving failed with exception:", error);
-                }
-              );
-            })
-          },
-          (error) => {
-            console.log("Groups list fetching failed with error", error);
-          }
-        );
-      },
-      (error) => {
-        console.log("Login failed with exception:", { error });
-      }
-    );
+          // groupsRequest.fetchNext().then(
+          //   (groupList) => {
+          //     /* groupList will be the list of Group class */
+          //     console.log("Groups list fetched successfully", groupList);
+          //     if (this.store.userType === "doctor") {
+          //       this.displayChatView = true;
+          //     }
+          //     /* you can display the list of groups available using groupList */
+          //     groupList.forEach((group: CometChat.Group) => {
+          //       CometChat.deleteGroup(group?.getGuid()).then(
+          //         (hasLeft) => {
+          //           console.log("Group deleted successfully:", hasLeft);
+          //         },
+          //         (error) => {
+          //           console.log("Group deleting failed with exception:", error);
+          //         }
+          //       );
+          //     });
+          //   },
+          //   (error) => {
+          //     console.log("Groups list fetching failed with error", error);
+          //   }
+          // );
+        },
+        (error) => {
+          console.log("Login failed with exception:", { error });
+          CometChat;
+        }
+      )
+      .finally(() => this._loadingCtrl.dismiss());
   }
 
-  createGroup(groupId, groupName) {
-    var group = new CometChat.Group(groupId, groupName, "private", "westy");
+  setupChat(user) {
+    console.log("Setting up:", { user });
+    if (this.store.activeChatDoctor) {
+      this.createGroup(this.store.activeChatDoctor);
+    }
 
-    CometChat.createGroup(group).then(
-      (group) => {
-        console.log("group created", { group });
-        this.displayChatView = true;
-      },
-      (err) => {
-        console.log("Group Error", { err });
-        this.displayChatView = true;
-      }
+    if (this.store.userType === "doctor") {
+      this.displayChatView = true;
+    }
+  }
+
+  async createGroup(doctor) {
+    if (this.store.userType === "doctor") {
+      return (this.displayChatView = true);
+    }
+
+    // new CometChat.UsersRequestBuilder().build()
+
+    // const chatGroup = await CometChat.getGroup(
+    //   `${this.store.user.smart_code}${doctor.smart_code}`
+    // )
+    //   .then((group) => group)
+    //   .catch((e) => {
+    //     console.log(e);
+    //     return null;
+    //   });
+    // console.log("Created chat group", chatGroup);
+
+    var group = new CometChat.Group(
+      `${this.store.user.smart_code}${doctor.smart_code}`,
+      `${doctor.designation || ""} ${doctor.fname} ${doctor.lname}`,
+      "private",
+      "westy"
     );
+
+    this.chatService
+      .runner(`users/${this.store.user._id}/friends`, "POST", {
+        accepted: [doctor._id],
+      })
+      .then((res) => {
+        console.log("Friend", res);
+        this.store.activeChatDoctor = doctor;
+        this.displayChatView = true;
+      })
+      .catch((e) => console.log(e, "Add friend error"));
+
+    // CometChat.createGroup(group)
+    //   .then(
+    //     (group) => {
+    //       this.chatService
+    //         .runner(`groups/${group.getGuid()}/members`, {
+    //           participants: [doctor._id],
+    //         })
+    //         .then((res) => console.log(res))
+    //         .catch((err) => console.log(err));
+    //       console.log("group created", { group });
+    //       this.displayChatView = true;
+    //     },
+    //     (err) => {
+    //       console.log("Group Error", { err });
+    //       this.displayChatView = true;
+    //     }
+    //   )
+    //   .catch((e) => {
+    //     console.log(e);
+    //     this.displayChatView = true;
+    //   });
   }
 
   ionViewDidEnter() {
+    this.initialize();
     // this.selectedDept = this._deptService.getGOPDDept();
     // this._docService.presentActionSheet(async (data) => {
     //   this.decision = data;
@@ -133,9 +205,10 @@ export class DoctorsPage implements OnInit {
     //     this.filterDoctors(this.searchInput);
     //   }
     // });
-
-    this.fetchDoctors();
-    this.presentDepartments();
+    if (this.store.userType !== "doctor") {
+      this.fetchDoctors();
+      this.presentDepartments();
+    }
   }
 
   presentDepartments() {
@@ -156,20 +229,18 @@ export class DoctorsPage implements OnInit {
   fetchDoctors() {
     console.log("Fetch doctors");
     this.loadingDoctors = true;
-    this._docService
-      .fetchDoctors(this.selectedDept?.route || "general-health")
-      .subscribe(
-        (res) => {
-          this.doctors.next(res?.result || []);
-          this.filterDoctors(this.searchInput);
-        },
-        (err) => {
-          console.log(err);
-        },
-        () => {
-          this.loadingDoctors = false;
-        }
-      );
+    this._docService.fetchDoctors(this.selectedDept?.route || "").subscribe(
+      (res) => {
+        this.doctors.next(res?.result || []);
+        this.filterDoctors(this.searchInput);
+      },
+      (err) => {
+        console.log(err);
+      },
+      () => {
+        this.loadingDoctors = false;
+      }
+    );
   }
 
   filterDoctors(searchInput) {
@@ -188,27 +259,9 @@ export class DoctorsPage implements OnInit {
     this.filteredDoctors.next(filteredDoctors);
   }
 
-  async initiateChat(doctor) {
-    this.chatService.sendRequest(doctor._id);
-    this.chatService.activeReceiverName = `${doctor.title || "" + " "}${
-      doctor.fname
-    } ${doctor.lname}`;
-    // this.chatService.sendMessage(
-    //   new ChatMessage(
-    //     this.store.userFullName,
-    //     `${doctor.fname} ${doctor.lname}`,
-    //     doctor.id,
-    //     "Hello Doc",
-    //     this.chatService.activeChatKey,
-    //     100082
-    //   )
-    // );
-    // this.router.navigateByUrl("/tabs/chat");
-  }
-
   async startChat(doctor: IStaff) {
     const walletBalance = await this.fetchWalletBalance();
-    if (!walletBalance || walletBalance < 500) {
+    if (!walletBalance || walletBalance < 100) {
       const alertCtrl = await this._alertCtrl.create({
         header: `Insufficient Funds`,
         message: `You must have at least 550 naira in your wallet. You currently have ${
@@ -236,11 +289,29 @@ export class DoctorsPage implements OnInit {
 
       await alertCtrl.present();
       return;
+    } else {
+      const alertCtrl2 = await this._alertCtrl.create({
+        header: "Starting Consultation",
+        message: `550 units will be deducted from your wallet for this transaction. <br> Do you want to proceed?`,
+        buttons: [
+          {
+            text: "Yes",
+            role: "cancel",
+            cssClass: "secondary",
+            handler: () => {
+              this.createGroup(doctor);
+            },
+          },
+          {
+            text: "No",
+            handler: () => {},
+          },
+        ],
+      });
+
+      await alertCtrl2.present();
     }
-    this.createGroup(
-      `${this.store.user.smart_code}${doctor.smart_code}`,
-      `${doctor.designation || ""} ${doctor.fname} ${doctor.lname}`
-    );
+
     // if (!number) number = this.store.currentHospital.phone1;
     // this.callNumber
     //   .callNumber(number, true)

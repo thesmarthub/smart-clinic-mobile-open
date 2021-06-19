@@ -15,9 +15,8 @@ export class DoctorService {
   ) {}
 
   fetchDoctors(departmentRoute): Observable<any> {
-    return this._genService.http.post(
-      `${this._genService.baseUrl}hospital/patient-request`,
-      {},
+    return this._genService.http.get(
+      `${this._genService.baseUrl}auth/get-staff`,
       {
         params: {
           action: "VIEW_AVAILABLE_SPECIALISTS",

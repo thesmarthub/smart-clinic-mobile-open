@@ -25,8 +25,11 @@ export class GeneralInterceptorService implements HttpInterceptor {
           store.currentHospital?.smart_code,
         patient_smart_code: String(store.user?.smart_code),
         hospital_number: store.user?.hospital_number,
+        staff_smart_code: store.staff?.smart_code,
+        user_type: store.userType,
       },
     });
+
     return next.handle(duplicate);
   }
 }

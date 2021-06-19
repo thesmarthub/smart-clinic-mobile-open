@@ -20,7 +20,7 @@ import { logger } from "../../../../utils/common";
 })
 export class CometChatUserListComponent
   implements OnInit, OnDestroy, OnChanges {
-  @Input() friendsOnly = false;
+  @Input() friendsOnly = true;
   @Input() hasActions = false;
   @Input() item = null;
 

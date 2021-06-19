@@ -10,7 +10,7 @@ import { Store } from "src/app/engine/store";
 export class StartScreenPage implements OnInit {
   frameClass = "frame";
   doctorQuestion = false;
-  selectedRadioGroup = "user";
+  selectedRadioGroup: "user" | "doctor" = "user";
   storeCtrl = new Store();
   constructor(public router: Router) {}
 

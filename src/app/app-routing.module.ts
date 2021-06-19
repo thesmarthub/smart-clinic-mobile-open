@@ -38,10 +38,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/cart/cart.module').then( m => m.CartPageModule)
   },
   {
-    path: 'chat',
-    loadChildren: () => import('./pages/chat/chat.module').then( m => m.ChatPageModule)
-  },
-  {
     path: 'please-wait',
     loadChildren: () => import('./pages/please-wait/please-wait.module').then( m => m.PleaseWaitPageModule)
   },
@@ -68,10 +64,6 @@ const routes: Routes = [
   {
     path: 'ambulance',
     loadChildren: () => import('./pages/ambulance/ambulance.module').then( m => m.AmbulancePageModule)
-  },
-  {
-    path: 'video-chat',
-    loadChildren: () => import('./pages/video-chat/video-chat.module').then( m => m.VideoChatPageModule)
   },
   {
     path: 'flutterwave',

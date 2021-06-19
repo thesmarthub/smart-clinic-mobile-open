@@ -1,3 +1,4 @@
+import { CometChat } from "@cometchat-pro/chat";
 import * as moment from "moment";
 import { IDepartment, IHospital } from "src/interfaces/hospital";
 import { IUser } from "src/interfaces/user";
@@ -56,16 +57,20 @@ export class Store {
     localStorage.setItem("staff", JSON.stringify(data));
   }
 
-  set userType(data){
-    localStorage.setItem("userType", JSON.stringify(data))
-  }
-
-  get userType(){
-    return JSON.parse(localStorage.getItem("userType"));
-  }
-
   get staff() {
     return JSON.parse(localStorage.getItem("staff"));
+  }
+
+  set userType(data) {
+    const props = ["doctor", "user"];
+    if (!props.includes(data)) {
+      throw new Error(`User type must be in ${JSON.stringify(props)}`);
+    }
+    localStorage.setItem("userType", JSON.stringify(data));
+  }
+
+  get userType(): "doctor" | "user" {
+    return JSON.parse(localStorage.getItem("userType"));
   }
 
   set lastLoginTime(time: moment.Moment) {
@@ -89,7 +94,33 @@ export class Store {
     this.user = user;
   }
 
+  set cometAuthKey(key) {
+    localStorage.setItem("comet-auth", key);
+  }
+
+  get cometAuthKey() {
+    return localStorage.getItem("comet-auth");
+  }
+
+  set activeChatDoctor(doctor) {
+    if (doctor === null) {
+      localStorage.removeItem("activeChatDoctor");
+    }
+    localStorage.setItem("activeChatDoctor", JSON.stringify(doctor));
+  }
+
+  get activeChatDoctor() {
+    const _activeChatDoctor = localStorage.getItem("activeChatDoctor");
+    if (!_activeChatDoctor) return null;
+    return JSON.parse(_activeChatDoctor);
+  }
+
   clearStore() {
-    localStorage.clear();
+    this.activeChatDoctor = null;
+    localStorage.removeItem("user");
+    localStorage.removeItem("currentHospital");
+    localStorage.removeItem("token");
+    localStorage.removeItem("lastLoginTime");
+    CometChat.logout().catch(e => console.log(e => console.log("logout error", e)))
   }
 }

@@ -39,6 +39,10 @@ export class LoginPage implements OnInit {
         }
         if (status.event === "LOGGED IN") {
           this.gService.presentLoading(this.loaderConf, "close");
+          if (this._authService.store.userType === "doctor") {
+            this._authService.navigate("/tabs/home", {});
+            this._authService.authListenerWithData.next({ event: "DEFAULT" });
+          }
         }
         if (status.event === "LOGIN FAILED") {
           console.log("Failed to login!!!", status);
@@ -59,7 +63,6 @@ export class LoginPage implements OnInit {
   }
 
   ionViewDidEnter() {
-    new Store().clearStore();
   }
 
   ionViewDidLeave() {
@@ -67,6 +70,7 @@ export class LoginPage implements OnInit {
   }
 
   login() {
+    new Store().clearStore();
     if (!this.loginForm.value.email || !this.loginForm.value.password) {
       this.showAlert("Please enter valid email and password.");
       return;

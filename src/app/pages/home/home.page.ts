@@ -1,11 +1,19 @@
 import { Component, OnInit } from "@angular/core";
-import { AlertController, IonRouterOutlet, MenuController, Platform } from "@ionic/angular";
+import {
+  AlertController,
+  IonRouterOutlet,
+  MenuController,
+  Platform,
+} from "@ionic/angular";
 import { Store } from "src/app/engine/store";
 import { TabsService } from "src/app/services/tabs.service";
 import { OpenMenu, TabEvent } from "src/app/actions/events/tab";
 import { Observer } from "rxjs";
 import { App } from "@capacitor/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ChatService } from "src/app/services/chat.service";
+import { CometChat } from "@cometchat-pro/chat";
+import { GeneralService } from "src/app/services/general.service";
 
 @Component({
   selector: "app-home",
@@ -21,6 +29,7 @@ export class HomePage implements OnInit {
       link: "/tabs/view-appointments",
       img: "/assets/004-calendar.png",
       bgColor: "appt",
+      users: ["doctor", "user"],
     },
     {
       title: "Talk to Doctor",
@@ -28,6 +37,7 @@ export class HomePage implements OnInit {
       link: "/tabs/doctors",
       img: "/assets/019-doctor.png",
       bgColor: "doctors",
+      users: ["user"],
     },
     {
       title: "Prescriptions",
@@ -35,6 +45,7 @@ export class HomePage implements OnInit {
       link: "/tabs/prescription",
       img: "/assets/001-drug.png",
       bgColor: "doctors",
+      users: ["users"],
     },
     {
       title: "Laboratory",
@@ -42,6 +53,7 @@ export class HomePage implements OnInit {
       link: "/tabs/lab",
       img: "/assets/003-research.png",
       bgColor: "appt",
+      users: ["users"],
     },
     {
       title: "Scans",
@@ -49,6 +61,7 @@ export class HomePage implements OnInit {
       link: "/tabs/radiology",
       img: "/assets/in_bed.png",
       bgColor: "appt",
+      users: ["users"],
     },
     {
       title: "Hospitals",
@@ -56,6 +69,7 @@ export class HomePage implements OnInit {
       link: "/tabs/hospitals",
       img: "/assets/012-hospital-1.png",
       bgColor: "doctors",
+      users: ["users"],
     },
   ];
 
@@ -68,12 +82,12 @@ export class HomePage implements OnInit {
       bgColor: "appt",
     },
     {
-      title: "Talk to Doctor",
+      title: "Active Chats",
       icon: "fa fa-user",
       link: "/tabs/doctors",
-      img: "/assets/019-doctor.png",
+      img: "/assets/021-comments.png",
       bgColor: "doctors",
-    },   
+    },
   ];
 
   store = new Store();
@@ -84,8 +98,33 @@ export class HomePage implements OnInit {
     private tService: TabsService,
     private platform: Platform,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    private aRoute: ActivatedRoute,
+    private _chatService: ChatService,
+    private _genService: GeneralService
   ) {
+    this.aRoute.queryParams.subscribe((data) => {
+      if (data.endChat === "true") {
+        this._genService.resetQueryParams(this.router, this.aRoute);
+        CometChat.logout()
+          .then((res) => console.log("logout chat", res))
+          .catch((e) => console.log("logout chat err", e));
+        const store = new Store();
+        const isDoctor = store.userType === "doctor";
+        if (!isDoctor) {
+          this._chatService
+            .runner(`users/${store.user._id}/friends`, "DELETE", {
+              friends: [store.activeChatDoctor?._id],
+            })
+            .then((res) => res)
+            .catch((e) => console.log(e, "unfriend error"));
+
+          setTimeout(() => {
+            store.activeChatDoctor = null;
+          }, 3000);
+        }
+      }
+    });
     this.tService.currentValues.menuAction.subscribe((action) => {
       if (action === "open") {
         this.openCustom();
@@ -94,16 +133,19 @@ export class HomePage implements OnInit {
       }
     });
     this.platform.backButton.subscribe(async () => {
-      if(this.router.url === "/tabs/home") {
+      if (this.router.url === "/tabs/home") {
         await this.confirmExitApp();
-        return
+        return;
       }
     });
   }
 
   ngOnInit() {
-    if(!this.store.user || !this.store.currentHospital) {
-      this.router.navigate(["/auth/login"])
+    if (
+      !this.store.user ||
+      (!this.store.currentHospital && this.store.userType !== "doctor")
+    ) {
+      this.router.navigate(["/auth/login"]);
     }
     console.log("Home Page loaded");
   }

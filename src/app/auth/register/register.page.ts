@@ -10,7 +10,6 @@ import { Subscription } from "rxjs";
 import { GeneralService } from "src/app/services/general.service";
 import { AuthService } from "../auth.service";
 
-
 @Component({
   selector: "app-register",
   templateUrl: "./register.page.html",
@@ -31,16 +30,15 @@ export class RegisterPage implements OnInit {
     public authService: AuthService,
     private alertCtrl: AlertController,
     private loadingController: LoadingController,
-    private gService: GeneralService,
- 
+    private gService: GeneralService
   ) {
     this.regForm = this.fb.group({
       fname: ["", Validators.required],
       lname: ["", Validators.required],
-      email: ["", Validators.required, Validators.email],
+      email: ["", [Validators.required, Validators.email]],
       phone: ["", Validators.required],
-      password: ["", Validators.required, Validators.minLength(8)],
-      d_o_b: ["", Validators.required,],
+      password: ["", [Validators.required, Validators.minLength(8)]],
+      d_o_b: ["", Validators.required],
       sex: ["", Validators.required],
     });
   }
@@ -79,6 +77,7 @@ export class RegisterPage implements OnInit {
     console.log(this.regForm.value);
 
     if (!this.regForm.valid) {
+      console.log(this.regForm.errors);
       const alert = await this.alertCtrl.create({
         message: "Please enter all required information.",
         buttons: ["OK"],
@@ -88,6 +87,4 @@ export class RegisterPage implements OnInit {
     }
     this.authService.register(this.regForm.value);
   }
-
-
 }

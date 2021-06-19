@@ -1,5 +1,5 @@
 <!-- <ion-header> -->
-<ion-toolbar>
+<ion-toolbar *ngIf="!displayChatView">
   <ion-title color="primary">
     <ion-row class="ion-justify-content-between">
       <ion-col size="10">
@@ -12,7 +12,7 @@
     </ion-row>
   </ion-title>
 </ion-toolbar>
-<ion-searchbar debounce="0" (ionInput)="filterDoctors($event.target.value)" [(ngModel)]="searchInput" color="">
+<ion-searchbar *ngIf="!displayChatView" debounce="0" (ionInput)="filterDoctors($event.target.value)" [(ngModel)]="searchInput" color="">
 </ion-searchbar>
 <ion-content class="centralize">
   <div *ngIf="!displayChatView">

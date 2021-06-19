@@ -8,11 +8,15 @@ import {
   OnChanges,
   SimpleChanges,
 } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
 import { CometChat } from "@cometchat-pro/chat";
 import * as enums from "../../../../utils/enums";
 import { COMETCHAT_CONSTANTS } from "../../../../utils/messageConstants";
 import { DatePipe } from "@angular/common";
 import { logger } from "../../../../utils/common";
+import { ChatService } from "../../../../../../../../../app/services/chat.service";
+import { Store } from "../../../../../../../../../app/engine/store";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "cometchat-message-header",
@@ -20,7 +24,8 @@ import { logger } from "../../../../utils/common";
   styleUrls: ["./cometchat-message-header.component.css"],
 })
 export class CometChatMessageHeaderComponent
-  implements OnInit, OnChanges, OnDestroy {
+  implements OnInit, OnChanges, OnDestroy
+{
   @Input() item = null;
   @Input() type = null;
 
@@ -40,7 +45,11 @@ export class CometChatMessageHeaderComponent
   //displays audio and video call options
   checkNotBlocked: boolean = true;
 
-  constructor(public datepipe: DatePipe) {}
+  constructor(
+    public datepipe: DatePipe,
+    private _chatService: ChatService,
+    private router: Router
+  ) {}
 
   ngOnChanges(change: SimpleChanges) {
     try {
@@ -418,5 +427,14 @@ export class CometChatMessageHeaderComponent
     } catch (error) {
       logger(error);
     }
+  }
+
+  endChat() {
+    if (!confirm("Are you sure?")) return;
+    this.router.navigate(["/tabs/home"], {
+      queryParams: {
+        endChat: true,
+      },
+    });
   }
 }

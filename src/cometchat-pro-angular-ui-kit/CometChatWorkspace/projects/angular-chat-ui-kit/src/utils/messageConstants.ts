@@ -10,7 +10,7 @@ export const COMETCHAT_CONSTANTS = {
   ERROR_NO_USERS_FOUND: "No users found",
   EMPTY_STRING: "",
   SINGLE_SPACE: " ",
-  USERS: "Users",
+  USERS: "Select participant",
   CHATS: "Chats",
   GROUPS: "Groups",
   MORE: "More",

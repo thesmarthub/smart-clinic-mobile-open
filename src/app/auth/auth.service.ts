@@ -32,6 +32,10 @@ export class AuthService {
     private chatService: ChatService
   ) {}
 
+  navigate(link, queryParams) {
+    this.router.navigate([link], { queryParams });
+  }
+
   login(email, password) {
     this.authListenerWithData.next({ event: "LOGGING IN" });
     this._http
@@ -43,12 +47,21 @@ export class AuthService {
         (res) => {
           // console.log(res, "loged in res")
           if (this.authSuccess(res)) {
-            this.chatService.initialize();
+            // this.chatService.initialize();
             this.storeAuthData(res, "LOGGED IN");
-            this.fetchActiveHospitalAndProfile(
-              this.store.user.active_hospital_smart_code ||
-                "SMART_CLINIC_DEFAULT"
-            );
+            this.createChatProfile();
+            if (this.store.userType === "doctor") {
+              this.authListenerWithData.next({ event: "LOGGED IN" });
+              this.toaster({
+                text: `Welcome, ${this.store.user.fname}`,
+                duration: 2000,
+              });
+            } else {
+              this.fetchActiveHospitalAndProfile(
+                this.store.user.active_hospital_smart_code ||
+                  "SMART_CLINIC_DEFAULT"
+              );
+            }
           } else {
             console.log(res.message);
             this.authListenerWithData.next({
@@ -168,7 +181,10 @@ export class AuthService {
         if (showNotification) {
           alert(res.message);
         }
-        this.initializeProfile(this.store.user._id, this.store.user.hospital_number);
+        this.initializeProfile(
+          this.store.user._id,
+          this.store.user.hospital_number
+        );
       });
   }
 
@@ -355,7 +371,9 @@ export class AuthService {
     this.store.user = res["result"];
     this.store.lastLoginTime = moment();
     this.store.addFirebaseKey(this.store.firebaseToken);
-    this.editUserDetails(this.store.user, false);
+    if (!(this.store.userType === "doctor")) {
+      this.editUserDetails(this.store.user, false);
+    }
   }
 
   socialLogin() {
@@ -366,6 +384,44 @@ export class AuthService {
     const browser = this.iab.create(
       "https://docs.google.com/forms/d/e/1FAIpQLSc-UVDE0mQvNZ6MLy54yMN9tCyNG0Coy9bysGKU5xK5n0OgsQ/viewform"
     );
+  }
+
+  createChatProfile() {
+    this._http
+      .post(
+        `${this.baseURL}auth/comet?uid=${this.store.user._id}&comet_method=POST&comet_url=users`,
+        {
+          data: {
+            uid: this.store.user._id,
+            name: `${this.store.user.fname} ${this.store.user.lname}`,
+            status: "online",
+            createdAt: new Date().getTime(),
+          },
+        }
+      )
+      .toPromise()
+      .then((data) => {
+        console.log("comet chat", data);
+        this._http
+          .post(
+            `${this.baseURL}auth/comet?uid=${this.store.user._id}&comet_method=POST&comet_url=users/${this.store.user._id}/auth_tokens`,
+            {}
+          )
+          .toPromise()
+          .then(
+            (resp: {
+              data: Record<string, any>;
+              meta: Record<string, any>;
+            }) => {
+              console.log(resp)
+              if (resp?.data && resp.data) {
+                this.store.cometAuthKey = resp?.data["authToken"];
+              }
+            }
+          )
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
   }
 }
 

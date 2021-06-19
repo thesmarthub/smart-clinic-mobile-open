@@ -145,6 +145,14 @@ export class AppComponent {
 
   logout() {
     this.closeTab();
+    if (
+      this.store.activeChatDoctor &&
+      !confirm(
+        "You have an existing conversation. This conversation will be cancelled."
+      )
+    ) {
+      return;
+    }
     setTimeout(() => {
       this.store.clearStore();
       this.router.navigateByUrl("/auth/login");
