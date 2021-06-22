@@ -80,6 +80,10 @@ const routes: Routes = [
     path: 'health-shop',
     loadChildren: () => import('./pages/health-shop/health-shop.module').then( m => m.HealthShopPageModule)
   },
+  {
+    path: 'shop-search',
+    loadChildren: () => import('./pages/shop-search/shop-search.module').then( m => m.ShopSearchPageModule)
+  },
 
 
 ];

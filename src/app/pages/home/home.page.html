@@ -1,20 +1,22 @@
-<ion-content>
 
-<div class="bck">
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-icon class="menu" (click)="eventTrigger(openMenu)" name="menu"></ion-icon>
-      </ion-col>
-      <ion-avatar class="top-img" (click)="eventTrigger(openMenu)">
-        <ion-img [src]="store.user?.profileImage"></ion-img>
-      </ion-avatar>
-    </ion-row>
-  </ion-grid>
-  <div>
-    <ion-grid>
-      <ion-text class="top-text">Hi, {{store.user?.fname}} {{store.user?.lname}}
-      </ion-text>
+ 
+  <ion-row>
+    <ion-col>
+      <ion-icon class="menu" (click)="eventTrigger(openMenu)" name="menu"></ion-icon>
+    </ion-col>
+    <ion-avatar class="top-img" (click)="eventTrigger(openMenu)">
+      <ion-img [src]="store.user?.profileImage"></ion-img>
+    </ion-avatar>
+  
+</ion-row>
+
+<ion-content>
+  <div class="bck">
+    
+    <div>
+      <ion-grid>
+      <ion-text class="top-text">Hi, {{store.user?.fname}} {{store.user?.lname}}</ion-text>
+     
       <ion-row *ngIf="store.userType === 'user'">
         <ion-col size="12">
 
