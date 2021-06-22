@@ -4,12 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "auth/login",
+    redirectTo: "start-screen",
     pathMatch: "full",
   },
   {
-    path: "auth",
-    loadChildren: () => import("./auth/auth.module").then((m) => m.AuthModule),
+    path: "start-screen",
+    loadChildren: () => import("./pages/start-screen/start-screen.module").then((m) => m.StartScreenPageModule),
   },
   // {
   //   path: "home",
@@ -74,8 +74,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/onboarding/onboarding.module').then( m => m.OnboardingPageModule)
   },
   {
-    path: 'start-screen',
-    loadChildren: () => import('./pages/start-screen/start-screen.module').then(m => m.StartScreenPageModule)
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
 
 ];

@@ -25,8 +25,8 @@ import { Store } from "../../engine/store";
 import { rangeGenerator } from "src/app/engine/utility";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { DepartmentService } from "src/app/services/department.service";
-import { Location } from "@angular/common"
-
+import { Location } from "@angular/common";
+import { DatePicker } from "@ionic-native/date-picker/ngx";
 
 @Component({
   selector: "app-view-appointments",
@@ -39,11 +39,17 @@ export class ViewAppointmentsPage implements OnInit {
   timeOftheDay;
   viewAll = false;
   pastAppointments = [];
-  futureAppointments = []
+  futureAppointments = [];
+  todayAppointments = [];
+
+  displayedAppointments = [];
+
   isPast = false;
-  active = 'active-color'
-  appt ="" ;
-  
+  view = "today";
+  active = "active-color";
+  appt = "";
+
+  appointmentTime;
 
   daysConfig: DayConfig[] = [];
   store = new Store();
@@ -62,13 +68,24 @@ export class ViewAppointmentsPage implements OnInit {
     private actionSheetController: ActionSheetController,
     private pickerController: PickerController,
     private deptService: DepartmentService,
-    public location: Location
+    public location: Location,
+    private datePicker: DatePicker
   ) {}
 
   ngOnInit() {}
 
+  changeDisplayedAppointments(view: "today" | "future" | "past") {
+    this.changeView(view);
+    let usedAppts = this.todayAppointments;
+    if (view === "future") {
+      usedAppts = this.futureAppointments;
+    } else if (view === "past") {
+      usedAppts = this.pastAppointments;
+    }
+    this.displayedAppointments = JSON.parse(JSON.stringify(usedAppts));
+  }
+
   ionViewDidEnter() {
-    
     this.getDay();
     this.getBothPastandFuture();
     this.aService.triggerEvent(LoadAppointments);
@@ -101,7 +118,6 @@ export class ViewAppointmentsPage implements OnInit {
     );
     this.fresh = false;
     this.tempSubs.push(sub1);
-  
   }
 
   ionViewDidLeave() {
@@ -233,11 +249,48 @@ export class ViewAppointmentsPage implements OnInit {
   }
 
   async presentActionSheet() {
-    this.deptService.presentActionSheet((data) => {
-      this.selectedDepartment = JSON.parse(JSON.stringify(data));
-      this.loadTimeSlots();
-    },)
+    if (!confirm("Are you sure you want to create a new appointment?")) return
+      this.deptService.presentActionSheet((data) => {
+        this.selectedDepartment = JSON.parse(JSON.stringify(data));
+        this.datePicker
+          .show({
+            minDate: new Date(),
+            maxDate: moment().add(3, "days").toDate(),
+            date: new Date(),
+            mode: "datetime",
+            androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK,
+          })
+          .then(
+            (date) => {
+              console.log("Got date: ", date);
+              if (date) {
+                this.bookAppointment(date);
+              }
+            },
+            (err) => console.log("Error occurred while getting date: ", err)
+          );
+      });
   }
+
+  bookAppointment = (time: Date, slot_id?) => {
+    const data = {
+      appointment_type: "Future",
+      appointment_time: time.toISOString(),
+      clinic: this.selectedDepartment.name,
+      department_route: this.selectedDepartment.route,
+      hospital_number: this.store?.user.hospital_number,
+      patient: this.store?.user._id,
+      hmo_or_retainer: null,
+      has_approved_hmo: false,
+      patient_sex: this.store?.user.sex,
+      patient_dob: this.store?.user.d_o_b,
+      smart_code:
+        this.selectedDepartment.smart_code ||
+        `${this.selectedDepartment.name}_${this.selectedDepartment.route}`,
+      slot_id: slot_id,
+    };
+    this.aService.createAppointment(data);
+  };
 
   async presentPicker(slots: any[]) {
     const picker = await this.pickerController.create({
@@ -249,7 +302,7 @@ export class ViewAppointmentsPage implements OnInit {
             const data = {
               appointment_type: "Future",
               appointment_time: val.Time?.text,
-              clinic: this.selectedDepartment.name,
+              clinic: this.selectedDepartment?.name,
               department_route: this.selectedDepartment.route,
               hospital_number: this.store?.user.hospital_number,
               patient: this.store?.user._id,
@@ -293,38 +346,41 @@ export class ViewAppointmentsPage implements OnInit {
     picker.present();
   }
 
-  getDay(){
+  getDay() {
     if (this.currentHour < 12) {
-    this.timeOftheDay = "Good Morning"
-     } else if (this.currentHour < 16) {
-        this.timeOftheDay = "Good AfterNoon"
+      this.timeOftheDay = "Good Morning";
+    } else if (this.currentHour < 16) {
+      this.timeOftheDay = "Good AfterNoon";
     } else {
-      this.timeOftheDay = "Good Evening"
+      this.timeOftheDay = "Good Evening";
+    }
+  }
+
+  getBothPastandFuture() {
+    this.aService.currentValues.appointments.subscribe((data) => {
+      console.log(data);
+      if (!data) return;
+      this.pastAppointments = data.filter(
+        (item) => moment(item.appointment_time) < moment()
+      );
+      this.futureAppointments = data.filter(
+        (item) => moment(item.appointment_time) > moment()
+      );
+      this.todayAppointments = data.filter((item) => {
+        moment(item.appointment_time).startOf("day") === moment();
+      });
+    });
+  }
+
+  appts(apptType: "past" | "future" | "today") {
+    this.changeDisplayedAppointments(apptType);
+  }
+
+  changeView(newView: "today" | "future" | "past") {
+    this.view = newView;
+  }
+
+  goBack() {
+    this.location.back();
+  }
 }
-  }
-
-  getBothPastandFuture(){
-    this.aService.currentValues.appointments.subscribe((data)=>{  
-      console.log(data)
-      if(!data)return
-     this.pastAppointments = data.filter(item=> moment(item.appointment_time).startOf("day") < moment().startOf("day"))
-     this.futureAppointments = data.filter(item=> moment(item.appointment_time).startOf("day") > moment().startOf("day"))
-      })
-    }
-
-    appts(apptType: "past" | "future"){
-      if(apptType === "past") {
-        this.isPast = true
-      } else {
-        this.isPast = false
-      }
-    }
-
-    goBack(){
-      this.location.back()
-    }
-
-    
-  }
-
-

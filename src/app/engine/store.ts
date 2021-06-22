@@ -121,6 +121,5 @@ export class Store {
     localStorage.removeItem("currentHospital");
     localStorage.removeItem("token");
     localStorage.removeItem("lastLoginTime");
-    CometChat.logout().catch(e => console.log(e => console.log("logout error", e)))
   }
 }

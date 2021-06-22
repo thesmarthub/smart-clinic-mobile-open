@@ -160,7 +160,7 @@ export class HomePage implements OnInit {
   }
 
   closeCustom() {
-    this.menu.close("custom");
+    this.menu.close();
   }
 
   async confirmExitApp() {

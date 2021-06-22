@@ -31,7 +31,13 @@ export class LoginPage implements OnInit {
     private gService: GeneralService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnDestroy(): void {}
+
+  ionViewDidEnter() {
+    console.log("Subs", this.subs);
+    this.subs = [];
     this.subs.push(
       this._authService.authListenerWithData.subscribe((status) => {
         if (status.event === "LOGGING IN") {
@@ -54,19 +60,23 @@ export class LoginPage implements OnInit {
     );
   }
 
-  ngOnDestroy(): void {
-    this.subs.forEach((sub) => {
-      if (!sub.closed) {
-        sub.unsubscribe();
-      }
-    });
-  }
-
-  ionViewDidEnter() {
+  resetVariables() {
+    this.subs = [];
+    this.loaderConf = {
+      message: "Please wait...",
+    };
   }
 
   ionViewDidLeave() {
     this.gService.presentLoading(this.loaderConf, "close");
+    this.subs.forEach((sub, index) => {
+      if (!sub.closed) {
+        sub.unsubscribe();
+      }
+      if (index === this.subs.length - 1) {
+        this.resetVariables();
+      }
+    });
   }
 
   login() {

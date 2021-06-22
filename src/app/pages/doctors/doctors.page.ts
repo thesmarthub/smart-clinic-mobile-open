@@ -212,7 +212,7 @@ export class DoctorsPage implements OnInit {
   }
 
   presentDepartments() {
-    this._deptService.presentActionSheet(this.onSelectDept);
+    // this._deptService.presentActionSheet(this.onSelectDept);
   }
 
   onSelectDept = (data) => {
