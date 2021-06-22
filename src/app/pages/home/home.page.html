@@ -1,3 +1,5 @@
+<ion-content>
+
 <div class="bck">
   <ion-grid>
     <ion-row>
@@ -24,8 +26,26 @@
           </ion-card>
         </ion-col>
       </ion-row>
+
+      <ion-row *ngIf="store.userType === 'user'">
+        <ion-col size="12">
+
+          <ion-card class="shop-card">
+            <ion-card-header>
+              <ion-row class="ion-justify-content-between">
+                <ion-card-subtitle color='primary'>Health Shop</ion-card-subtitle>
+                <ion-icon name="arrow-forward" color='primary'></ion-icon>
+              </ion-row>
+         
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </div>
+
+
+
   <ion-grid>
     <ion-row *ngIf="store.userType==='doctor'">
       <ion-col size="6" *ngFor="let card of doctorsCards">
@@ -49,6 +69,7 @@
     </ion-row>
   </ion-grid>
 </div>
+</ion-content>
 
 
 
