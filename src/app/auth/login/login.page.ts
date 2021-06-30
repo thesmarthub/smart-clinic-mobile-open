@@ -80,7 +80,7 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    new Store().clearStore();
+    new Store().clearStore(true);
     if (!this.loginForm.value.email || !this.loginForm.value.password) {
       this.showAlert("Please enter valid email and password.");
       return;
