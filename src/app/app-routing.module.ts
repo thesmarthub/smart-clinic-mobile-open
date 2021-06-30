@@ -76,7 +76,15 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },  {
+    path: 'health-shop',
+    loadChildren: () => import('./pages/health-shop/health-shop.module').then( m => m.HealthShopPageModule)
   },
+  {
+    path: 'shop-search',
+    loadChildren: () => import('./pages/shop-search/shop-search.module').then( m => m.ShopSearchPageModule)
+  },
+
 
 ];
 @NgModule({
