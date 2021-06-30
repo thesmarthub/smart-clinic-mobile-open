@@ -1,5 +1,11 @@
 <!-- <div class="main-div"> -->
-<ion-content >
+<ion-toolbar>
+  <ion-title>
+    <ion-icon name="close" color='primary' (click)="navigateToStart()"></ion-icon>
+  </ion-title>
+</ion-toolbar>
+
+<ion-content>
 
   <ion-slides class="page-pad" pager="true" [options]="slideOpts">
     <ion-slide>
@@ -34,12 +40,12 @@
   </ion-slides>
   <!-- <ion-row> -->
 
-    <!-- <ion-item> -->
-    <ion-button class="page-pad" expand='block' routerLink="/auth/register">Create an account</ion-button>
-    <!-- </ion-item> -->
-    <!-- <ion-item> -->
-    <ion-button class="page-pad"  expand='block' routerLink="/auth/login" >Log In</ion-button>
-    <!-- </ion-item> -->
+  <!-- <ion-item> -->
+  <ion-button class="page-pad" expand='block' routerLink="/auth/register">Create an account</ion-button>
+  <!-- </ion-item> -->
+  <!-- <ion-item> -->
+  <ion-button class="page-pad" expand='block' routerLink="/auth/login">Log In</ion-button>
+  <!-- </ion-item> -->
   <!-- </ion-row> -->
- 
+
 </ion-content>

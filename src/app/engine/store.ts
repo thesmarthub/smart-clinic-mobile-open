@@ -62,6 +62,10 @@ export class Store {
   }
 
   set userType(data) {
+    if (!data) {
+      localStorage.removeItem("userType");
+      return;
+    }
     const props = ["doctor", "user"];
     if (!props.includes(data)) {
       throw new Error(`User type must be in ${JSON.stringify(props)}`);
@@ -70,7 +74,22 @@ export class Store {
   }
 
   get userType(): "doctor" | "user" {
-    return JSON.parse(localStorage.getItem("userType"));
+    const data = localStorage.getItem("userType");
+    if (!data) return;
+    return JSON.parse(data);
+  }
+
+  set rememberUserType(val: boolean) {
+    console.log(val)
+    if (val) {
+      localStorage.setItem("rememberUserType", "yes");
+    } else {
+      localStorage.setItem("rememberUserType", "no");
+    }
+  }
+
+  get rememberUserType() {
+    return localStorage.getItem("rememberUserType") === "yes";
   }
 
   set lastLoginTime(time: moment.Moment) {
@@ -117,6 +136,9 @@ export class Store {
 
   clearStore() {
     this.activeChatDoctor = null;
+    if (!this.rememberUserType) {
+      this.userType = null;
+    }
     localStorage.removeItem("user");
     localStorage.removeItem("currentHospital");
     localStorage.removeItem("token");
