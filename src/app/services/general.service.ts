@@ -111,6 +111,7 @@ export class GeneralService {
 
         default:
           await conf.loader.dismiss();
+          conf = { message: "" };
           break;
       }
       return;
@@ -133,7 +134,7 @@ export class GeneralService {
   };
 
   resetQueryParams(router: Router, route: ActivatedRoute) {
-    router.navigate(['.'], { relativeTo: route, queryParams: {}});
+    router.navigate(["."], { relativeTo: route, queryParams: {} });
   }
 }
 
