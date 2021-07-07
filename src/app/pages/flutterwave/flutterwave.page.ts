@@ -1,6 +1,13 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { Flutterwave, PaymentSuccessResponse } from "flutterwave-angular-v3";
+import {
+  Flutterwave,
+  InlinePaymentOptions,
+  PaymentSuccessResponse,
+} from "flutterwave-angular-v3";
+import { FetchBills } from "src/app/actions/events/payment";
 import { Store } from "src/app/engine/store";
+import { CartService } from "src/app/services/cart.service";
+import { PaymentService } from "src/app/services/payment.service";
 
 @Component({
   selector: "app-flutterwave",
@@ -13,8 +20,11 @@ export class FlutterwavePage implements OnInit {
     | "UPDATE_HOSPITAL_WALLET"
     | "UPDATE_SMART_WALLET" = "UPDATE_BILLS";
 
-  @Input() amount
-  @Input() transactionRef
+  @Input() amount;
+  @Input() transactionRef;
+  @Input() subaccounts;
+  @Input()
+  paymentText = "Pay Now";
 
   store = new Store();
 
@@ -38,23 +48,56 @@ export class FlutterwavePage implements OnInit {
     action: this.action,
   };
 
-  constructor(private flutterwave: Flutterwave) {}
+  paymentData: InlinePaymentOptions;
+
+  constructor(
+    private flutterwave: Flutterwave,
+    private cartService: CartService,
+    private paymentService: PaymentService
+  ) {}
 
   ngOnInit() {
-    if(!this.amount) {
+    if (!this.amount) {
       throw new Error("Amount is required!");
     }
-    if(!this.transactionRef) {
-      throw new Error("Transaction Ref is required!")
+    if (!this.transactionRef) {
+      throw new Error("Transaction Ref is required!");
     }
-    if(!this.action) {
-      throw new Error("Action is require. 'UPDATE_BILLS', 'UPDATE_HOSPITAL_WALLET' or 'UPDATE_SMART_WALLET'")
+    if (!this.action) {
+      throw new Error(
+        "Action is require. 'UPDATE_BILLS', 'UPDATE_HOSPITAL_WALLET' or 'UPDATE_SMART_WALLET'"
+      );
     }
+
+    this.paymentText = `Pay ${this.amount} Naira now.`;
+
+    this.paymentData = {
+      public_key: this.publicKey,
+      tx_ref: this.transactionRef,
+      amount: this.amount,
+      currency: "NGN",
+      payment_options: "card",
+      redirect_url: "",
+      meta: this.meta,
+      subaccounts: this.subaccounts,
+      customer: this.customerDetails,
+      customizations: this.customizations,
+      callback: this.makePaymentCallback,
+      onclose: this.closedPaymentModal,
+      callbackContext: this,
+    };
+  }
+
+  makePayment(){
+    this.flutterwave.inlinePay(this.paymentData)
   }
 
   makePaymentCallback(response: PaymentSuccessResponse): void {
     console.log("Pay", response);
     this.flutterwave.closePaymentModal(5);
+    this.cartService.clearCart();
+    this.cartService.closeCartDialog();
+    this.paymentService.triggerEvent(FetchBills);
   }
   closedPaymentModal(): void {
     console.log("payment is closed");

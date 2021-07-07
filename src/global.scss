@@ -25,9 +25,9 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-@import '~animate.css/animate.min.css';
+@import "~animate.css/animate.min.css";
 $custom-border-color: #6c47af;
- 
+
 .cart-modal {
   --height: 90%;
   --border-radius: 10px;
@@ -40,14 +40,13 @@ $custom-border-color: #6c47af;
 // }
 
 html {
-  background-color: #F6F1F6;
+  background-color: #f6f1f6;
   color: #0a1365 !important;
 }
 
 .default-text-color {
   color: #0a1365;
 }
-
 
 .smart-primary {
   color: #6c47af !important;
@@ -95,4 +94,12 @@ html {
 .centralize {
   text-align: center;
   align-content: center;
+}
+
+.custom-alert {
+  --background: whitesmoke;
+}
+
+ion-spinner {
+  color: #6c47af;
 }

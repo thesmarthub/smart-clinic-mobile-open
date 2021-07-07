@@ -1,39 +1,43 @@
 <!-- <ion-header> -->
-<!-- <ion-toolbar>
-  <ion-title color="primary">Hospitals</ion-title>
-</ion-toolbar> -->
+<ion-toolbar (click)="backClicked()">
+  <ion-title color="primary"><ion-icon name="arrow-back"></ion-icon> Hospitals</ion-title>
+</ion-toolbar>
 <!-- <ion-searchbar color=""></ion-searchbar> -->
 <!-- <ion-item style="padding-left: 100px; padding-right: 100px;" > -->
-  <!-- </ion-item> -->
-  
-  <ion-content class="centralize">
+<!-- </ion-item> -->
+
+<ion-content class="centralize">
   <ion-img style="height: 200px;" src="/assets/health.jpg"></ion-img>
   <ion-spinner *ngIf="hService.currentValues.loadingHospitals | async"></ion-spinner>
   <ion-list mode="ios">
-    <ion-item *ngFor="let item of hService.currentValues.hospitals | async">
+    <ion-item *ngFor="let item of hService.currentValues.hospitals | async" (click)="showConfirmAlert(item)">
       <ion-grid>
         <ion-row>
           <ion-col size="9">
             <ion-row>
               <ion-text color="primary">{{item.name}}</ion-text>
-            
+
             </ion-row>
             <ion-row>
               <ion-text class="grey-text"><small>{{item.address}}</small></ion-text>
             </ion-row>
             <ion-row>
-              
-              <ion-text *ngIf="!storeCtrl.user.hospital_smart_codes.includes(item.smart_code)" class="online" (click)="showConfirmAlert(item)"><small >Register</small></ion-text>
-          
+
+              <ion-text [class]="!storeCtrl.user.hospital_smart_codes.includes(item.smart_code)? 'enter' : 'online'">
+                <small>{{!storeCtrl.user.hospital_smart_codes.includes(item.smart_code) ? 'Register' : 'Enter'}}</small>
+              </ion-text>
+
             </ion-row>
           </ion-col>
 
           <ion-col size="3">
-            <ion-icon name="radio-button-on" [class.online]="storeCtrl.user.hospital_smart_codes.includes(item.smart_code)" [class.offline]="!storeCtrl.user.hospital_smart_codes.includes(item.smart_code)"></ion-icon>
- 
+            <ion-icon name="radio-button-on"
+              [class.online]="storeCtrl.user.hospital_smart_codes.includes(item.smart_code)"
+              [class.offline]="!storeCtrl.user.hospital_smart_codes.includes(item.smart_code)"></ion-icon>
+
           </ion-col>
 
-         
+
 
         </ion-row>
       </ion-grid>

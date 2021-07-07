@@ -1,28 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
-} from '@angular/forms';
-import { Location } from '@angular/common';
-import { Store } from 'src/app/engine/store';
-import { HospitalService } from 'src/app/services/hospital.service';
-import { AuthService } from 'src/app/auth/auth.service';
-import { async } from '@angular/core/testing';
+} from "@angular/forms";
+import { Location } from "@angular/common";
+import { Store } from "src/app/engine/store";
+import { HospitalService } from "src/app/services/hospital.service";
+import { AuthService } from "src/app/auth/auth.service";
+import { async } from "@angular/core/testing";
 
 @Component({
-  selector: 'app-hospital-reg',
-  templateUrl: './hospital-reg.page.html',
-  styleUrls: ['./hospital-reg.page.scss'],
+  selector: "app-hospital-reg",
+  templateUrl: "./hospital-reg.page.html",
+  styleUrls: ["./hospital-reg.page.scss"],
 })
 export class HospitalRegPage implements OnInit {
   regForm: FormGroup;
   registering = false;
   showNextOfKin = false;
-  storeCtrl = new Store()
+  storeCtrl = new Store();
 
-  kins = ["Mother", "Father", "Brother", "Sister", "Nephew", "Niece", "Aunt", "Uncle", "Grand Mother", "Grand Father"];
+  kins = [
+    "Mother",
+    "Father",
+    "Brother",
+    "Sister",
+    "Nephew",
+    "Niece",
+    "Aunt",
+    "Uncle",
+    "Grand Mother",
+    "Grand Father",
+  ];
 
   constructor(
     public hService: HospitalService,
@@ -41,45 +52,42 @@ export class HospitalRegPage implements OnInit {
       state: [this.storeCtrl.user.state],
       address: [this.storeCtrl.user.address],
       profile_image: [this.storeCtrl.user.profileImage, Validators.required],
-      next_of_kin_fname: ["" ],
-      next_of_kin_lname: ["" ],
-      next_of_kin_email: ["" ],
-      next_of_kin_phone: ["" ],
+      next_of_kin_fname: [""],
+      next_of_kin_lname: [""],
+      next_of_kin_email: [""],
+      next_of_kin_phone: [""],
       next_of_kin_sex: [""],
       next_of_kin_relationship: [""],
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   showKin() {
     // this.showNextOfKin = true;
     if (this.showNextOfKin) {
-      this.showNextOfKin = false
+      this.showNextOfKin = false;
     } else {
-      this.showNextOfKin = true
+      this.showNextOfKin = true;
     }
-
   }
 
   backClicked() {
     this._location.back();
     // console.log(this.authService.fetchActiveHospitalAndProfile)
-
   }
 
   registerInHospital() {
     this.registering = true;
-    this.storeCtrl.tempHospital 
     try {
-      this.hService.registerInHospital(this.regForm.value).subscribe(
+      this.hService
+        .registerInHospital(this.regForm.value, this.hService.tempHospital)
+        .subscribe(
           (res) => {
             console.log(res);
             if (!res.error) {
               this.authService.fetchProfileInHospital(
-                false,
-                this.storeCtrl.tempHospital
+                this.hService.tempHospital
               );
             } else {
               this.authService.toaster(res.message);
@@ -89,12 +97,14 @@ export class HospitalRegPage implements OnInit {
             console.log(error, "failed to send");
             this.authService.toaster(error.message);
           },
-          () => (this.registering = false)
+          () => {
+            this.registering = false;
+            this.hService.tempHospital = null;
+          }
         );
     } catch (e) {
-      console.log(e, "catch e")
+      console.log(e, "catch e");
       this.authService.toaster(e.message);
     }
   }
-
 }

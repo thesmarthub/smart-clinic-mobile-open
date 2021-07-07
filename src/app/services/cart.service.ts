@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { ModalController } from "@ionic/angular";
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({
@@ -7,6 +8,8 @@ import { BehaviorSubject } from "rxjs";
 export class CartService {
   private cart = [];
   private cartItemCount = new BehaviorSubject(0);
+
+  private _cartModal: ModalController;
 
   constructor() {}
 
@@ -61,5 +64,18 @@ export class CartService {
 
   clearCart() {
     this.cart = [];
+  }
+
+  closeCartDialog() {
+    this.cartModal.dismiss();
+  }
+
+  set cartModal(modal) {
+    if(this._cartModal) this.cartModal.dismiss();
+    this._cartModal = modal;
+  }
+
+  get cartModal() {
+    return this._cartModal;
   }
 }

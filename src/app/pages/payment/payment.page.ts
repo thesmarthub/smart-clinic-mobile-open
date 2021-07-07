@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import * as moment from "moment";
 import { BehaviorSubject, Subscription } from "rxjs";
@@ -7,6 +8,8 @@ import { CartService } from "src/app/services/cart.service";
 import { PaymentService } from "src/app/services/payment.service";
 import { ApiAction } from "src/interfaces/action";
 import { CartPage } from "../cart/cart.page";
+import { Location } from "@angular/common"
+
 
 @Component({
   selector: "app-payment",
@@ -16,21 +19,39 @@ import { CartPage } from "../cart/cart.page";
 export class PaymentPage implements OnInit {
   cart = [];
   products = [];
+  walletBalance: number;
   cartItemCount: BehaviorSubject<number>;
   subs: Subscription[] = [];
+  billType;
   @ViewChild("cart", { static: false, read: ElementRef }) fab: ElementRef;
   constructor(
     public pService: PaymentService,
     public cartService: CartService,
-    private modalCtrl: ModalController
-  ) {}
+    public aRoute: ActivatedRoute,
+    private modalCtrl: ModalController,
+    public location: Location
+    // private badge: Badge
+  ) {
+    this.aRoute.queryParams.subscribe((data) => {
+      if (data?.department_route) {
+        this.pService.departmentRoute = data.department_route
+      } else {
+        this.pService.departmentRoute = null
+      }
+    });
+  }
 
   ngOnInit() {
     this.loadData();
   }
 
   ionViewDidEnter() {
+    this.fetchWalletBalance();
     this.fetchBills();
+  }
+
+  ionViewDidLeave() {
+    this.pService.departmentRoute = null;
   }
 
   loadData() {
@@ -62,6 +83,15 @@ export class PaymentPage implements OnInit {
       action,
       start_date: moment().subtract(3, "months").toDate(),
     });
+  }
+
+  async fetchWalletBalance() {
+    console.log("fetching wallet balance");
+
+    const walletBalance = await this.pService.fetchWalletBalance();
+    if (typeof walletBalance !== "boolean") {
+      this.walletBalance = walletBalance;
+    }
   }
 
   unsub() {
@@ -121,5 +151,9 @@ export class PaymentPage implements OnInit {
       node.removeEventListener("animationend", handleAnimationEnd);
     }
     node.addEventListener("animationend", handleAnimationEnd);
+  }
+
+  goBack(){
+    this.location.back()
   }
 }

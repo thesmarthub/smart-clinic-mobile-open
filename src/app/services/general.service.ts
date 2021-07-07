@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { LoadingController } from "@ionic/angular";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AlertController, LoadingController } from "@ionic/angular";
 import { BehaviorSubject } from "rxjs";
 import { ApiAction } from "src/interfaces/action";
 import { API } from "src/interfaces/api";
@@ -83,42 +84,56 @@ export class GeneralService {
     );
   };
 
-  async presentLoading(conf) {
-    console.log(conf);
-    if (conf.currentEvent === conf.expectedEvent) {
-      if (conf.loader) {
-        await conf.loader.dismiss();
-      }
-      conf.loader = await this.loadingController.create({
+  presentLoading = async (
+    conf: { message: string; loader?: HTMLIonLoadingElement },
+    action?: "open" | "close"
+  ) => {
+    const createLoader = async () => {
+      return this.loadingController.create({
         message: conf.message,
         spinner: "bubbles",
       });
-      await conf.loader.present();
-    } else if (conf.loader) {
-      await conf.loader.dismiss();
+    };
+    if (!conf.loader) {
+      conf.loader = await createLoader();
     }
-  }
+    if (action) {
+      switch (action) {
+        case "open":
+          conf.loader.present();
+          setTimeout(() => {
+            if (conf.loader?.isConnected) {
+              conf.loader.dismiss();
+            }
+          }, 30000);
 
-  async fetchOrgs(type) {
-    return await this.http
-      .get(`${environment.orgsURL}organization?type=${type}`)
-      .toPromise()
-      .then((data) => data)
-      .catch((err) => {
-        console.log("Could not fetch hospitals");
-        return false;
-      });
-  }
+          break;
 
-  async fetchProducts(orgId) {
-    return await this.http
-      .get(`${environment.orgsURL}product?orgId=${orgId}`)
-      .toPromise()
-      .then((data) => data)
-      .catch((err) => {
-        console.log("Could not fetch products");
-        return false;
-      });
+        default:
+          await conf.loader.dismiss();
+          break;
+      }
+      return;
+    }
+
+    // if (conf.currentEvent === conf.expectedEvent) {
+    //   if (conf.loader) {
+    //     await conf.loader.dismiss();
+    //   }
+    //   conf.loader = await createLoader();
+    //   await conf.loader.present();
+    //   setTimeout(() => {
+    //     if (conf.loader?.isConnected) {
+    //       conf.loader.dismiss();
+    //     }
+    //   }, 30000);
+    // } else if (conf.loader) {
+    //   await conf.loader.dismiss();
+    // }
+  };
+
+  resetQueryParams(router: Router, route: ActivatedRoute) {
+    router.navigate(['.'], { relativeTo: route, queryParams: {}});
   }
 }
 

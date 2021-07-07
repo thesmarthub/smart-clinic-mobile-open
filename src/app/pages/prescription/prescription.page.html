@@ -1,26 +1,44 @@
 <!-- <ion-header> -->
-<!-- <ion-toolbar>
-  <ion-title color="primary">Prescriptions</ion-title>
-</ion-toolbar> -->
+<ion-toolbar (click)="goBack()">
+  <ion-title color="primary"><ion-icon name='arrow-back'></ion-icon> Prescriptions</ion-title>
+</ion-toolbar>
 <!-- <ion-searchbar color=""></ion-searchbar> -->
 
+
+<!-- 
+  <ion-row>
+    <ion-item>
+    <ion-col>
+      <ion-text><small>Home Delivery?</small></ion-text>
+    </ion-col>
+    <ion-col>
+      <ion-text style="text-align: right"><small>Call</small> <ion-icon (click)='call()' name='call'></ion-icon></ion-text>
+    </ion-col>
+  </ion-item>
+  </ion-row> -->
 
 
 <ion-content class="centralize">
   <ion-img src="/assets/pharm-pic.jpg"></ion-img>
   <ion-spinner *ngIf="pService.currentValues.loadingPrescriptions | async"></ion-spinner>
+
+ 
+  
   <ion-list>
+    <ion-text class="grey-text" style="font-size: 28px;" *ngIf="pService.currentValues?.prescriptions.value?.length < 1 && !pService.currentValues.loadingPrescriptions.value">
+      <span><ion-icon name="alert"></ion-icon></span> No Prescriptions
+    </ion-text>
     <ion-item *ngFor="let item of pService.currentValues?.prescriptions | async">
       <ion-grid>
         <ion-row  *ngIf="!item.prescription" >
           <ion-col>
             <ion-label><small class="grey-text">{{item?.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small></ion-label>
-            <ion-label><small [class.pending]="item.status === 'pending' " [class.dispensed]="item.status === 'dispensed' "  class="grey-text">{{item?.status |titlecase}}</small></ion-label>
+            <ion-label><small [class.pending]="item.status === 'pending' " [class.dispensed]="item.status === 'dispensed' "  class="grey-text">{{item?.status ==='pending'?'Awaiting payment':'Dispensed' }}</small></ion-label>
           </ion-col>
 
           <ion-col [size]="item.prescription ? 12 : 7">
             <ion-row>
-              <ion-text>{{item?.item_name}}</ion-text>
+              <ion-text color="primary">{{item?.item_name}}</ion-text>
             </ion-row>
           </ion-col> 
           
@@ -41,7 +59,7 @@
       </ion-grid>
     </ion-item>
   </ion-list>
-  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>PAY</ion-fab-button>
-  </ion-fab> -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" (click)="payForDrugs()">
+    <ion-fab-button>BUY</ion-fab-button>
+  </ion-fab>
 </ion-content>

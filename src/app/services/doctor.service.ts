@@ -15,9 +15,8 @@ export class DoctorService {
   ) {}
 
   fetchDoctors(departmentRoute): Observable<any> {
-    return this._genService.http.post(
-      `${this._genService.baseUrl}hospital/patient-request`,
-      {},
+    return this._genService.http.get(
+      `${this._genService.baseUrl}auth/get-staff`,
       {
         params: {
           action: "VIEW_AVAILABLE_SPECIALISTS",
@@ -26,28 +25,6 @@ export class DoctorService {
         },
       }
     );
-  }
-
-  async fetchPrivatePractitioners() {
-    const doctors = await this._genService.fetchOrgs("private-practice");
-    if (Array.isArray(doctors)) {
-      doctors.forEach((doctor) => {
-        this.transformDoctorData(doctor);
-      });
-      return doctors;
-    }
-    return [];
-  }
-
-  async fetchServicesByOrganization(orgId) {
-    const services = await this._genService.fetchProducts(orgId);
-    if (Array.isArray(services)) {
-      services.forEach((service) => {
-        this.transformServiceData(service);
-      });
-      return services;
-    }
-    return [];
   }
 
   async presentActionSheet(

@@ -1,0 +1,52 @@
+.profile {
+  text-align: center;
+  padding: 1em;
+  font-size: 18px;
+  // color: #6c47af;
+  // color: grey;
+}
+
+.profile-img {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+  height: 150px;
+  width: 150px;
+}
+
+.profile-icon {
+  color: #6c47af;
+  padding-right: 0.5em;
+  font-size: 20px;
+}
+
+
+.chat-menu{
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.profile-list {
+  color: #6c47af;
+  font-size: 18px;
+  font-weight:500;
+}
+.profile-list-new {
+    color: #6c47af;
+    font-size: 18px;
+    padding-left: 5px;
+    font-weight: 500;
+  }
+
+.grey-text{
+    color: gray;
+    text-align: center;
+    padding: 1em;
+    font-size: 18px;
+}
+
+.log-out{
+  color: red;
+  font-weight: 500;
+}
+

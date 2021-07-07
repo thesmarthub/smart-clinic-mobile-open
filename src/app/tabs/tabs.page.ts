@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { MenuController } from "@ionic/angular";
 import { OpenMenu, TabEvent } from "../actions/events/tab";
 import { TabsService } from "../services/tabs.service";
@@ -9,8 +10,9 @@ import { TabsService } from "../services/tabs.service";
   styleUrls: ["tabs.page.scss"],
 })
 export class TabsPage {
+  isActive = false
   openMenu = OpenMenu;
-  constructor(private menu: MenuController, private tService: TabsService) {
+  constructor(private menu: MenuController, private tService: TabsService, private router:Router) {
     this.tService.currentValues.menuAction.subscribe((action) => {
       if (action === "open") {
         this.openCustom();
@@ -44,5 +46,9 @@ export class TabsPage {
 
   closeCustom() {
     this.menu.close("custom");
+  }
+
+  openBills(){
+    this.router.navigate(['/tabs/payment'], {queryParams:{'department_route':''}})
   }
 }

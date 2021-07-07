@@ -53,18 +53,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: "chat",
-        loadChildren: () =>
-          import("../pages/chat/chat.module").then((m) => m.ChatPageModule),
-      },
-      {
-        path: "video-chat",
-        loadChildren: () =>
-          import("../pages/video-chat/video-chat.module").then(
-            (m) => m.VideoChatPageModule
-          ),
-      },
-      {
         path: "doctors",
         loadChildren: () =>
           import("../pages/doctors/doctors.module").then(

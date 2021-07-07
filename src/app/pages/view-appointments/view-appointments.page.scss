@@ -31,3 +31,25 @@ ion-card {
  padding-right: 80px;
  
 }
+
+ion-spinner {
+  display: block;
+  margin: auto;
+}
+
+// .active{
+//   color: #6c47af;
+//   font-size: larger;
+// }
+
+.active-color{
+  // text-decoration: underline;
+  color: #6c47af;
+  font-weight: bolder;
+}
+
+.default-color{
+  color: grey;
+  // text-decoration: underline;
+}
+

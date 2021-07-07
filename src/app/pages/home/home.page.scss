@@ -5,58 +5,198 @@
   // background-color: red;
 }
 
-ion-img {
+.img-card {
   height: 60px;
-  margin-bottom: 7px;
+
 }
 
-.spacer {
-  margin: 20px 0px 0px 0px;
+
+.doc-img-card {
+  height: 80px;
+  margin-bottom: 100px;
+
 }
 
-.big-font {
-  font-size: larger;
+ion-avatar {
+  padding: 8px;
+  // border: 1px solid #6c47af;
 }
 
-.strong-font {
-  font-weight: bolder;
+.top-img {
+  height: 50px;
+  width: 50px;
+  // margin: 20px;
 }
 
-.top-row {
-  margin: 15px;
+.top-text {
+  font-size: 18px;
+  padding-left: 1em;
+  // padding-top: 0.5em;
+  color: #6c47af;
+}
+
+.link-card {
+  border-radius: 5px;
+  max-width: 40vw;
+  color: #6c47af;
+  font-weight: bold;
+  box-shadow: 0 1px 2px rgba(108, 71, 175), 0 3px 3px rgba(108, 71, 175) !important;
+  // max-height: 20vw;
+}
+.head-border {
+  box-shadow: 0px 0px 2px 1px rgba(108, 71, 175),
+    0px 0px 2px 1px rgba(108, 71, 175) !important;
+}
+.marginalize {
+  margin-top: 5%;
+  margin-left: 15%;
+  // z-index: -1;
+}
+
+.squ {
   background-color: #6c47af;
+  height: 70px;
+  width: 100%;
+  border-bottom-left-radius: 150px 100px;
+  border-bottom-right-radius: 150px 100px;
+}
+
+.grey-text {
+  color: grey;
+}
+
+.appt {
+  background-color: #FDF3F6;
+
+  font-weight: bold;
+}
+.doctors {
+  background-color: #F7F2F7;
+  
+  font-weight: bold;
+}
+.prescriptions {
+  background-color:  #FDF3F6;
+ 
+}
+.lab {
+  background-color: #F7F2F7;
+ 
+}
+.scans {
+  background-color: #FDF3F6;
+  
+}
+.hospitals {
+  background-color: #F7F2F7;
+
+}
+
+// .icon-img{
+//   max-height: 2.2em;
+//   max-width: 2.2em;
+//   margin-bottom: 1em;
+// }
+
+.img-border {
+  text-align: center;
+  border: 1px solid #6c47af;
+  border-radius: 2em;
+  max-width: 2.5em;
+  min-width: 2.5em;
+  min-height: 2.5em;
+  max-height: 2.5em;
+  padding: 8px;
+  margin-bottom: 1em;
+}
+
+.hospital-card {
+  border-radius: 0.5em;
+  // background-color: #6c47af;
+  background-color: #9079bb;
   color: white;
+  text-align: center;
+  margin-bottom: 0px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
-.bottom-row {
-  padding-bottom: 50px;
-  border-radius: 30px;
-  margin-left: 10px;
-  margin-right: 10px;
-  background-color: white;
-  // color: white;
+.shop-card {
+  border-radius: 0.5em;
+  background-color: #F7F2F7;
+  text-align: center;
+  margin-bottom: 0px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
 }
 
-ion-card {
-  border-radius: 10px;
-  // box-shadow: 0px 0px 3px 2px #6c47af !important;
-  box-shadow: 0 1px 2px rgba(108,71,175), 0 3px 3px rgba(108,71,175) !important;
-  // box-shadow: 0 1px 3px rgba(108,71,175), 0 1px 2px rgba(108,71,175);
-  // transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+.white-text {
+  color: white;
+  font-weight: bold;
 }
 
-// ion-card:hover {
-//   box-shadow: 0 14px 28px rgba(108,71,175), 0 10px 10px rgba(108,71,175);
+.smoke-text {
+  color: rgb(240, 234, 234);
+  // font-weight: bold;
+}
+
+.question {
+  width: 100vw;
+}
+
+// for notifications
+// .dot {
+//   height: 25px;
+//   width: 25px;
+//   background-color: #bbb;
+//   border-radius: 50%;
+//   display: inline-block;
 // }
 
-ion-grid {
-  background-color: #6c47af !important;
-  height: 100% !important;
+// .bck{
+//   background-color:white !important;
+//   height: 100vh;
+//   // --ion-background-color: #6c47af;
+// }
+.color-grey {
+  color: #707070;
 }
 
-ion-content {
-  background-color: #6c47af !important;
-}
-// ion-content {
-//   --ion-background-color: green;
+// .is-full-width {
+//   width: 100%;
 // }
+
+.green {
+  background-color: green;
+}
+
+.card-pointer:hover {
+cursor: pointer;
+}
+
+.img-design{
+  border-radius: 0.5em;
+  text-align: center;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.doc-img-design{
+  border-radius: 0.5em;
+  // padding: 30px;
+  text-align: center;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+
+.menu{
+  padding: 0.3em; 
+  font-size: 24px;
+  color:#6c47af;
+}
+

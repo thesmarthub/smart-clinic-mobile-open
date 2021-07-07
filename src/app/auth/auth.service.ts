@@ -10,6 +10,7 @@ import { IAPIResponse } from "../../interfaces/general";
 import { IUser } from "../../interfaces/user";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { ChatService } from "../services/chat.service";
+import * as moment from "moment";
 
 @Injectable({
   providedIn: "root",
@@ -31,6 +32,10 @@ export class AuthService {
     private chatService: ChatService
   ) {}
 
+  navigate(link, queryParams) {
+    this.router.navigate([link], { queryParams });
+  }
+
   login(email, password) {
     this.authListenerWithData.next({ event: "LOGGING IN" });
     this._http
@@ -42,12 +47,21 @@ export class AuthService {
         (res) => {
           // console.log(res, "loged in res")
           if (this.authSuccess(res)) {
-            this.chatService.initialize();
+            // this.chatService.initialize();
             this.storeAuthData(res, "LOGGED IN");
-            this.fetchActiveHospitalAndProfile(
-              this.store.user.active_hospital_smart_code ||
-                "SMART_CLINIC_DEFAULT"
-            );
+            this.createChatProfile();
+            if (this.store.userType === "doctor") {
+              this.authListenerWithData.next({ event: "LOGGED IN" });
+              this.toaster({
+                text: `Welcome, ${this.store.user.fname}`,
+                duration: 2000,
+              });
+            } else {
+              this.fetchActiveHospitalAndProfile(
+                this.store.user.active_hospital_smart_code ||
+                  "SMART_CLINIC_DEFAULT"
+              );
+            }
           } else {
             console.log(res.message);
             this.authListenerWithData.next({
@@ -125,7 +139,7 @@ export class AuthService {
         }
       );
   }
-  initializeProfile(id) {
+  initializeProfile(id, hospitalNumber?) {
     // this.authListenerWithData.next({ event: 'LOGGING IN' });
     this._http
       .get<IAPIResponse<any>>(`${this.baseURL}auth/get-patient/${id}`)
@@ -133,6 +147,9 @@ export class AuthService {
         (res: any) => {
           if (res?.result) {
             console.log(res);
+            if (hospitalNumber) {
+              res["result"].hospital_number = hospitalNumber;
+            }
             this.patient_profile.next(res["result"]);
             this.store.user = res["result"];
           } else {
@@ -164,7 +181,10 @@ export class AuthService {
         if (showNotification) {
           alert(res.message);
         }
-        this.initializeProfile(this.store.user._id);
+        this.initializeProfile(
+          this.store.user._id,
+          this.store.user.hospital_number
+        );
       });
   }
 
@@ -190,7 +210,7 @@ export class AuthService {
       )
       .subscribe((res) => {
         this.toaster({ text: res.message, duration: 2000 });
-        this.initializeProfile(_id);
+        this.initializeProfile(_id, this.store.user.hospital_number);
       });
   }
 
@@ -224,7 +244,7 @@ export class AuthService {
       );
   }
 
-  fetchActiveHospitalAndProfile(smartCode) {
+  fetchActiveHospitalAndProfile(smartCode, callback = () => {}) {
     this.authListenerWithData.next({ event: "FETCHING HOSPITAL PROFILE" });
     this._http
       .get<IAPIResponse<IHospital>>(
@@ -233,15 +253,13 @@ export class AuthService {
       .subscribe(
         (res) => {
           if (res?.result) {
-            this.store.currentHospital = res.result;
-            this.store.user.active_hospital_smart_code = res.result.smart_code;
-            this.fetchProfileInHospital();
+            this.fetchProfileInHospital(res.result, callback);
           } else {
             this.toaster({
               text: "Could not fetch active hospital. Please try again.",
               duration: 2000,
             });
-            this.authListenerWithData.next({ event: "DEFAULT" });
+            this.authListenerWithData.next({ event: "LOGIN FAILED" });
           }
         },
         (err) => {
@@ -254,22 +272,28 @@ export class AuthService {
       );
   }
 
-  fetchProfileInHospital(mustFetch = true, selectedHospital?: IHospital) {
+  fetchProfileInHospital(selectedHospital: IHospital, callback = () => {}) {
+    console.log(selectedHospital);
     this._http
       .get<IAPIResponse<IUser>>(`${this.baseURL}hospital/patient-request`, {
         params: {
           action: "FETCH_PATIENT_PROFILE",
-          use_temp_hosp: mustFetch ? "no" : "yes",
+          hospital_smart_code: selectedHospital.smart_code,
         },
       })
       .subscribe(
         (res) => {
+          console.log("Profile in hospital", res)
           const userClone = this.store.user;
 
           if (res?.result?.hospital_number) {
             userClone.hospital_number = res.result.hospital_number;
 
             if (selectedHospital) {
+              this.editUserDetails(
+                { active_hospital_smart_code: selectedHospital.smart_code },
+                false
+              );
               userClone.active_hospital_smart_code =
                 selectedHospital.smart_code;
               userClone.currentHospital = selectedHospital;
@@ -277,27 +301,25 @@ export class AuthService {
             }
 
             this.store.user = userClone;
+
+            // console.log("after cloning", this.store.user)
             this.authListenerWithData.next({ event: "LOGGED IN" });
             this.toaster({
               text: `Welcome, ${this.store.user.fname}`,
               duration: 2000,
             });
             this.router.navigateByUrl("/tabs/home");
-          } else if (
-            this.store.user.active_hospital_smart_code !==
-              "SMART_CLINIC_DEFAULT" &&
-            mustFetch
-          ) {
+          } else if (selectedHospital.smart_code !== "SMART_CLINIC_DEFAULT") {
             const currentHospitalClone = this.store.currentHospital;
             currentHospitalClone["smart_code"] = "SMART_CLINIC_DEFAULT";
             this.store.currentHospital = currentHospitalClone;
 
-            this.fetchProfileInHospital();
-          } else if (mustFetch) {
-            // this.toaster('Could not find profile in hospital');
-            this.defaultHospitalRegistration();
+            this.fetchProfileInHospital(this.store.currentHospital);
+            // } else if (mustFetch) {
+            //   // this.toaster('Could not find profile in hospital');
+            //   this.defaultHospitalRegistration();
 
-            this.authListenerWithData.next({ event: "DEFAULT" });
+            //   this.authListenerWithData.next({ event: "DEFAULT" });
           } else {
             this.toaster({
               text: "Could not find profile in hospital",
@@ -316,10 +338,14 @@ export class AuthService {
             duration: 2000,
           });
           this.authListenerWithData.next({ event: "DEFAULT" });
+        },
+        () => {
+          callback();
         }
       );
   }
 
+  //Should be deprecated in favor of a more reliable solurioin
   defaultHospitalRegistration() {
     this._http
       .post<IAPIResponse<IUser>>(
@@ -343,8 +369,11 @@ export class AuthService {
     // this.authListenerWithData.next({ event: action });
     this.store.token = res["token"];
     this.store.user = res["result"];
+    this.store.lastLoginTime = moment();
     this.store.addFirebaseKey(this.store.firebaseToken);
-    this.editUserDetails(this.store.user, false);
+    if (!(this.store.userType === "doctor")) {
+      this.editUserDetails(this.store.user, false);
+    }
   }
 
   socialLogin() {
@@ -352,7 +381,47 @@ export class AuthService {
   }
 
   registerDoctor() {
-    const browser = this.iab.create('https://docs.google.com/forms/d/e/1FAIpQLSc-UVDE0mQvNZ6MLy54yMN9tCyNG0Coy9bysGKU5xK5n0OgsQ/viewform');
+    const browser = this.iab.create(
+      "https://docs.google.com/forms/d/e/1FAIpQLSc-UVDE0mQvNZ6MLy54yMN9tCyNG0Coy9bysGKU5xK5n0OgsQ/viewform"
+    );
+  }
+
+  createChatProfile() {
+    this._http
+      .post(
+        `${this.baseURL}auth/comet?uid=${this.store.user._id}&comet_method=POST&comet_url=users`,
+        {
+          data: {
+            uid: this.store.user._id,
+            name: `${this.store.user.fname} ${this.store.user.lname}`,
+            status: "online",
+            createdAt: new Date().getTime(),
+          },
+        }
+      )
+      .toPromise()
+      .then((data) => {
+        console.log("comet chat", data);
+        this._http
+          .post(
+            `${this.baseURL}auth/comet?uid=${this.store.user._id}&comet_method=POST&comet_url=users/${this.store.user._id}/auth_tokens`,
+            {}
+          )
+          .toPromise()
+          .then(
+            (resp: {
+              data: Record<string, any>;
+              meta: Record<string, any>;
+            }) => {
+              console.log(resp)
+              if (resp?.data && resp.data) {
+                this.store.cometAuthKey = resp?.data["authToken"];
+              }
+            }
+          )
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
   }
 }
 

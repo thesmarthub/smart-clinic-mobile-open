@@ -1,0 +1,51 @@
+<!-- <div class="main-div"> -->
+<ion-toolbar>
+  <ion-title>
+    <ion-icon name="close" color='primary' (click)="navigateToStart()"></ion-icon>
+  </ion-title>
+</ion-toolbar>
+
+<ion-content>
+
+  <ion-slides class="page-pad" pager="true" [options]="slideOpts">
+    <ion-slide>
+      <div>
+        <ion-img src="/assets/appt-time.jpg"></ion-img>
+        <label class="grey-text">Book and view Appointments in your preffered hospital with your preffered
+          Doctor</label>
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <ion-img src="/assets/notifications.jpg"></ion-img>
+        <label class="grey-text">Get notified when prescriptions, x-ray scans and lab results are ready</label>
+
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <ion-img src="/assets/bill.jpg"></ion-img>
+        <label class='grey-text'>Get hospital bills and make hospital payment using any payment method including
+          wallet</label>
+
+      </div>
+    </ion-slide>
+    <ion-slide>
+      <div>
+        <ion-img src="/assets/health.jpg"></ion-img>
+        <label style="color: grey;">View and register in any<br> available hospital<br>across Nigeria</label>
+
+      </div>
+    </ion-slide>
+  </ion-slides>
+  <!-- <ion-row> -->
+
+  <!-- <ion-item> -->
+  <ion-button class="page-pad" expand='block' routerLink="/auth/register">Create an account</ion-button>
+  <!-- </ion-item> -->
+  <!-- <ion-item> -->
+  <ion-button class="page-pad" expand='block' routerLink="/auth/login">Log In</ion-button>
+  <!-- </ion-item> -->
+  <!-- </ion-row> -->
+
+</ion-content>

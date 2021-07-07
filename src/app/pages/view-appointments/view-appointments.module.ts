@@ -8,6 +8,7 @@ import { ViewAppointmentsPageRoutingModule } from './view-appointments-routing.m
 
 import { ViewAppointmentsPage } from './view-appointments.page';
 import { CalendarModule } from 'ion2-calendar';
+import { DatePicker } from '@ionic-native/date-picker/ngx';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CalendarModule } from 'ion2-calendar';
     ViewAppointmentsPageRoutingModule,
     CalendarModule
   ],
-  declarations: [ViewAppointmentsPage]
+  declarations: [ViewAppointmentsPage],
+  providers: [DatePicker]
 })
 export class ViewAppointmentsPageModule {}

@@ -48,6 +48,9 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    if (this.store.notNeedLogin) {
+      this.router.navigate(["/tabs/home"]);
+    }
     console.log("Initializing app!");
     // Request permission to use push notifications
     // iOS will prompt user and return if they granted permission or not
@@ -142,8 +145,25 @@ export class AppComponent {
 
   logout() {
     this.closeTab();
-    this.store.clearStore();
-    this.router.navigateByUrl("/auth/login");
+  
+    if (
+      this.store.activeChatDoctor &&
+      !confirm(
+        "You have an existing conversation. This conversation will be cancelled."
+      )
+    ) {
+      return;
+    }
+    setTimeout(() => {
+      this.store.clearStore();
+        if(!this.store.userType){
+      this.router.navigateByUrl('/start-screen')
+    }else{
+
+      this.router.navigateByUrl("/auth/login");
+    }
+
+    }, 1000)
   }
 
   navigateToResetPassword() {

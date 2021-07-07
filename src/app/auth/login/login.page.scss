@@ -1,11 +1,11 @@
-// form {
-//   background-color: #F6F1F6;
-//   height: 100vh;
-// }
-
-ion-img {
-  height: 100px;
+form {
+  // background-color: #F6F1F6;
+  height: 100vh;
 }
+
+// ion-img {
+//   height: 100px;
+// }
 
 .center-text {
   text-align: center;
@@ -34,24 +34,26 @@ ion-input{
 
 .centralize {
   align-items: center;
+  // padding-top: 30%;
 }
 .extra-margin {
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 50px;
+  padding-top: 20px;
+ 
 }
 
-.little-margin {
-  margin-top: 10px;
-}
+// .little-margin {
+//   margin-top: 10px;
+// }
 
 .grey {
   color: gray;
 }
 
-.footer{
-  padding-top: 60px;
-}
+// .footer{
+//   padding-top: 60px;
+// }
 
 
 ion-item {

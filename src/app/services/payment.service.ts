@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
+import * as moment from "moment";
 import { BehaviorSubject } from "rxjs";
 import { map } from "rxjs/operators";
 import { APIResult } from "src/interfaces/api";
@@ -36,6 +37,7 @@ export class PaymentService {
   currentState = new BehaviorSubject(PaymentState);
   store = new Store();
   creatingLink = false;
+  departmentRoute = null;
 
   constructor(
     private gService: GeneralService,
@@ -52,6 +54,12 @@ export class PaymentService {
     if (event === FetchBills) {
       this.currentState.next(FetchingBills);
       this.currentValues.loadingBills.next(true);
+      if (!value) {
+        value = {
+          action: "FETCH_PATIENT_BILLS",
+          start_date: moment().subtract(3, "months").toDate(),
+        };
+      }
       this.gService.getData({
         url: "hospital/patient-request",
         params: value,
@@ -74,11 +82,28 @@ export class PaymentService {
       return {
         paidBills: [],
         pendingBills: [],
+        drugBills: [],
       };
     }
     return {
-      paidBills: bills?.filter((bill) => bill.payment_status === true),
-      pendingBills: bills?.filter((bill) => bill.payment_status === false),
+      paidBills: bills?.filter((bill) => {
+        if (
+          this.departmentRoute &&
+          bill.department_route !== this.departmentRoute
+        ) {
+          return false;
+        }
+        return bill.payment_status === true;
+      }),
+      pendingBills: bills?.filter((bill) => {
+        if (
+          this.departmentRoute &&
+          bill.department_route !== this.departmentRoute
+        ) {
+          return false;
+        }
+        return bill.payment_status === false;
+      }),
     };
   }
 
@@ -164,6 +189,21 @@ export class PaymentService {
       .toPromise()
       .then((data) => data)
       .catch((e) => false);
+  }
+
+  fetchWalletTransactions() {
+    return this._http
+      .get<APIResult<object[]>>(
+        `${this.gService.baseUrl}payment/patient-transactions`,
+        { params: { action: "UPDATE_SMART_WALLET" } }
+      )
+      .pipe(
+        map((data) =>
+          data.result.filter((res: Record<string, any>) => {
+            return res.action === "UPDATE_SMART_WALLET";
+          })
+        )
+      );
   }
 
   clean(prop) {

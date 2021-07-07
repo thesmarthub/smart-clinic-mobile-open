@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseURL: "https://health.smartapps.com.ng/mobile/", //"https://health.smartapps.com.ng/mobile/",
+  baseURL: "https://health.smartapps.com.ng/mobile/", 
+  // baseURL: "http://172.24.23.144:7003",
   mobileEventUrl: "https://events.s3.smartapps.com.ng/",
   orgsURL: "http://localhost:8080/api/v1/"
 };

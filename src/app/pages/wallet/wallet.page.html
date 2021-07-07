@@ -1,25 +1,28 @@
-<!-- <ion-toolbar>
-    <ion-title>My Wallet</ion-title>
-  </ion-toolbar> -->
+<ion-toolbar>
+  <ion-title color="primary">
+    <ion-icon (click)="goBack()" name="arrow-back"></ion-icon> My Wallet
+  </ion-title>
+</ion-toolbar>
 
 <!-- <ion-item style="padding-left: 100px; padding-right: 100px;" > -->
 <ion-item>
   <ion-row>
-    <ion-col style="padding-top: 40px;" size="6">
+    <ion-col style="padding-top: 40px;" size="5">
       <!-- <ion-item> -->
       <ion-text>Balance:</ion-text>
       <br>
-      <ion-text class="balance">₦{{walletBalance | number}}</ion-text>
+      <ion-text >&#8358; <span class="balance">{{walletBalance | number}}</span></ion-text>
       <!-- </ion-item> -->
     </ion-col>
-    <ion-col size="6">
+    <ion-col size="7">
       <ion-card class="bord">
         <ion-item>
-          <ion-input [(ngModel)]="amount" type="number" placeholder="Enter Amount"></ion-input>
+          <ion-input [(ngModel)]="amount" [disabled]="!showNext" type="number" placeholder="Enter Amount"></ion-input>
         </ion-item>
         <ion-item>
           <ion-button [disabled]="loading" *ngIf="showNext" (click)="initTransaction()">Next</ion-button>
-          <app-flutterwave [amount]="amount" [transactionRef]="txRef" *ngIf="!showNext"></app-flutterwave>
+          <app-flutterwave [amount]="amount" [subaccounts]="subaccounts" [transactionRef]="txRef" *ngIf="!showNext">
+          </app-flutterwave>
           <!-- <ion-button *ngIf="loading" (click)="initTransaction()">Next</ion-button>
         <app-flutterwave
           [amount]="amount"
@@ -38,19 +41,32 @@
   <ion-item>
     <ion-text>Activities</ion-text>
   </ion-item>
+
+  <ion-spinner *ngIf="loadingActivities"></ion-spinner>
+  <ion-text class="grey-text" style="font-size: 28px;" *ngIf="transactions.length < 1 && !loadingActivities">
+    <span>
+      <ion-icon name="alert"></ion-icon>
+    </span> No Activities
+  </ion-text>
   <ion-list>
-    <ion-item>
+    <ion-item *ngFor="let item of transactions; let i=index">
       <ion-grid>
         <ion-row>
-          <ion-col size="3">
-            <ion-icon color="primary" name="cash-outline"></ion-icon>
-          </ion-col>
-          <ion-col size="5">
-            <ion-label><small>28th dec, 2023</small></ion-label>
-            <ion-label><small>Transfer</small></ion-label>
+          <ion-col size="1">
+            <ion-icon color='primary' name="information-circle-outline"></ion-icon>
           </ion-col>
           <ion-col size="4">
-            <ion-text color="primary">N2300000</ion-text>
+            <ion-label><small class="grey-text">{{item.verified_at || item.updated_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small>
+            </ion-label>
+            <ion-text [class.green-text]="item.verified === true" [class.red-text]="item.verified === false">
+              <small>{{item.verified?"Success":"Failed"}}</small>
+            </ion-text>
+          </ion-col>
+          <ion-col size="4">
+            <ion-label><small class="gold">{{item.payment_type|titlecase}}</small></ion-label>
+          </ion-col>
+          <ion-col size="3">
+            <ion-text color="primary">&#8358;{{item.amount |number}}</ion-text>
           </ion-col>
         </ion-row>
       </ion-grid>
