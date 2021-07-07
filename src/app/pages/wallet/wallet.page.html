@@ -56,16 +56,16 @@
             <ion-icon color='primary' name="information-circle-outline"></ion-icon>
           </ion-col>
           <ion-col size="4">
-            <ion-label><small class="grey-text">{{item.verified_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small>
+            <ion-label><small class="grey-text">{{item.verified_at || item.updated_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small>
             </ion-label>
-            <ion-text [class.green-text]="item.status === 'successful'" [class.red-text]="item.status === 'failed'">
-              <small>{{item.status |titlecase}}</small>
+            <ion-text [class.green-text]="item.verified === true" [class.red-text]="item.verified === false">
+              <small>{{item.verified?"Success":"Failed"}}</small>
             </ion-text>
           </ion-col>
-          <ion-col size="3">
-            <ion-label><small color='primary'>{{item.payment_type|uppercase}}</small></ion-label>
-          </ion-col>
           <ion-col size="4">
+            <ion-label><small class="gold">{{item.payment_type|titlecase}}</small></ion-label>
+          </ion-col>
+          <ion-col size="3">
             <ion-text color="primary">&#8358;{{item.amount |number}}</ion-text>
           </ion-col>
         </ion-row>

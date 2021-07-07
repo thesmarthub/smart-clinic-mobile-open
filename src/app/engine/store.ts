@@ -134,9 +134,9 @@ export class Store {
     return JSON.parse(_activeChatDoctor);
   }
 
-  clearStore() {
+  clearStore(skipUserType?:boolean) {
     this.activeChatDoctor = null;
-    if (!this.rememberUserType) {
+    if (!this.rememberUserType && !skipUserType) {
       this.userType = null;
     }
     localStorage.removeItem("user");
