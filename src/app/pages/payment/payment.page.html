@@ -41,10 +41,10 @@
           <ion-col size=5>
             <ion-label class="grey-text"><small>{{ p.created_at | date: 'MMM-dd-yy hh:mm' | uppercase}}</small>
             </ion-label>
-            <ion-text class="green-text">&#8358;{{ p.amount_paid_per_unit * p.number_of_units }}</ion-text>
+            <ion-text class="green-text"><small>&#8358;{{ p.amount_paid_per_unit * p.number_of_units }}</small></ion-text>
           </ion-col>
           <ion-col size=5>
-            <ion-text color='primary'>{{ p.item_name }}</ion-text>
+            <ion-text color='primary'><small>{{ p.item_name }}</small></ion-text>
           </ion-col>
 
           <ion-col size=2>

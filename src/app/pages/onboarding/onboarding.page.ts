@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { AuthService } from "src/app/auth/auth.service";
+import { Store } from "src/app/engine/store";
 
 @Component({
   selector: "app-onboarding",
@@ -7,7 +9,8 @@ import { AuthService } from "src/app/auth/auth.service";
   styleUrls: ["./onboarding.page.scss"],
 })
 export class OnboardingPage implements OnInit {
-  constructor(public authService: AuthService) {}
+  store = new Store();
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
 
@@ -17,6 +20,11 @@ export class OnboardingPage implements OnInit {
     autoplay: {
       delay: 5000,
     },
-    
   };
+
+  navigateToStart() {
+    this.store.rememberUserType = false;
+    this.store.userType = null;
+    this.router.navigate(["/start-screen"]);
+  }
 }

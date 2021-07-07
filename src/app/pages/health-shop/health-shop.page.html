@@ -1,0 +1,65 @@
+<!-- <ion-header> -->
+<ion-toolbar (click)="goBack()">
+  <ion-title color="primary">
+    <ion-icon name="arrow-back"></ion-icon> Health Shop
+  </ion-title>
+</ion-toolbar>
+<!-- <ion-searchbar></ion-searchbar> -->
+
+<ion-content class="centralize">
+  <ion-row>
+    <ion-col size="12">
+      <ion-card class="shop-card" routerLink="/health-shop">
+        <ion-card-header>
+          <ion-row class="ion-justify-content-between">
+            <ion-card-subtitle color="primary"
+              >Featured Products</ion-card-subtitle
+            >
+            <!-- <ion-icon name="arrow-forward" color='primary'></ion-icon> -->
+          </ion-row>
+        </ion-card-header>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-slides class="page-pad" pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let card of cards">
+      <!-- <ion-row> -->
+        <ion-col size="6">
+          <ion-card
+            class="card-pointer img-design"
+            [routerLink]="card.link"
+            [class]="card.bgColor"
+          >
+            <ion-card-content>
+              <ion-img class="img-card" [src]="card.img"></ion-img>
+              <ion-text color="primary">{{card.title}}</ion-text>
+              <ion-card-subtitle color='primary'>&#8358;{{card.amount}}</ion-card-subtitle>
+
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      <!-- </ion-row> -->
+    </ion-slide>
+  </ion-slides>
+
+  <ion-item>
+    <ion-text class="grey-text">Categories</ion-text>
+  </ion-item>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="shop-card" *ngFor='let category of categories' [class]="category.bgColor">
+          <ion-card-header>
+            <ion-row class="ion-justify-content-between">
+              <ion-card-subtitle color='primary'>{{category.title}}</ion-card-subtitle>
+              <ion-icon name="arrow-forward" color='primary'></ion-icon>
+            </ion-row>
+          </ion-card-header>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+   
+</ion-content>
