@@ -283,7 +283,7 @@ export class AuthService {
       })
       .subscribe(
         (res) => {
-          // console.log("Profile in hospital", res)
+          console.log("Profile in hospital", res)
           const userClone = this.store.user;
 
           if (res?.result?.hospital_number) {

@@ -145,6 +145,7 @@ export class AppComponent {
 
   logout() {
     this.closeTab();
+  
     if (
       this.store.activeChatDoctor &&
       !confirm(
@@ -155,7 +156,13 @@ export class AppComponent {
     }
     setTimeout(() => {
       this.store.clearStore();
+        if(!this.store.userType){
+      this.router.navigateByUrl('/start-screen')
+    }else{
+
       this.router.navigateByUrl("/auth/login");
+    }
+
     }, 1000)
   }
 
