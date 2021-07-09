@@ -1,60 +1,56 @@
-import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { LoadLabRequests } from 'src/app/actions/events/lab';
-import { LoadedLabRequests } from 'src/app/actions/states/lab';
-import { LabService } from 'src/app/services/lab.service';
-import { AlertController } from '@ionic/angular';
-import { Store } from 'src/app/engine/store';
-import { PaymentService } from 'src/app/services/payment.service';
-import { Router } from '@angular/router';
+import { Location } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { LoadLabRequests } from "src/app/actions/events/lab";
+import { LoadedLabRequests } from "src/app/actions/states/lab";
+import { LabService } from "src/app/services/lab.service";
+import { AlertController } from "@ionic/angular";
+import { Store } from "src/app/engine/store";
+import { PaymentService } from "src/app/services/payment.service";
+import { Router } from "@angular/router";
+import { Subscription } from "rxjs/internal/Subscription";
+
 
 @Component({
-  selector: 'app-lab',
-  templateUrl: './lab.page.html',
-  styleUrls: ['./lab.page.scss'],
+  selector: "app-lab",
+  templateUrl: "./lab.page.html",
+  styleUrls: ["./lab.page.scss"],
 })
 export class LabPage implements OnInit {
-  storeCtrl = new Store()
+  storeCtrl = new Store();
 
   constructor(
-    public lService: LabService, 
-    public location: Location, 
-    public alertCtrl:AlertController,
+    public lService: LabService,
+    public location: Location,
+    public alertCtrl: AlertController,
     public _paymentService: PaymentService,
-    public router: Router) { }
+    public router: Router
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ionViewDidEnter() {
-    this.lService.triggerEvent(LoadLabRequests)
+    this.lService.triggerEvent(LoadLabRequests);
   }
-  send(){
-    
-  }
+  send() {}
 
-  goBack(){
-    this.location.back()
+  goBack() {
+    this.location.back();
   }
 
+  async fetchWalletBalance() {
+    const walletBalance = await this._paymentService.fetchWalletBalance();
 
-async fetchWalletBalance() {
-  const walletBalance = await this._paymentService.fetchWalletBalance();
+    return walletBalance;
+  }
 
-  return walletBalance;
-}
-
-
-async requestResult(item) {
-const walletBalance = await this.fetchWalletBalance();
+  async requestResult(item) {
+    const walletBalance = await this.fetchWalletBalance();
     if (!walletBalance || walletBalance > 300) {
       const alertCtrl = await this.alertCtrl.create({
         header: `Insufficient Funds`,
-        subHeader: ` Currently Wallet Balance ${
-          walletBalance || 0
-        } naira.`,
-        message:`You must have at least 300 naira in your wallet to request for the ${item.service_name} result.`,
-    
+        subHeader: ` Currently Wallet Balance ${walletBalance || 0} naira.`,
+        message: `You must have at least 300 naira in your wallet to request for the ${item.service_name} result.`,
+
         buttons: [
           {
             text: "Cancel",
@@ -82,20 +78,22 @@ const walletBalance = await this.fetchWalletBalance();
         header: `Request for ${item.service_name} result`,
         message: `350 units will be deducted from your wallet for this service. <br> To proceed, please enter your preferred email address below`,
         inputs: [
+        
           {
-            name: 'name2',
-            type: 'email',
-            id: 'name2-id',
+            name: "name2",
+            type: "email",
+            id: "name2-id",
             value: `${this.storeCtrl.user.email}`,
             // placeholder: `${this.storeCtrl.user.email}`
             attributes: {
-              autofocus:true
+              autofocus: true,
               //     inputmode: 'decimal'
               //   }
-          },}
-       
-   
+            },
+          },
+        
         ],
+
         buttons: [
           {
             text: "Cancel",
@@ -107,11 +105,14 @@ const walletBalance = await this.fetchWalletBalance();
             handler: () => {
               // console.log(item)
               let data = {
-                url:"/smart-patient/fetch-lab-results",
-                data:[item?.appointment]
-              }
+                url: "smart-patient/fetch-lab-results?sendMail=true",
+                // data: [item?.appointment],
+                data:{
+                  appointment:["5f74c4d38b4a1c89a819997b"]
+                },
+                action: null,
+              };
               this.lService.sendLabResults(data)
-
             },
           },
         ],
@@ -126,5 +127,4 @@ const walletBalance = await this.fetchWalletBalance();
     //   .then((res) => console.log("Launched dialer!", res))
     //   .catch((err) => console.log("Error launching dialer", err));
   }
-
 }

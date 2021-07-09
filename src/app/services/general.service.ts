@@ -8,12 +8,16 @@ import { API } from "src/interfaces/api";
 import { IAPIResponse } from "src/interfaces/general";
 import { environment } from "../../environments/environment";
 import { SmartMobileEvent } from "../actions/events";
+import { ToastController } from '@ionic/angular';
+import { async } from "@angular/core/testing";
+
 
 @Injectable({
   providedIn: "root",
 })
 export class GeneralService {
   baseUrl = environment.baseURL;
+  nodeUrl = environment.emrUrl;
   broadcaster = new BehaviorSubject<{
     res: APIResp;
     action: SmartMobileEvent;
@@ -21,8 +25,18 @@ export class GeneralService {
   }>(null);
   constructor(
     public http: HttpClient,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    public toastController: ToastController
   ) {}
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your settings have been saved.',
+      duration: 2000
+    });
+    toast.present();
+  }
+  
 
   postData = ({ url, data, action }: RequestRequirements) => {
     this.http.post(`${this.baseUrl}${url}`, data).subscribe(
@@ -35,10 +49,33 @@ export class GeneralService {
     );
   };
 
-  postDataNodeBackend = ({ url, data, action }: RequestRequirements) => {
-    this.http.post(`${this.baseUrl}${url}`, data).subscribe(
-      (res: APIResp) => {
-        this.broadcaster.next({ res: res, action, failed: false });
+  postDataNodeBackend =  ({ url, data, action }: RequestRequirements) => {
+    this.http.post(`${this.nodeUrl}${url}`, data).subscribe(
+     async (res: APIResp)  => {
+        // this.broadcaster.next({ res: res, action, failed: false });
+        console.log(res) 
+        if(res.error === false) {
+          const toast = await this.toastController.create({
+            message: 'operation successful',
+            position: 'top',
+            buttons: [
+              {
+  
+                handler: () => {
+                  console.log('Favorite clicked');
+                }
+              }, {
+                text: 'Done',
+                role: 'cancel',
+                handler: () => {
+                  console.log('Cancel clicked');
+                }
+              }
+            ]
+          });
+          await toast.present();
+        }
+       
       },
       (error) => {
         this.broadcaster.next({ res: error, action, failed: true });

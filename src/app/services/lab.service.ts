@@ -5,6 +5,7 @@ import { LabEvent, LoadLabRequests } from "../actions/events/lab";
 import { LabState } from "../actions/states/lab";
 import { GeneralService } from "./general.service";
 
+
 @Injectable({
   providedIn: "root",
 })
@@ -56,8 +57,8 @@ export class LabService {
   }
 
   sendLabResults(data: any) {
-    this._genService.postData(data);
-    console.log(data);
+   this._genService.postDataNodeBackend(data)
+    // console.log(data);
   }
 
   triggerEvent(event: LabEvent, data?) {
