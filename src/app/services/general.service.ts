@@ -35,6 +35,17 @@ export class GeneralService {
     );
   };
 
+  postDataNodeBackend = ({ url, data, action }: RequestRequirements) => {
+    this.http.post(`${this.baseUrl}${url}`, data).subscribe(
+      (res: APIResp) => {
+        this.broadcaster.next({ res: res, action, failed: false });
+      },
+      (error) => {
+        this.broadcaster.next({ res: error, action, failed: true });
+      }
+    );
+  };
+
   getData = async ({
     url,
     params,

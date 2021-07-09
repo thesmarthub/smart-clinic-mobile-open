@@ -46,13 +46,18 @@ export class LabService {
           service_cost: request.test?.service_cost,
           service_department_route: request.test?.service_department_route,
           smart_code: request.test?.smart_code,
-          status:element.status
+          status: element.status,
         };
         result.push(modified);
       });
     });
     // console.log(result);
     return result;
+  }
+
+  sendLabResults(data: any) {
+    this._genService.postData(data);
+    console.log(data);
   }
 
   triggerEvent(event: LabEvent, data?) {

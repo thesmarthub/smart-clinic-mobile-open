@@ -16,7 +16,8 @@ import { Router } from '@angular/router';
 export class LabPage implements OnInit {
   storeCtrl = new Store()
 
-  constructor(public lService: LabService, 
+  constructor(
+    public lService: LabService, 
     public location: Location, 
     public alertCtrl:AlertController,
     public _paymentService: PaymentService,
@@ -27,6 +28,9 @@ export class LabPage implements OnInit {
 
   ionViewDidEnter() {
     this.lService.triggerEvent(LoadLabRequests)
+  }
+  send(){
+    
   }
 
   goBack(){
@@ -100,7 +104,15 @@ const walletBalance = await this.fetchWalletBalance();
           },
           {
             text: "Send",
-            handler: () => {},
+            handler: () => {
+              // console.log(item)
+              let data = {
+                url:"/smart-patient/fetch-lab-results",
+                data:[item?.appointment]
+              }
+              this.lService.sendLabResults(data)
+
+            },
           },
         ],
       });
