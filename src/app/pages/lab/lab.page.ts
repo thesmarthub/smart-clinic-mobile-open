@@ -80,9 +80,10 @@ export class LabPage implements OnInit {
         inputs: [
         
           {
-            name: "name2",
+            name: "email",
             type: "email",
             id: "name2-id",
+            placeholder: 'Enter email address',
             value: `${this.storeCtrl.user.email}`,
             // placeholder: `${this.storeCtrl.user.email}`
             attributes: {
@@ -102,13 +103,14 @@ export class LabPage implements OnInit {
           },
           {
             text: "Send",
-            handler: () => {
-              // console.log(item)
+            handler: (alertData) => {
+              console.log(alertData, "alert data")
               let data = {
                 url: "smart-patient/fetch-lab-results?sendMail=true",
                 // data: [item?.appointment],
                 data:{
-                  appointment:["5f74c4d38b4a1c89a819997b"]
+                  appointment:[item?.appointment],
+                  email:alertData?.email
                 },
                 action: null,
               };
@@ -116,9 +118,12 @@ export class LabPage implements OnInit {
             },
           },
         ],
-      });
+        
+      }
+      );
 
       await alertCtrl2.present();
+     
     }
 
     // if (!number) number = this.store.currentHospital.phone1;

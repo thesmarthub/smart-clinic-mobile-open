@@ -9,6 +9,7 @@ import { IAPIResponse } from "src/interfaces/general";
 import { environment } from "../../environments/environment";
 import { SmartMobileEvent } from "../actions/events";
 import { ToastController } from '@ionic/angular';
+import {ToasterService} from './toaster.service'
 import { async } from "@angular/core/testing";
 
 
@@ -26,7 +27,9 @@ export class GeneralService {
   constructor(
     public http: HttpClient,
     private loadingController: LoadingController,
-    public toastController: ToastController
+    public toastController: ToastController,
+    public toasta: ToasterService
+
   ) {}
 
   async presentToast() {
@@ -55,25 +58,7 @@ export class GeneralService {
         // this.broadcaster.next({ res: res, action, failed: false });
         console.log(res) 
         if(res.error === false) {
-          const toast = await this.toastController.create({
-            message: 'operation successful',
-            position: 'top',
-            buttons: [
-              {
-  
-                handler: () => {
-                  console.log('Favorite clicked');
-                }
-              }, {
-                text: 'Done',
-                role: 'cancel',
-                handler: () => {
-                  console.log('Cancel clicked');
-                }
-              }
-            ]
-          });
-          await toast.present();
+        this.toasta.presentToastWithOptions(res.message )
         }
        
       },
