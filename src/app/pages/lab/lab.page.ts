@@ -104,7 +104,7 @@ export class LabPage implements OnInit {
           {
             text: "Send",
             handler: (alertData) => {
-              console.log(alertData, "alert data")
+              console.log(item, " data")
               let data = {
                 url: "smart-patient/fetch-lab-results?sendMail=true",
                 // data: [item?.appointment],

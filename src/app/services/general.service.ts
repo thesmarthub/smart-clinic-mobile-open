@@ -11,6 +11,8 @@ import { SmartMobileEvent } from "../actions/events";
 import { ToastController } from '@ionic/angular';
 import {ToasterService} from './toaster.service'
 import { async } from "@angular/core/testing";
+import { LoadersService} from "./loaders.service"
+
 
 
 @Injectable({
@@ -28,7 +30,8 @@ export class GeneralService {
     public http: HttpClient,
     private loadingController: LoadingController,
     public toastController: ToastController,
-    public toasta: ToasterService
+    public toasta: ToasterService,
+    public loada: LoadersService
 
   ) {}
 
@@ -53,12 +56,18 @@ export class GeneralService {
   };
 
   postDataNodeBackend =  ({ url, data, action }: RequestRequirements) => {
+    this.loada.presentLoadingWithOptions("processing...")
+
     this.http.post(`${this.nodeUrl}${url}`, data).subscribe(
      async (res: APIResp)  => {
         // this.broadcaster.next({ res: res, action, failed: false });
         console.log(res) 
+        this.loada.dismissLoader()
         if(res.error === false) {
-        this.toasta.presentToastWithOptions(res.message )
+        
+        this.toasta.presentToastWithOptions("successful!")
+        } else {
+          this.toasta.presentToastWithOptions("error in sending messages")
         }
        
       },

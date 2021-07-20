@@ -58,7 +58,7 @@ export class LabService {
 
   sendLabResults(data: any) {
    this._genService.postDataNodeBackend(data)
-    // console.log(data);
+    console.log(data);
   }
 
   triggerEvent(event: LabEvent, data?) {

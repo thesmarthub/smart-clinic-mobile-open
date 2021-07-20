@@ -8,7 +8,9 @@ export const environment = {
   // baseURL: "http://172.24.23.144:7003",
   mobileEventUrl: "https://events.s3.smartapps.com.ng/",
   orgsURL: "http://localhost:8080/api/v1/",
-  emrUrl:"http://localhost:8000/v1/"
+  // emrUrl:"http://localhost:8000/v1/"
+    emrUrl:"https://s3.smartapps.com.ng/v1/"
+
 };
 
 /*
