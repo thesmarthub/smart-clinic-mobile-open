@@ -73,7 +73,7 @@ export class RadiologyPage implements OnInit {
         message: `350 units will be deducted from your wallet for this service. <br> To proceed, please enter your preferred email address below`,
         inputs: [
           {
-            name: 'name2',
+            name: 'email',
             type: 'email',
             id: 'name2-id',
             value: `${this.storeCtrl.user.email}`,
@@ -95,7 +95,19 @@ export class RadiologyPage implements OnInit {
           },
           {
             text: "Proceed",
-            handler: () => { },
+            handler: (alertData) => {
+              console.log(item, "items")
+              let data = {
+                url: "smart-patient/fetch-radiology-results?sendMail=true",
+                // data: [item?.appointment],
+                data:{
+                  appointment:[item?.appointment],
+                  email:alertData?.email
+                },
+                action: null,
+              };
+              this.rService.sendRadResults(data)
+             },
           },
         ],
       });

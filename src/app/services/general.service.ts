@@ -8,12 +8,19 @@ import { API } from "src/interfaces/api";
 import { IAPIResponse } from "src/interfaces/general";
 import { environment } from "../../environments/environment";
 import { SmartMobileEvent } from "../actions/events";
+import { ToastController } from '@ionic/angular';
+import {ToasterService} from './toaster.service'
+import { async } from "@angular/core/testing";
+import { LoadersService} from "./loaders.service"
+
+
 
 @Injectable({
   providedIn: "root",
 })
 export class GeneralService {
   baseUrl = environment.baseURL;
+  nodeUrl = environment.emrUrl;
   broadcaster = new BehaviorSubject<{
     res: APIResp;
     action: SmartMobileEvent;
@@ -21,13 +28,48 @@ export class GeneralService {
   }>(null);
   constructor(
     public http: HttpClient,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    public toastController: ToastController,
+    public toasta: ToasterService,
+    public loada: LoadersService
+
   ) {}
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your settings have been saved.',
+      duration: 2000
+    });
+    toast.present();
+  }
+  
 
   postData = ({ url, data, action }: RequestRequirements) => {
     this.http.post(`${this.baseUrl}${url}`, data).subscribe(
       (res: APIResp) => {
         this.broadcaster.next({ res: res, action, failed: false });
+      },
+      (error) => {
+        this.broadcaster.next({ res: error, action, failed: true });
+      }
+    );
+  };
+
+  postDataNodeBackend =  ({ url, data, action }: RequestRequirements) => {
+    this.loada.presentLoadingWithOptions("processing...")
+
+    this.http.post(`${this.nodeUrl}${url}`, data).subscribe(
+     async (res: APIResp)  => {
+        // this.broadcaster.next({ res: res, action, failed: false });
+        console.log(res) 
+        this.loada.dismissLoader()
+        if(res.error === false) {
+        
+        this.toasta.presentToastWithOptions("successful!")
+        } else {
+          this.toasta.presentToastWithOptions("error in sending messages")
+        }
+       
       },
       (error) => {
         this.broadcaster.next({ res: error, action, failed: true });
@@ -111,6 +153,7 @@ export class GeneralService {
 
         default:
           await conf.loader.dismiss();
+          conf = { message: "" };
           break;
       }
       return;
@@ -133,7 +176,7 @@ export class GeneralService {
   };
 
   resetQueryParams(router: Router, route: ActivatedRoute) {
-    router.navigate(['.'], { relativeTo: route, queryParams: {}});
+    router.navigate(["."], { relativeTo: route, queryParams: {} });
   }
 }
 

@@ -5,6 +5,7 @@ import { LabEvent, LoadLabRequests } from "../actions/events/lab";
 import { LabState } from "../actions/states/lab";
 import { GeneralService } from "./general.service";
 
+
 @Injectable({
   providedIn: "root",
 })
@@ -46,13 +47,18 @@ export class LabService {
           service_cost: request.test?.service_cost,
           service_department_route: request.test?.service_department_route,
           smart_code: request.test?.smart_code,
-          status:element.status
+          status: element.status,
         };
         result.push(modified);
       });
     });
     // console.log(result);
     return result;
+  }
+
+  sendLabResults(data: any) {
+   this._genService.postDataNodeBackend(data)
+    console.log(data);
   }
 
   triggerEvent(event: LabEvent, data?) {

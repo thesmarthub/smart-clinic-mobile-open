@@ -45,9 +45,9 @@ export class LoginPage implements OnInit {
         }
         if (status.event === "LOGGED IN") {
           this.gService.presentLoading(this.loaderConf, "close");
+          this._authService.authListenerWithData.next({ event: "DEFAULT" });
           if (this._authService.store.userType === "doctor") {
             this._authService.navigate("/tabs/home", {});
-            this._authService.authListenerWithData.next({ event: "DEFAULT" });
           }
         }
         if (status.event === "LOGIN FAILED") {

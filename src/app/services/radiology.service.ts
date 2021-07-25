@@ -70,6 +70,11 @@ export class RadiologyService {
     }
   }
 
+  sendRadResults(data: any) {
+    this._genService.postDataNodeBackend(data)
+     // console.log(data);
+   }
+
   private readonly handleEvent = (
     event: RadiologyEvent,
     value: IAPIResponse<Record<string, any> | Record<string, any>[]>
@@ -93,6 +98,8 @@ export class RadiologyService {
         this.currentValues[key].unsubscribe();
       }
     });
+
+    
 
     this.currentValues = {
       radiologyRequests: new BehaviorSubject([]),
