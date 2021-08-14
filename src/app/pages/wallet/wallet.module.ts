@@ -8,6 +8,8 @@ import { WalletPageRoutingModule } from './wallet-routing.module';
 
 import { WalletPage } from './wallet.page';
 import { FlutterwavePageModule } from '../flutterwave/flutterwave.module';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { WalletChargeDirective } from 'src/app/shared/wallet-charge.directive';
 
 @NgModule({
   imports: [
@@ -15,8 +17,10 @@ import { FlutterwavePageModule } from '../flutterwave/flutterwave.module';
     FormsModule,
     IonicModule,
     WalletPageRoutingModule,
-    FlutterwavePageModule
+    FlutterwavePageModule,
+    SharedModule
   ],
-  declarations: [WalletPage]
+  declarations: [WalletPage],
+  // providers: [WalletChargeDirective]
 })
 export class WalletPageModule {}

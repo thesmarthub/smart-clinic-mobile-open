@@ -4,6 +4,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { Store } from "src/app/engine/store";
 import { CartService } from "src/app/services/cart.service";
 import { PaymentService } from "src/app/services/payment.service";
+import { WalletChargeDirective } from "src/app/shared/wallet-charge.directive";
 
 @Component({
   selector: "app-cart",
@@ -31,7 +32,8 @@ export class CartPage implements OnInit, OnDestroy {
     private cartService: CartService,
     private paymentService: PaymentService,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private walletChargeDirective: WalletChargeDirective
   ) {}
 
   ngOnInit() {
@@ -152,5 +154,9 @@ export class CartPage implements OnInit, OnDestroy {
   closedPaymentModal() {
     console.log("Modal closed");
     this.modalCtrl.dismiss({ reload: true });
+  }
+
+  payWithWallet() {
+    this.walletChargeDirective.runMe({amount: this.amount})
   }
 }

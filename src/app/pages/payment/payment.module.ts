@@ -8,6 +8,7 @@ import { PaymentPageRoutingModule } from './payment-routing.module';
 
 import { PaymentPage } from './payment.page';
 import { FlutterwavePageModule } from '../flutterwave/flutterwave.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { FlutterwavePageModule } from '../flutterwave/flutterwave.module';
     FormsModule,
     IonicModule,
     PaymentPageRoutingModule,
-    FlutterwavePageModule
+    FlutterwavePageModule,
+    SharedModule
   ],
   declarations: [PaymentPage]
 })

@@ -1,8 +1,9 @@
 import { Location } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { AlertController } from "@ionic/angular";
 import { PaymentService } from "src/app/services/payment.service";
+import { WalletChargeDirective } from "src/app/shared/wallet-charge.directive";
 
 @Component({
   selector: "app-wallet",
@@ -25,13 +26,14 @@ export class WalletPage implements OnInit {
     public paymentService: PaymentService,
     private alertCtrl: AlertController,
     private aRoute: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private walletDialog: WalletChargeDirective
   ) {
     this.aRoute.queryParams.subscribe((data) => {
-      if(data?.showBack === "yes") {
+      if (data?.showBack === "yes") {
         this.showBack = true;
-      } 
-    })
+      }
+    });
   }
 
   ngOnInit() {}
@@ -60,9 +62,11 @@ export class WalletPage implements OnInit {
 
     const walletBalance = await this.paymentService.fetchWalletBalance();
     if (typeof walletBalance !== "boolean") {
+      if (this.walletBalance !== walletBalance) {
+        this.walletTransactions();
+      }
       this.walletBalance = walletBalance;
     }
-    
   }
 
   walletTransactions() {

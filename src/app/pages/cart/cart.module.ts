@@ -8,6 +8,7 @@ import { CartPageRoutingModule } from "./cart-routing.module";
 
 import { CartPage } from "./cart.page";
 import { FlutterwavePageModule } from "../flutterwave/flutterwave.module";
+import { SharedModule } from "src/app/shared/shared.module";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { FlutterwavePageModule } from "../flutterwave/flutterwave.module";
     FormsModule,
     IonicModule,
     CartPageRoutingModule,
-    FlutterwavePageModule
+    FlutterwavePageModule,
+    SharedModule
   ],
   declarations: [CartPage],
 })

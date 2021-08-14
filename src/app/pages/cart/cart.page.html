@@ -83,6 +83,7 @@
       Proceed
     </ion-button> -->
     <app-flutterwave [amount]="amount" [transactionRef]="txRef" *ngIf="!loading"></app-flutterwave>
+    <button (click)="payWithWallet()">Pay with wallet</button>
     <!-- <flutterwave-make-payment *ngIf="transactionInitiated" [public_key]="publicKey" [amount]="amount" currency='NGN'
       payment_options="card,ussd,bank" [redirect_url]="redirectUrl" text="Pay Now" [customer]="customerDetails"
       [customizations]="customizations" [meta]="meta" [tx_ref]="txRef" (callback)="makePaymentCallback($event)"

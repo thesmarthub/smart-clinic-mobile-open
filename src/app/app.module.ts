@@ -1,4 +1,4 @@
-import { NgModule } from "@angular/core";
+import { APP_INITIALIZER, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy, RouterModule } from "@angular/router";
 
@@ -12,11 +12,27 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { GeneralInterceptorService } from "./interceptors/general-interceptor";
 import { CalendarModule } from "ion2-calendar";
-import { FlutterwaveModule } from "flutterwave-angular-v3"
+import { FlutterwaveModule } from "flutterwave-angular-v3";
 import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+// import { KeycloakAngularModule, KeycloakService } from "keycloak-angular";
 
+// function initializeKeycloak(keycloak: KeycloakService) {
+//   return () =>
+//     keycloak.init({
+//       config: {
+//         url: "http://localhost:8081/auth",
+//         realm: "clinic",
+//         clientId: "vanilla",
+//       },
+//       initOptions: {
+//         onLoad: "check-sso",
+//         silentCheckSsoRedirectUri:
+//           window.location.origin + "/assets/silent-check-sso.html",
+//       },
+//     });
+// }
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -29,7 +45,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
-    FlutterwaveModule
+    FlutterwaveModule,
+    // KeycloakAngularModule,
   ],
   providers: [
     StatusBar,
@@ -41,7 +58,13 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
       useClass: GeneralInterceptorService,
       multi: true,
     },
-    InAppBrowser
+    // {
+    //   provide: APP_INITIALIZER,
+    //   useFactory: initializeKeycloak,
+    //   multi: true,
+    //   deps: [KeycloakService],
+    // },
+    InAppBrowser,
   ],
   bootstrap: [AppComponent],
 })
