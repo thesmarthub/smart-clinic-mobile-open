@@ -9,6 +9,8 @@ import { Location } from '@angular/common'
 export class MarketPlacePage implements OnInit {
 
   toShow="drugs";
+  outline = 'add-outline'
+  shoppingCart = [];
 
   drugs = [
     {
@@ -51,7 +53,17 @@ export class MarketPlacePage implements OnInit {
   }
 
   marketPurchase(element:string){
-    console.log("market", element);
+    if(element === 'service'){
+      this.toShow = 'service';
+    }else{
+      this.toShow = 'drugs';
+    }
   }
 
+  addToChart(element:any){
+    // this.outline = "remove-outline";
+     let costPrice = element.drug_price || element.cost
+    this.shoppingCart.push(costPrice );
+    console.log(this.shoppingCart)
+  }
 }

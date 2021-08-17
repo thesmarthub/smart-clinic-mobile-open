@@ -6,12 +6,16 @@
 
 <ion-content >
  
-  <ion-row class="">
+  <ion-row class="padded">
       <ion-col (click)="marketPurchase('drugs')">
           <ion-text>Drugs</ion-text>
       </ion-col>
       <ion-col (click)="marketPurchase('service')">
         <ion-text>Services</ion-text>
+    </ion-col>
+    <ion-col>
+      <!-- <i class="fa fa-shopping-cart" aria-hidden="true"></i> -->
+      <ion-icon name="fa-shopping-cart" fas></ion-icon>
     </ion-col>
   </ion-row>
 
@@ -19,29 +23,33 @@
     <ion-searchbar placeholder="Search"></ion-searchbar>
   </ion-toolbar>
 
-  <ion-list>
-    <ion-item *ngFor="let drug of drugs">
+  <ion-list *ngIf="toShow === 'drugs'">
+    <ion-item *ngFor="let drug of drugs; let index = i" >
       <ion-grid>
           <ion-row>
             <ion-col>
               <ion-row>
                 <ion-label>{{drug.drug_name}}</ion-label>
                 <ion-label>{{drug.drug_price}}</ion-label>
-                <ion-icon name="add-outline"></ion-icon>
+                <ion-icon name={{outline}} (click)="addToChart(drug)"></ion-icon>
               </ion-row>        
             </ion-col>
           </ion-row>
       </ion-grid>
     </ion-item>
 
-    <ion-item *ngFor="let service of services">
+
+  </ion-list>
+
+  <ion-list *ngIf="toShow === 'service'">
+    <ion-item *ngFor="let service of services; let index = i">
       <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-row>
+              <ion-row class="">
                 <ion-label>{{service.service_name}}</ion-label>
                 <ion-label>{{service.cost}}</ion-label>
-                <ion-icon name="add-outline"></ion-icon>
+                <ion-icon name={{outline}} (click)="addToChart(service)"></ion-icon>
               </ion-row>        
             </ion-col>
           </ion-row>
