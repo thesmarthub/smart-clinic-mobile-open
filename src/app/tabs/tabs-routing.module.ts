@@ -76,6 +76,10 @@ const routes: Routes = [
           ),
       },
       {
+        path: "market-place",
+        loadChildren: () => import("../pages/market-place/market-place.module").then((m)=>m.MarketPlacePageModule)
+      },
+      {
         path: "",
         redirectTo: "/tabs/home",
         pathMatch: "full",

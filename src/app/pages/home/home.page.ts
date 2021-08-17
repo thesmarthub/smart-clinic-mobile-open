@@ -71,6 +71,14 @@ export class HomePage implements OnInit {
       bgColor: "doctors",
       users: ["users"],
     },
+    // {
+    //   title: "Market Place",
+    //   icon: "fa fa-map-marker",
+    //   link: "/tabs/market-place",
+    //   img: "/assets/016-map.png",
+    //   bgColor: "appt",
+    //   users: ["users"],
+    // }
   ];
 
   doctorsCards = [
