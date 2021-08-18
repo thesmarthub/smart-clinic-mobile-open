@@ -15,10 +15,9 @@
     </ion-col>
     <ion-col>
       <span>
-        {{countCart}}
-        <ion-icon name="Chart"></ion-icon>
-      </span>
-      
+        <ion-icon color="primary" name="reader-outline"></ion-icon>
+        <ion-text color="primary" class="super">{{countCart}}</ion-text>
+      </span>      
     </ion-col>
   </ion-row>
 
@@ -28,14 +27,17 @@
 
   <ion-list *ngIf="toShow === 'drugs'">
     <ion-item *ngFor="let drug of drugs; let index = i" >
-      <ion-grid>
-          <ion-row>
+      <ion-grid >
+          <ion-row >
             <ion-col>
-              <ion-row class="market_table">
-                <ion-label>{{drug.drug_name |titlecase}}</ion-label>
+                <ion-label>{{drug.drug_name |titlecase}}</ion-label>                            
+            </ion-col>
+              <ion-col > 
                 <ion-label>{{drug.drug_price}}</ion-label>
-                <ion-icon name={{outline}} (click)="addToChart(drug)"></ion-icon>
-              </ion-row>        
+              </ion-col>      
+
+            <ion-col>
+              <ion-icon name={{outline}} (click)="addToChart(drug)"></ion-icon> 
             </ion-col>
           </ion-row>
       </ion-grid>
@@ -47,14 +49,18 @@
   <ion-list *ngIf="toShow === 'service'">
     <ion-item *ngFor="let service of services; let index = i">
       <ion-grid>
-          <ion-row>
+          <ion-row >
             <ion-col>
-              <ion-row class="market_table">
                 <ion-label>{{service.service_name |titlecase}}</ion-label>
-                <ion-label>{{service.cost}}</ion-label>
-                <ion-icon name={{outline}} (click)="addToChart(service)"></ion-icon>
-              </ion-row>        
             </ion-col>
+            <ion-col>
+              <ion-label>{{service.cost}}</ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-icon name={{outline}} (click)="addToChart(service)"></ion-icon>
+            </ion-col>           
+     
+
           </ion-row>
       </ion-grid>
     </ion-item>

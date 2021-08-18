@@ -41,6 +41,10 @@ export class MarketPlacePage implements OnInit {
       service_name:"pcv",
       cost: "1500.00"
     },
+    {
+      service_name:"pregnancy test",
+      cost: "2500.00"
+    }
 
   ];
 

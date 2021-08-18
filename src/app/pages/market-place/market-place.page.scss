@@ -9,17 +9,17 @@
   }  
 
   .padded{
-    // text-align: center;
     padding-left:45px;
-    // padding-right:45px;
+    font-size:20px;
   } 
 
   .market_table{
-    width:100%;
-    ion-label{
-      padding:25px;
-    }
-    ion-icon{
-      padding:25px;
-    }
+    display: flex !important;
+    justify-content: start;
+    align-content: space-between;
+  }
+
+  .super{
+    vertical-align:super;
+    font-size: 14px;
   }
