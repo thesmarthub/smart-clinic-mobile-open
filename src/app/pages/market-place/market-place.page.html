@@ -14,8 +14,11 @@
         <ion-text>Services</ion-text>
     </ion-col>
     <ion-col>
-      <!-- <i class="fa fa-shopping-cart" aria-hidden="true"></i> -->
-      <ion-icon name="fa-shopping-cart" fas></ion-icon>
+      <span>
+        {{countCart}}
+        <ion-icon name="Chart"></ion-icon>
+      </span>
+      
     </ion-col>
   </ion-row>
 
@@ -28,8 +31,8 @@
       <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-row>
-                <ion-label>{{drug.drug_name}}</ion-label>
+              <ion-row class="market_table">
+                <ion-label>{{drug.drug_name |titlecase}}</ion-label>
                 <ion-label>{{drug.drug_price}}</ion-label>
                 <ion-icon name={{outline}} (click)="addToChart(drug)"></ion-icon>
               </ion-row>        
@@ -46,8 +49,8 @@
       <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-row class="">
-                <ion-label>{{service.service_name}}</ion-label>
+              <ion-row class="market_table">
+                <ion-label>{{service.service_name |titlecase}}</ion-label>
                 <ion-label>{{service.cost}}</ion-label>
                 <ion-icon name={{outline}} (click)="addToChart(service)"></ion-icon>
               </ion-row>        

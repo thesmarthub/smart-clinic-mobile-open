@@ -11,6 +11,7 @@ export class MarketPlacePage implements OnInit {
   toShow="drugs";
   outline = 'add-outline'
   shoppingCart = [];
+  countCart = 0;
 
   drugs = [
     {
@@ -61,9 +62,8 @@ export class MarketPlacePage implements OnInit {
   }
 
   addToChart(element:any){
-    // this.outline = "remove-outline";
-     let costPrice = element.drug_price || element.cost
+    let costPrice = element.drug_price || element.cost
     this.shoppingCart.push(costPrice );
-    console.log(this.shoppingCart)
+    this.countCart = this.shoppingCart.length;
   }
 }
