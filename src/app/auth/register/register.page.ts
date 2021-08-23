@@ -77,7 +77,7 @@ export class RegisterPage implements OnInit {
     console.log(this.regForm.value);
 
     if (!this.regForm.valid) {
-      console.log(this.regForm.errors);
+      // console.log(this.regForm.errors);
       const alert = await this.alertCtrl.create({
         message: "Please enter all required information.",
         buttons: ["OK"],

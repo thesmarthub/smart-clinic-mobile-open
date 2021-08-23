@@ -24,7 +24,7 @@ export class PandemicPage implements OnInit {
       {
         key: "active_health_worker",
         title:
-          "Are you an active health care proffessional working in a facility with a confirmed case?",
+          "Are you an active health care professional working in a facility with a confirmed case?",
         score: 5,
         type: "radio",
         value: false,

@@ -101,8 +101,8 @@ export class ViewAppointmentsPage implements OnInit {
             });
           });
           let { daysConfig, numberOfDays } = this.configureDates(expanded);
-          console.log("num days", numberOfDays);
-          console.log("enabled slots", this.enabledSlots);
+          // console.log("num days", numberOfDays);
+          // console.log("enabled slots", this.enabledSlots);
           if (numberOfDays > 0) {
             this.daysConfig = daysConfig;
             this.openCalendar();
@@ -190,7 +190,7 @@ export class ViewAppointmentsPage implements OnInit {
         if (moment(config.date).startOf("day") < moment().startOf("day")) {
           config.disable = false;
           numberOfDays += 1;
-          console.log("Found matching days", config.date.getDate());
+          // console.log("Found matching days", config.date.getDate());
         }
       }
     }
@@ -198,11 +198,11 @@ export class ViewAppointmentsPage implements OnInit {
   }
 
   setAvailableSlots(date) {
-    console.log(this.enabledSlots);
+    // console.log(this.enabledSlots);
     const availableSlots = this.enabledSlots.filter((slot) => {
       return moment(slot.start_time).dayOfYear() === moment(date).dayOfYear();
     });
-    console.log(this.availableSlots);
+    // console.log(this.availableSlots);
     this.availableSlots.next(availableSlots);
   }
 
@@ -262,7 +262,7 @@ export class ViewAppointmentsPage implements OnInit {
           })
           .then(
             (date) => {
-              console.log("Got date: ", date);
+              // console.log("Got date: ", date);
               if (date) {
                 this.bookAppointment(date);
               }
@@ -313,14 +313,14 @@ export class ViewAppointmentsPage implements OnInit {
               smart_code: this.selectedDepartment.route,
               slot_id: val.slot?._id,
             };
-            console.log(val);
+            // console.log(val);
             this.aService.createAppointment(data);
           },
         },
         {
           text: "Back to Calendar",
           handler: (val) => {
-            console.log("Going back to calendar");
+            // console.log("Going back to calendar");
             this.loadTimeSlots();
           },
         },
@@ -358,7 +358,7 @@ export class ViewAppointmentsPage implements OnInit {
 
   getBothPastandFuture() {
     this.aService.currentValues.appointments.subscribe((data) => {
-      console.log(data);
+      // console.log(data);
       if (!data) return;
       this.pastAppointments = data.filter(
         (item) => moment(item.appointment_time) < moment()
